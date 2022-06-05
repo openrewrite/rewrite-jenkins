@@ -8,7 +8,6 @@ import org.openrewrite.TreeVisitor;
 import org.openrewrite.maven.MavenVisitor;
 import org.openrewrite.xml.AddOrUpdateChild;
 import org.openrewrite.xml.tree.Xml;
-import org.openrewrite.xml.tree.Xml.Document;
 import org.openrewrite.xml.tree.Xml.Tag;
 
 @Value
@@ -34,11 +33,6 @@ public class DisableLocalResolutionForParentPom extends Recipe {
                     return AddOrUpdateChild.addOrUpdateChild(tag, relativePathTag, getCursor().getParentOrThrow());
                 }
                 return super.visitTag(tag, ctx);
-            }
-
-            @Override
-            public Xml visitDocument(Document document, ExecutionContext ctx) {
-                return super.visitDocument(document, ctx);
             }
         };
     }

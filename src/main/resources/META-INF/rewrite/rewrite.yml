@@ -39,6 +39,9 @@ recipeList:
   - net.sghill.jenkins.rewrite.ChangeJenkinsVersion:
       parentPomVersion: "4.40"
       jenkinsVersion: "2.303.3"
+  - net.sghill.jenkins.rewrite.AddPluginsBom:
+      bomName: bom-2.303.x
+      bomVersion: "1409.v7659b_c072f18"
   - net.sghill.jenkins.rewrite.DisableLocalResolutionForParentPom
   - org.openrewrite.maven.RemoveProperty:
       # as of parent pom 4.40 this is deprecated and unused
