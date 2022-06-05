@@ -19,11 +19,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import org.jetbrains.annotations.NotNull;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
-import org.openrewrite.maven.AddCommentToMavenDependency;
 import org.openrewrite.maven.MavenVisitor;
 import org.openrewrite.maven.RemoveDependency;
 import org.openrewrite.maven.tree.ResolvedDependency;
@@ -50,14 +48,14 @@ public class ReplaceLibrariesWithApiPlugin extends Recipe {
     public static class Library {
         String groupId;
         String artifactId;
-        
+
         @JsonCreator
         public Library(@JsonProperty("groupId") String groupId, @JsonProperty("artifactId") String artifactId) {
             this.groupId = groupId;
             this.artifactId = artifactId;
         }
     }
-    
+
     @JsonCreator
     public ReplaceLibrariesWithApiPlugin(
             @JsonProperty("pluginGroupId") String pluginGroupId,
@@ -75,20 +73,20 @@ public class ReplaceLibrariesWithApiPlugin extends Recipe {
     }
 
     @Override
-    public @NotNull String getDisplayName() {
+    public String getDisplayName() {
         return "Use Jenkins API plugin instead of libraries";
     }
 
     @Override
-    public @NotNull String getDescription() {
+    public String getDescription() {
         return "Prefer Jenkins API plugins over bundling libraries for slimmer plugins.";
     }
 
     @Override
-    protected @NotNull TreeVisitor<?, ExecutionContext> getVisitor() {
+    protected TreeVisitor<?, ExecutionContext> getVisitor() {
         return new MavenVisitor<ExecutionContext>() {
             @Override
-            public @NotNull Xml visitTag(@NotNull Tag tag, @NotNull ExecutionContext executionContext) {
+            public Xml visitTag(Tag tag, ExecutionContext executionContext) {
                 if (isDependencyTag()) {
                     ResolvedDependency dependency = findDependency(tag);
                     if (dependency != null && !isApiPlugin(dependency)) {

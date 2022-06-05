@@ -2,7 +2,6 @@ package net.sghill.jenkins.rewrite;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import org.jetbrains.annotations.NotNull;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
@@ -24,15 +23,15 @@ public class AddDependency extends Recipe {
     String version;
 
     @Override
-    public @NotNull String getDisplayName() {
+    public String getDisplayName() {
         return "Adds a dependency unconditionally";
     }
 
     @Override
-    protected @NotNull TreeVisitor<?, ExecutionContext> getVisitor() {
+    protected TreeVisitor<?, ExecutionContext> getVisitor() {
         return new MavenVisitor<ExecutionContext>() {
             @Override
-            public @NotNull Xml visitTag(@NotNull Tag tag, @NotNull ExecutionContext executionContext) {
+            public Xml visitTag(Tag tag, ExecutionContext executionContext) {
                 if (DEPENDENCIES_MATCHER.matches(getCursor())) {
                     List<Tag> dependencies = tag.getChildren("dependency");
                     boolean missing = dependencies.stream().noneMatch(d -> groupId.equals(d.getChildValue("groupId").orElse(null)) &&
