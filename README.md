@@ -30,7 +30,7 @@ In a Maven project's pom.xml, make your recipe module a plugin dependency:
                 <version>4.14.1</version>
                 <configuration>
                     <activeRecipes>
-                        <recipe>org.openrewrite.starter.NoGuavaListsNewArrayList</recipe>
+                        <recipe>net.sghill.jenkins.rewrite.ReplaceLibrariesWithApiPlugin</recipe>
                     </activeRecipes>
                 </configuration>
                 <dependencies>
@@ -65,7 +65,7 @@ dependencies {
 }
 
 rewrite {
-    activeRecipe("org.openrewrite.starter.NoGuavaListsNewArrayList")
+    activeRecipe("net.sghill.jenkins.rewrite.ReplaceLibrariesWithApiPlugin")
 }
 ```
 

@@ -52,6 +52,7 @@ dependencies {
     implementation(platform("org.openrewrite.recipe:rewrite-recipe-bom:${rewriteBomVersion}"))
 
     implementation("org.openrewrite:rewrite-java")
+    implementation("org.openrewrite:rewrite-maven")
     runtimeOnly("org.openrewrite:rewrite-java-11")
 
     testImplementation("org.jetbrains.kotlin:kotlin-reflect")
