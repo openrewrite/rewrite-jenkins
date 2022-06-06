@@ -59,6 +59,7 @@ public class AddPluginsBom extends Recipe {
     protected TreeVisitor<?, ExecutionContext> getVisitor() {
         return new MavenVisitor<ExecutionContext>() {
             private boolean bomAlreadyAdded = false;
+            private final BomLookup lookup = new BomLookup();
             
             @Override
             public Xml visitTag(Xml.Tag tag, ExecutionContext executionContext) {
@@ -88,16 +89,8 @@ public class AddPluginsBom extends Recipe {
                 return super.visitTag(tag, executionContext);
             }
 
-            /**
-             * This needs to be replaced with something that can
-             * look up what is in the added bom.
-             *
-             * @param dependency declared
-             * @return true if dependency is in bom
-             */
             private boolean inBom(ResolvedDependency dependency) {
-                String groupId = dependency.getGroupId();
-                return "org.jenkins-ci.plugins".equals(groupId);
+                return lookup.inBom(dependency.getGroupId(), dependency.getArtifactId());
             }
         };
     }
