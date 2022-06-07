@@ -7,9 +7,14 @@ import org.openrewrite.java.ChangeType;
 public class JavaxAnnotationsToSpotbugs extends Recipe {
     @Override
     public String getDisplayName() {
-        return "javax.annotations to SpotBugs";
+        return "`javax.annotations` to SpotBugs";
     }
-    
+
+    @Override
+    public String getDescription() {
+        return "Jenkins is no longer using JSR-305, likely due to Jigsaw concerns about split packages.";
+    }
+
     public JavaxAnnotationsToSpotbugs() {
         doNext(new ChangeType("javax.annotation.Nonnull", "edu.umd.cs.findbugs.annotations.NonNull", true));
         doNext(new ChangePackage("javax.annotation", "edu.umd.cs.findbugs.annotations", false));

@@ -19,12 +19,12 @@ public class ChangeJenkinsVersion extends Recipe {
 
     @Override
     public String getDisplayName() {
-        return "Upgrade parent pom and Jenkins version";
+        return "Upgrade parent POM and Jenkins version";
     }
 
     @Override
     public String getDescription() {
-        return "This upgrade is atomic so we prevent attempting to resolve a bom that does not exist yet.";
+        return "This upgrade is atomic so we prevent attempting to resolve a BOM that does not exist yet.";
     }
 
     @Override

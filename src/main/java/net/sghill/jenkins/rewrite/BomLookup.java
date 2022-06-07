@@ -1,5 +1,6 @@
 package net.sghill.jenkins.rewrite;
 
+import lombok.Getter;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.internal.PropertyPlaceholderHelper;
 import org.openrewrite.internal.StringUtils;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 
+@Getter
 public class BomLookup {
     private final Set<GroupArtifact> groupArtifacts;
 
