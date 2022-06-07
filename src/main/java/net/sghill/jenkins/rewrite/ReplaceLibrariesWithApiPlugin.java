@@ -15,8 +15,6 @@
  */
 package net.sghill.jenkins.rewrite;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.openrewrite.ExecutionContext;
@@ -39,6 +37,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class ReplaceLibrariesWithApiPlugin extends Recipe {
     private static final XPathMatcher DEPENDENCIES_MATCHER = new XPathMatcher("/project/dependencies");
+
     String pluginGroupId;
     String pluginArtifactId;
     String pluginVersion;
@@ -48,20 +47,13 @@ public class ReplaceLibrariesWithApiPlugin extends Recipe {
     public static class Library {
         String groupId;
         String artifactId;
-
-        @JsonCreator
-        public Library(@JsonProperty("groupId") String groupId, @JsonProperty("artifactId") String artifactId) {
-            this.groupId = groupId;
-            this.artifactId = artifactId;
-        }
     }
 
-    @JsonCreator
     public ReplaceLibrariesWithApiPlugin(
-            @JsonProperty("pluginGroupId") String pluginGroupId,
-            @JsonProperty("pluginArtifactId") String pluginArtifactId,
-            @JsonProperty("pluginVersion") String pluginVersion,
-            @JsonProperty("replaces") Set<Library> replaces) {
+            String pluginGroupId,
+            String pluginArtifactId,
+            String pluginVersion,
+            Set<Library> replaces) {
         this.pluginGroupId = pluginGroupId;
         this.pluginArtifactId = pluginArtifactId;
         this.pluginVersion = pluginVersion;

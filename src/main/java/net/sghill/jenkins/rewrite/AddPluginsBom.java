@@ -1,7 +1,5 @@
 package net.sghill.jenkins.rewrite;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.openrewrite.ExecutionContext;
@@ -29,30 +27,23 @@ import org.openrewrite.xml.tree.Xml;
 @EqualsAndHashCode(callSuper = true)
 public class AddPluginsBom extends Recipe {
     @Option(displayName = "artifactId",
-            description = "Middle part of `io.jenkins.tools.bom:bom-2.303.x:VERSION`",
+            description = "Middle part of `io.jenkins.tools.bom:bom-2.303.x:VERSION`.",
             example = "bom-2.303.x")
     String bomName;
     
     @Option(displayName = "version",
-            description = "Last part of `io.jenkins.tools.bom:bom-2.303.x:VERSION`",
+            description = "Last part of `io.jenkins.tools.bom:bom-2.303.x:VERSION`.",
             example = "1409.v7659b_c072f18")
     String bomVersion;
 
-    @JsonCreator
-    public AddPluginsBom(@JsonProperty("bomName") String bomName,
-                         @JsonProperty("bomVersion") String bomVersion) {
-        this.bomName = bomName;
-        this.bomVersion = bomVersion;
-    }
-
     @Override
     public String getDisplayName() {
-        return "Add Jenkins Plugins bom";
+        return "Add Jenkins Plugins BOM";
     }
 
     @Override
     public String getDescription() {
-        return "Adds official Jenkins plugins bom if any dependencies are present in it";
+        return "Adds official Jenkins plugins bom if any dependencies are present in .";
     }
 
     @Override
@@ -60,7 +51,7 @@ public class AddPluginsBom extends Recipe {
         return new MavenVisitor<ExecutionContext>() {
             private boolean bomAlreadyAdded = false;
             private final BomLookup lookup = new BomLookup();
-            
+
             @Override
             public Xml visitTag(Xml.Tag tag, ExecutionContext executionContext) {
                 if (!isManagedDependencyTag()) {

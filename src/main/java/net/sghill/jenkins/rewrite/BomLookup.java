@@ -23,19 +23,21 @@ public class BomLookup {
     }
     
     private void initialize() {
-        try (InputStream is = BomLookup.class.getResourceAsStream("/bom-2.303.x.csv");
-             InputStreamReader isr = new InputStreamReader(is);
-             BufferedReader r = new BufferedReader(isr);
-             Stream<String> lines = r.lines()) {
-            lines.filter(Objects::nonNull)
-                    .map(String::trim)
-                    .filter(l -> !l.isEmpty())
-                    .map(l -> l.split(",", 2))
-                    .forEach(parts -> {
-                        String group = parts[0];
-                        String artifact = parts[1];
-                        groupByArtifact.put(artifact, group);
-                    });
+        try (InputStream is = BomLookup.class.getResourceAsStream("/bom-2.303.x.csv")) {
+            assert is != null;
+            try (InputStreamReader isr = new InputStreamReader(is);
+                 BufferedReader r = new BufferedReader(isr);
+                 Stream<String> lines = r.lines()) {
+                lines.filter(Objects::nonNull)
+                        .map(String::trim)
+                        .filter(l -> !l.isEmpty())
+                        .map(l -> l.split(",", 2))
+                        .forEach(parts -> {
+                            String group = parts[0];
+                            String artifact = parts[1];
+                            groupByArtifact.put(artifact, group);
+                        });
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

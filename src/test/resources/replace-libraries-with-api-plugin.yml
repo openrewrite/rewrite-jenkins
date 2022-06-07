@@ -1,0 +1,11 @@
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: net.sghill.jenkins.rewrite.CommonsLang3ToApiPlugin
+recipeList:
+  - net.sghill.jenkins.rewrite.ReplaceLibrariesWithApiPlugin:
+      pluginGroupId: io.jenkins.plugins
+      pluginArtifactId: commons-text-api
+      pluginVersion: 1.9-5.v7ea_44fe6061c
+      replaces:
+        - groupId: org.apache.commons
+          artifactId: commons-text

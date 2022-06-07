@@ -1,7 +1,5 @@
 package net.sghill.jenkins.rewrite;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.openrewrite.ExecutionContext;
@@ -18,13 +16,6 @@ import org.openrewrite.xml.tree.Xml.Tag;
 public class ChangeJenkinsVersion extends Recipe {
     String parentPomVersion;
     String jenkinsVersion;
-
-    @JsonCreator
-    public ChangeJenkinsVersion(@JsonProperty("parentPomVersion") String parentPomVersion,
-                                @JsonProperty("jenkinsVersion") String jenkinsVersion) {
-        this.parentPomVersion = parentPomVersion;
-        this.jenkinsVersion = jenkinsVersion;
-    }
 
     @Override
     public String getDisplayName() {
