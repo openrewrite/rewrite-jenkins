@@ -34,6 +34,17 @@ recipeList:
 #      artifactId: spotbugs-annotations
 ---
 type: specs.openrewrite.org/v1beta/recipe
+name: net.sghill.jenkins.rewrite.CommonsLang3ToApiPlugin
+recipeList:
+  - net.sghill.jenkins.rewrite.ReplaceLibrariesWithApiPlugin:
+      pluginGroupId: io.jenkins.plugins
+      pluginArtifactId: commons-lang3-api
+      pluginVersion: 3.12.0.0
+      replaces:
+        - groupId: org.apache.commons
+          artifactId: commons-lang3
+---
+type: specs.openrewrite.org/v1beta/recipe
 name: net.sghill.jenkins.ModernizePlugin
 recipeList:
   - net.sghill.jenkins.rewrite.ChangeJenkinsVersion:
@@ -47,3 +58,4 @@ recipeList:
       # as of parent pom 4.40 this is deprecated and unused
       propertyName: java.level
   - net.sghill.jenkins.RemoveDep
+  - net.sghill.jenkins.rewrite.CommonsLang3ToApiPlugin

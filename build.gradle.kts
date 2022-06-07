@@ -24,8 +24,8 @@ configure<nebula.plugin.release.git.base.ReleasePluginExtension> {
     defaultVersionStrategy = nebula.plugin.release.NetflixOssStrategies.SNAPSHOT(project)
 }
 
-group = "org.openrewrite.recipe"
-description = "Rewrite recipes."
+group = "net.sghill.jenkins"
+description = "Jenkins Rewrite recipes."
 
 repositories {
     mavenLocal()
@@ -43,7 +43,7 @@ configurations.all {
 }
 
 //The bom version can also be set to a specific version or latest.release.
-val rewriteBomVersion = "latest.integration"
+val rewriteBomVersion = "1.3.0"
 
 dependencies {
     compileOnly("org.projectlombok:lombok:latest.release")
