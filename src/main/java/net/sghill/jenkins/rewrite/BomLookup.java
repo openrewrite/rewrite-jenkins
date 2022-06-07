@@ -1,45 +1,64 @@
 package net.sghill.jenkins.rewrite;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Stream;
+import org.openrewrite.InMemoryExecutionContext;
+import org.openrewrite.internal.PropertyPlaceholderHelper;
+import org.openrewrite.internal.StringUtils;
+import org.openrewrite.maven.MavenExecutionContextView;
+import org.openrewrite.maven.MavenParser;
+import org.openrewrite.maven.cache.CompositeMavenPomCache;
+import org.openrewrite.maven.cache.InMemoryMavenPomCache;
+import org.openrewrite.maven.cache.RocksdbMavenPomCache;
+import org.openrewrite.maven.tree.GroupArtifact;
+import org.openrewrite.maven.tree.MavenResolutionResult;
+import org.openrewrite.xml.tree.Xml;
+
+import java.nio.file.Paths;
+import java.util.Properties;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.util.Objects.requireNonNull;
 
 public class BomLookup {
-    private boolean initialized = false;
-    private final Map<String, String> groupByArtifact = new HashMap<>();
-    
-    public boolean inBom(String groupId, String artifactId) {
-        if (!initialized) {
-            initialize();
-            initialized = true;
-        }
-        String foundGroup = groupByArtifact.get(artifactId);
-        return groupId.equals(foundGroup);
+    private final Set<GroupArtifact> groupArtifacts;
+
+    public BomLookup() {
+        this("bom-2.303.x:1409.v7659b_c072f18", "4.40");
     }
-    
-    private void initialize() {
-        try (InputStream is = BomLookup.class.getResourceAsStream("/bom-2.303.x.csv")) {
-            assert is != null;
-            try (InputStreamReader isr = new InputStreamReader(is);
-                 BufferedReader r = new BufferedReader(isr);
-                 Stream<String> lines = r.lines()) {
-                lines.filter(Objects::nonNull)
-                        .map(String::trim)
-                        .filter(l -> !l.isEmpty())
-                        .map(l -> l.split(",", 2))
-                        .forEach(parts -> {
-                            String group = parts[0];
-                            String artifact = parts[1];
-                            groupByArtifact.put(artifact, group);
-                        });
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
+    public BomLookup(String bomArtifactVersion, String parentVersion) {
+        PropertyPlaceholderHelper placeholderHelper = new PropertyPlaceholderHelper("${", "}", null);
+        Properties props = new Properties();
+        String[] bomAV = bomArtifactVersion.split(":");
+        props.put("bomArtifact", bomAV[0]);
+        props.put("bomVersion", bomAV[1]);
+        props.put("parentVersion", parentVersion);
+
+        MavenExecutionContextView ctx = MavenExecutionContextView.view(new InMemoryExecutionContext());
+        ctx.setPomCache(new CompositeMavenPomCache(
+                new InMemoryMavenPomCache(),
+                new RocksdbMavenPomCache(Paths.get(System.getProperty("user.home")))
+        ));
+
+        Xml.Document maven = MavenParser.builder()
+                .build()
+                .parse(ctx, placeholderHelper.replacePlaceholders(StringUtils.readFully(
+                        requireNonNull(BomLookup.class.getResourceAsStream("/jenkins-bom.xml"))
+                ), props))
+                .get(0);
+
+        MavenResolutionResult resolved = maven.getMarkers().findFirst(MavenResolutionResult.class)
+                .orElseThrow(() -> new IllegalStateException("Expected a resolution result for BOM"));
+
+        groupArtifacts = resolved
+                .getPom()
+                .getDependencyManagement()
+                .stream()
+                .map(d -> new GroupArtifact(d.getGroupId(), d.getArtifactId()))
+                .collect(Collectors.toSet());
+    }
+
+    public boolean inBom(String groupId, String artifactId) {
+        return groupArtifacts.contains(new GroupArtifact(groupId, artifactId));
     }
 }

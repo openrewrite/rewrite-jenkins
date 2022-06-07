@@ -51,6 +51,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:latest.release")
     implementation(platform("org.openrewrite.recipe:rewrite-recipe-bom:${rewriteBomVersion}"))
 
+    implementation("org.rocksdb:rocksdbjni:7.2.2")
     implementation("org.openrewrite:rewrite-java")
     implementation("org.openrewrite:rewrite-maven")
     runtimeOnly("org.openrewrite:rewrite-java-11")
