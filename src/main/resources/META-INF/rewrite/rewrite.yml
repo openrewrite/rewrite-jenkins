@@ -10,30 +10,6 @@ recipeList:
       artifactId: symbol-annotation
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: net.sghill.jenkins.PreferSpotbugs
-recipeList:
-  #  - org.openrewrite.maven.AddDependency:
-  #      groupId: com.github.spotbugs
-  #      artifactId: spotbugs-annotations
-  #      version: 4.7.0
-  #      onlyIfUsing: javax.annotation.*
-  #  - org.openrewrite.maven.UpgradeDependencyVersion:
-  #      groupId: com.github.spotbugs
-  #      artifactId: spotbugs-annotations
-  #      version: 4.7.0
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: javax.annotations.Nonnull
-      newFullyQualifiedTypeName: edu.umd.cs.findbugs.annotations.NonNull
-      ignoreDefinition: true
-  - org.openrewrite.java.ChangePackage:
-      # new versions do not include javax.annotations; spotbugs is preferred
-      oldPackageName: javax.annotation
-      newPackageName: edu.umd.cs.findbugs.annotations
-#  - org.openrewrite.maven.RemoveDependency:
-#      groupId: com.github.spotbugs
-#      artifactId: spotbugs-annotations
----
-type: specs.openrewrite.org/v1beta/recipe
 name: net.sghill.jenkins.rewrite.CommonsLang3ToApiPlugin
 recipeList:
   - net.sghill.jenkins.rewrite.ReplaceLibrariesWithApiPlugin:

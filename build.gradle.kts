@@ -64,6 +64,9 @@ dependencies {
 
     testImplementation("org.openrewrite:rewrite-test")
     testImplementation("org.assertj:assertj-core:latest.release")
+    
+    testRuntimeOnly("com.github.spotbugs:spotbugs-annotations:4.7.0")
+    testRuntimeOnly("com.google.code.findbugs:jsr305:3.0.2")
 }
 
 tasks.named<Test>("test") {
