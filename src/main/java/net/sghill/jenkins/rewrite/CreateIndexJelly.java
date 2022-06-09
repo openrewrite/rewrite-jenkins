@@ -1,9 +1,12 @@
 package net.sghill.jenkins.rewrite;
 
+import org.intellij.lang.annotations.Language;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
 import org.openrewrite.SourceFile;
+import org.openrewrite.TreeVisitor;
 import org.openrewrite.internal.ListUtils;
+import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.text.PlainTextParser;
 
 import java.nio.file.PathMatcher;
@@ -25,6 +28,11 @@ public class CreateIndexJelly extends Recipe {
     }
 
     @Override
+    protected TreeVisitor<?, ExecutionContext> getApplicableTest() {
+        return new IsJenkinsPlugin("*").getVisitor();
+    }
+
+    @Override
     protected List<SourceFile> visit(List<SourceFile> before, ExecutionContext ctx) {
         for (SourceFile sourceFile : before) {
             PathMatcher pathMatcher = sourceFile.getSourcePath().getFileSystem()
@@ -35,7 +43,7 @@ public class CreateIndexJelly extends Recipe {
         }
 
         return ListUtils.flatMap(before, sourceFile -> {
-            if(Jenkins.isJenkinsPluginPom(sourceFile)) {
+            if(Jenkins.isJenkinsPluginPom(sourceFile) != null) {
                 return Arrays.asList(sourceFile, new PlainTextParser().parse("TODO insert contents here")
                         .get(0)
                         .withSourcePath(sourceFile.getSourcePath().resolve("../src/main/resources/index.jelly").normalize()));
