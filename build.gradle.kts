@@ -54,8 +54,18 @@ dependencies {
     implementation("org.rocksdb:rocksdbjni:7.2.2")
     implementation("org.openrewrite:rewrite-java")
     implementation("org.openrewrite:rewrite-maven")
+    implementation("org.openrewrite:rewrite-yaml")
     runtimeOnly("org.openrewrite:rewrite-java-11")
 
+    implementation("org.apache.maven.indexer:indexer-core:latest.release")
+    implementation("com.google.inject:guice:latest.release")
+    implementation("org.eclipse.sisu:org.eclipse.sisu.inject:latest.release")
+    implementation("org.apache.maven.wagon:wagon-http-lightweight:latest.release")
+//    implementation("org.eclipse.aether:aether-api:latest.release")
+//    implementation("org.eclipse.aether:aether-impl:latest.release")
+//    implementation("org.apache.maven:waggon-http-lightweight:latest.release")
+
+    testImplementation("org.ow2.asm:asm:latest.release")
     testImplementation("org.jetbrains.kotlin:kotlin-reflect")
     testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
