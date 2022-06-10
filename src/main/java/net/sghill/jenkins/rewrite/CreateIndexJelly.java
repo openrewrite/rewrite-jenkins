@@ -6,7 +6,10 @@ import org.openrewrite.SourceFile;
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.internal.ListUtils;
 import org.openrewrite.maven.tree.MavenResolutionResult;
+import org.openrewrite.text.PlainText;
+import org.openrewrite.text.PlainTextParser;
 import org.openrewrite.xml.XmlParser;
+import org.openrewrite.xml.format.AutoFormatVisitor;
 import org.openrewrite.xml.search.FindTags;
 import org.openrewrite.xml.tree.Xml;
 
@@ -53,13 +56,16 @@ public class CreateIndexJelly extends Recipe {
                                 .map(maven -> maven.getPom().getArtifactId())
                                 .orElseThrow(() -> new IllegalStateException("Expected to find an artifact id")));
 
-                return Arrays.asList(sourceFile, new XmlParser().parse(String.join("\n",
+                PlainText indexJelly = new PlainTextParser().parse(String.join("\n",
                                 "<?jelly escape-by-default='true'?>",
                                 "<div>",
                                 description,
                                 "</div>"))
                         .get(0)
-                        .withSourcePath(sourceFile.getSourcePath().resolve("../src/main/resources/index.jelly").normalize()));
+                        .withSourcePath(sourceFile.getSourcePath().resolve("../src/main/resources/index.jelly").normalize());
+
+//                indexJelly = new AutoFormatVisitor<ExecutionContext>().visitDocument(indexJelly, ctx);
+                return Arrays.asList(sourceFile, indexJelly);
             }
             return sourceFile;
         });

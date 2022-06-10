@@ -126,6 +126,7 @@ class CreateIndexJellyTest : RewriteTest {
                         <artifactId>plugin</artifactId>
                         <version>4.40</version>
                     </parent>
+                    <artifactId>plugin</artifactId>
                     <version>0.1</version>
                     <repositories>
                         <repository>
@@ -158,7 +159,7 @@ class CreateIndexJellyTest : RewriteTest {
                         <artifactId>plugin</artifactId>
                         <version>4.40</version>
                     </parent>
-                    <artifactId/>
+                    <artifactId>plugin</artifactId>
                     <version>0.1</version>
                     <repositories>
                         <repository>
