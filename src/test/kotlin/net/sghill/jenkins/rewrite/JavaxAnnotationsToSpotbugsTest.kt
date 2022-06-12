@@ -59,4 +59,41 @@ class JavaxAnnotationsToSpotbugsTest : JavaRecipeTest {
                         }
                         """
     )
+    
+    @Test
+    fun orderImports() = assertChanged(
+            before = """
+                        import javax.annotation.CheckForNull;
+                        import javax.annotation.Nonnull;
+                        import java.util.Objects;
+                        
+                        public class A {
+                            @CheckForNull
+                            public String key() {
+                                return null;
+                            }
+                            
+                            public @Nonnull String myMethod(String in) {
+                                return Objects.equals(in, "a") ? "yes" : "no";
+                            }
+                        }
+                        """,
+            after = """
+                        import edu.umd.cs.findbugs.annotations.CheckForNull;
+                        import edu.umd.cs.findbugs.annotations.NonNull;
+                        
+                        import java.util.Objects;
+                        
+                        public class A {
+                            @CheckForNull
+                            public String key() {
+                                return null;
+                            }
+                            
+                            public @NonNull String myMethod(String in) {
+                                return Objects.equals(in, "a") ? "yes" : "no";
+                            }
+                        }
+                        """
+    )
 }
