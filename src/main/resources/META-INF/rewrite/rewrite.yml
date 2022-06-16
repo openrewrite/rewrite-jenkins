@@ -34,3 +34,4 @@ recipeList:
       # as of parent pom 4.40 this is deprecated and unused
       propertyName: java.level
   - net.sghill.jenkins.RemoveDep
+  - org.openrewrite.maven.security.UseHttpsForRepositories

@@ -30,7 +30,7 @@ class ModernizeJenkinsPluginTest : RewriteTest {
                             <repositories>
                                 <repository>
                                     <id>repo.jenkins-ci.org</id>
-                                    <url>https://repo.jenkins-ci.org/public/</url>
+                                    <url>http://repo.jenkins-ci.org/public/</url>
                                 </repository>
                             </repositories>
                         </project>
