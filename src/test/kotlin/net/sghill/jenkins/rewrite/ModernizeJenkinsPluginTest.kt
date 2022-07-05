@@ -39,7 +39,7 @@ class ModernizeJenkinsPluginTest : RewriteTest {
                             <parent>
                                 <groupId>org.jenkins-ci.plugins</groupId>
                                 <artifactId>plugin</artifactId>
-                                <version>4.40</version>
+                                <version>4.42</version>
                                 <relativePath/>
                             </parent>
                             <artifactId>permissive-script-security</artifactId>
@@ -66,7 +66,7 @@ class ModernizeJenkinsPluginTest : RewriteTest {
                             <parent>
                                 <groupId>org.jenkins-ci.plugins</groupId>
                                 <artifactId>plugin</artifactId>
-                                <version>4.40</version>
+                                <version>4.42</version>
                                 <relativePath />
                             </parent>
                             <artifactId>permissive-script-security</artifactId>
@@ -93,7 +93,7 @@ class ModernizeJenkinsPluginTest : RewriteTest {
                             <parent>
                                 <groupId>org.jenkins-ci.plugins</groupId>
                                 <artifactId>plugin</artifactId>
-                                <version>4.40</version>
+                                <version>4.42</version>
                                 <relativePath />
                             </parent>
                             <artifactId>permissive-script-security</artifactId>

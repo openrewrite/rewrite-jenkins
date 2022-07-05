@@ -24,7 +24,7 @@ type: specs.openrewrite.org/v1beta/recipe
 name: net.sghill.jenkins.ModernizePlugin
 recipeList:
   - net.sghill.jenkins.rewrite.ChangeJenkinsVersion:
-      parentPomVersion: "4.40"
+      parentPomVersion: "4.42"
       jenkinsVersion: "2.303.3"
   - net.sghill.jenkins.rewrite.AddPluginsBom:
       bomName: bom-2.303.x
