@@ -4,7 +4,7 @@ import nebula.plugin.contacts.ContactsExtension
 plugins {
     `java-library`
 
-    id("org.jetbrains.kotlin.jvm") version "1.5.21"
+    alias(libs.plugins.kotlin.jvm)
     id("nebula.release") version "15.3.1"
 
     id("nebula.maven-manifest") version "17.3.2"
