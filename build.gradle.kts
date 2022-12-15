@@ -61,7 +61,7 @@ dependencies {
     implementation("org.openrewrite:rewrite-yaml")
     runtimeOnly("org.openrewrite:rewrite-java-11")
 
-    implementation("org.apache.maven.indexer:indexer-core:latest.release")
+    implementation("org.apache.maven.indexer:indexer-core:6.+")
     implementation("com.google.inject:guice:latest.release")
     implementation("org.eclipse.sisu:org.eclipse.sisu.inject:latest.release")
     implementation("org.apache.maven.wagon:wagon-http-lightweight:latest.release")
