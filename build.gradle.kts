@@ -27,6 +27,10 @@ configure<nebula.plugin.release.git.base.ReleasePluginExtension> {
 group = "net.sghill.jenkins"
 description = "Jenkins Rewrite recipes."
 
+dependencyLocking {
+    lockAllConfigurations()
+}
+
 repositories {
     mavenLocal()
     maven {
