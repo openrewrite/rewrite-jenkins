@@ -42,7 +42,7 @@ public class ChangeJenkinsVersion extends Recipe {
 
             @Override
             public Xml visitDocument(Xml.Document document, ExecutionContext executionContext) {
-                ChangePropertyValue change = new ChangePropertyValue("jenkins.version", jenkinsVersion, true);
+                ChangePropertyValue change = new ChangePropertyValue("jenkins.version", jenkinsVersion, true, null);
                 Xml.Document doc = (Xml.Document) change.getVisitor().visitNonNull(document, executionContext);
                 return super.visitDocument(doc, executionContext);
             }

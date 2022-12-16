@@ -8,8 +8,6 @@ import org.openrewrite.internal.ListUtils;
 import org.openrewrite.maven.tree.MavenResolutionResult;
 import org.openrewrite.text.PlainText;
 import org.openrewrite.text.PlainTextParser;
-import org.openrewrite.xml.XmlParser;
-import org.openrewrite.xml.format.AutoFormatVisitor;
 import org.openrewrite.xml.search.FindTags;
 import org.openrewrite.xml.tree.Xml;
 
@@ -28,7 +26,7 @@ public class CreateIndexJelly extends Recipe {
     public String getDescription() {
         return "The Jenkins tooling has changed over the years to [enforce](https://github.com/jenkinsci/maven-hpi-plugin/pull/302) " +
                 "that a `src/main/resources/index.jelly` exists with a description. " +
-                "If you don't have this, the build fails";
+                "If you don't have this, the build fails.";
     }
 
     @Override

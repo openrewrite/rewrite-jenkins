@@ -42,7 +42,7 @@ public class IsJenkinsPlugin extends Recipe {
                     @Override
                     public Xml visitDocument(Xml.Document document, ExecutionContext executionContext) {
                         String jenkinsVersion = Jenkins.isJenkinsPluginPom(document);
-                        if (jenkinsVersion != null && versionComparator.isValid(jenkinsVersion) &&
+                        if (jenkinsVersion != null && versionComparator.isValid(null, jenkinsVersion) &&
                                 !document.getMarkers().findFirst(SearchResult.class).isPresent()) {
                             return document.withMarkers(document.getMarkers().searchResult(jenkinsVersion));
                         }

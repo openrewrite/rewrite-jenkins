@@ -47,13 +47,14 @@ configurations.all {
 }
 
 //The bom version can also be set to a specific version or latest.release.
-val rewriteBomVersion = "1.3.0"
+val rewriteBomVersion = "1.13.0"
 
 dependencies {
     compileOnly("org.projectlombok:lombok:latest.release")
     compileOnly("com.google.code.findbugs:jsr305:latest.release")
     annotationProcessor("org.projectlombok:lombok:latest.release")
     implementation(platform("org.openrewrite.recipe:rewrite-recipe-bom:${rewriteBomVersion}"))
+    implementation(platform("org.openrewrite:rewrite-bom:7.34.1"))
 
     implementation("org.rocksdb:rocksdbjni:7.2.2")
     implementation("org.openrewrite:rewrite-java")
@@ -79,6 +80,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 
     testImplementation("org.openrewrite:rewrite-test")
+    testImplementation("org.openrewrite:rewrite-java-tck")
     testImplementation("org.assertj:assertj-core:latest.release")
     
     testRuntimeOnly("com.github.spotbugs:spotbugs-annotations:4.7.0")

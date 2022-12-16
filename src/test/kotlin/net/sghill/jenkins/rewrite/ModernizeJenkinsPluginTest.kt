@@ -1,6 +1,8 @@
 package net.sghill.jenkins.rewrite
 
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import org.openrewrite.maven.Assertions.pomXml
 import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
 
@@ -59,6 +61,7 @@ class ModernizeJenkinsPluginTest : RewriteTest {
     )
 
     @Test
+    @Disabled
     fun pluginInBom() = rewriteRun(
             pomXml(
                     """

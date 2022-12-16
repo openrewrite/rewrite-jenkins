@@ -1,8 +1,13 @@
 package net.sghill.jenkins.rewrite
 
 import org.junit.jupiter.api.Test
+import org.openrewrite.java.Assertions.mavenProject
+import org.openrewrite.java.Assertions.srcMainResources
+import org.openrewrite.maven.Assertions.pomXml
 import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
+import org.openrewrite.test.SourceSpecs.other
+import org.openrewrite.test.SourceSpecs.text
 
 class CreateIndexJellyTest : RewriteTest {
     override fun defaults(spec: RecipeSpec) {
