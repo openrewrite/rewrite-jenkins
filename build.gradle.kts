@@ -28,22 +28,7 @@ group = "net.sghill.jenkins"
 description = "Jenkins Rewrite recipes."
 
 repositories {
-    mavenLocal()
-    maven {
-        url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
-        content {
-            excludeGroup("org.junit")
-            excludeGroup("org.junit.jupiter")
-        }
-    }
     mavenCentral()
-}
-
-configurations.all {
-    resolutionStrategy {
-        cacheChangingModulesFor(0, TimeUnit.SECONDS)
-        cacheDynamicVersionsFor(0, TimeUnit.SECONDS)
-    }
 }
 
 //The bom version can also be set to a specific version or latest.release.
