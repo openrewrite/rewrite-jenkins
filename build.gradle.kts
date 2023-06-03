@@ -4,20 +4,18 @@ import nebula.plugin.contacts.ContactsExtension
 plugins {
     `java-library`
 
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.nebula.contacts)
-    alias(libs.plugins.nebula.javadoc)
-    alias(libs.plugins.nebula.info)
-    alias(libs.plugins.nebula.release)
+    alias(kt.plugins.jvm)
 
-    id("nebula.maven-manifest") version "17.3.2"
-    id("nebula.maven-nebula-publish") version "17.3.2"
-    id("nebula.maven-resolved-dependencies") version "17.3.2"
-
-    id("nebula.source-jar") version "17.3.2"
+    alias(nn.plugins.contacts)
+    alias(nn.plugins.javadoc.jar)
+    alias(nn.plugins.info)
+    alias(nn.plugins.maven.manifest)
+    alias(nn.plugins.maven.publish)
+    alias(nn.plugins.maven.resolved.dependencies)
+    alias(nn.plugins.publish.verification)
+    alias(nn.plugins.release)
+    alias(nn.plugins.source.jar)
 }
-
-apply(plugin = "nebula.publish-verification")
 
 configure<nebula.plugin.release.git.base.ReleasePluginExtension> {
     defaultVersionStrategy = nebula.plugin.release.NetflixOssStrategies.SNAPSHOT(project)
