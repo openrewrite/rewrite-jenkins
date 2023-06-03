@@ -5,7 +5,7 @@ plugins {
     `java-library`
 
     alias(libs.plugins.kotlin.jvm)
-    id("nebula.release") version "15.3.1"
+    alias(libs.plugins.nebula.release)
 
     id("nebula.maven-manifest") version "17.3.2"
     id("nebula.maven-nebula-publish") version "17.3.2"
