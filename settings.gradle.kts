@@ -9,6 +9,7 @@ dependencyResolutionManagement {
             }
             plugin("kotlin-jvm", "org.jetbrains.kotlin.jvm").versionRef(kotlin)
             plugin("nebula-contacts", "com.netflix.nebula.contacts").version("7.0.1")
+            plugin("nebula-info", "com.netflix.nebula.info").version("12.1.4")
             plugin("nebula-release", "com.netflix.nebula.release").version("17.2.2")
         }
     }
