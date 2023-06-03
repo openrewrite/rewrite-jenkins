@@ -1,5 +1,7 @@
 import nebula.plugin.contacts.Contact
 import nebula.plugin.contacts.ContactsExtension
+import nebula.plugin.release.NetflixOssStrategies
+import nebula.plugin.release.git.base.ReleasePluginExtension
 
 plugins {
     `java-library`
@@ -17,8 +19,8 @@ plugins {
     alias(nn.plugins.source.jar)
 }
 
-configure<nebula.plugin.release.git.base.ReleasePluginExtension> {
-    defaultVersionStrategy = nebula.plugin.release.NetflixOssStrategies.SNAPSHOT(project)
+configure<ReleasePluginExtension> {
+    defaultVersionStrategy = NetflixOssStrategies.SNAPSHOT(project)
 }
 
 group = "net.sghill.jenkins"
@@ -70,7 +72,7 @@ dependencies {
     testRuntimeOnly("org.slf4j:slf4j-simple:1.7.36")
 }
 
-tasks.named<Test>("test") {
+tasks.test {
     useJUnitPlatform()
     jvmArgs = listOf("-XX:+UnlockDiagnosticVMOptions", "-XX:+ShowHiddenFrames")
 }
@@ -87,7 +89,7 @@ configure<ContactsExtension> {
     people["team@moderne.io"] = j
 }
 
-tasks.withType<JavaCompile> {
+tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
     options.compilerArgs.addAll(listOf("-parameters"))
 }
