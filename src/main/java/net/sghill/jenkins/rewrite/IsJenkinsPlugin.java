@@ -48,7 +48,7 @@ public class IsJenkinsPlugin extends Recipe {
                         String jenkinsVersion = Jenkins.isJenkinsPluginPom(document);
                         if (jenkinsVersion != null && versionComparator.isValid(null, jenkinsVersion) &&
                                 !document.getMarkers().findFirst(SearchResult.class).isPresent()) {
-                            return document.withMarkers(document.getMarkers().searchResult(jenkinsVersion));
+                            return SearchResult.found(document, jenkinsVersion);
                         }
                         return document;
                     }
