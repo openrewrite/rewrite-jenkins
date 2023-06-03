@@ -20,8 +20,8 @@ public class JavaxAnnotationsToSpotbugs extends Recipe {
     }
 
     /**
-     * Changes javax.annotation.Nonnull -> spotbugs NonNull
-     * Updates packages javax.annotation -> spotbugs
+     * Changes javax.annotation.Nonnull to spotbugs NonNull
+     * Updates packages javax.annotation to spotbugs
      */
     public JavaxAnnotationsToSpotbugs() {
         doNext(new ChangeType("javax.annotation.Nonnull", "edu.umd.cs.findbugs.annotations.NonNull", true));
