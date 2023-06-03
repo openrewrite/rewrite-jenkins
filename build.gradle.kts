@@ -32,7 +32,7 @@ repositories {
 }
 
 //The bom version can also be set to a specific version or latest.release.
-val rewriteBomVersion = "1.13.0"
+val rewriteBomVersion = "1.19.4"
 
 dependencies {
     compileOnly("org.projectlombok:lombok:latest.release")
