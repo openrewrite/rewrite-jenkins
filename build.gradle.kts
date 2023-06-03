@@ -6,6 +6,7 @@ plugins {
 
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.nebula.contacts)
+    alias(libs.plugins.nebula.javadoc)
     alias(libs.plugins.nebula.info)
     alias(libs.plugins.nebula.release)
 
@@ -13,7 +14,6 @@ plugins {
     id("nebula.maven-nebula-publish") version "17.3.2"
     id("nebula.maven-resolved-dependencies") version "17.3.2"
 
-    id("nebula.javadoc-jar") version "17.3.2"
     id("nebula.source-jar") version "17.3.2"
 }
 
