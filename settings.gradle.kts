@@ -8,7 +8,7 @@ dependencyResolutionManagement {
             }
         }
         create("kt") {
-            val kotlin = version("kotlin", "1.7.21")
+            val kotlin = version("kotlin", "1.8.21")
             plugin("jvm", "org.jetbrains.kotlin.jvm").versionRef(kotlin)
         }
         create("nn") {
