@@ -39,7 +39,7 @@ dependencies {
     compileOnly("com.google.code.findbugs:jsr305:latest.release")
     annotationProcessor("org.projectlombok:lombok:latest.release")
     implementation(platform("org.openrewrite.recipe:rewrite-recipe-bom:${rewriteBomVersion}"))
-    implementation(platform("org.openrewrite:rewrite-bom:7.34.0"))
+    implementation(platform("org.openrewrite:rewrite-bom:7.40.8"))
 
     implementation("org.rocksdb:rocksdbjni:7.2.2")
     implementation("org.openrewrite:rewrite-java")
