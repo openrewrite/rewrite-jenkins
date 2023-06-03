@@ -70,6 +70,7 @@ dependencies {
     
     testRuntimeOnly("com.github.spotbugs:spotbugs-annotations:4.7.0")
     testRuntimeOnly("com.google.code.findbugs:jsr305:3.0.2")
+    testRuntimeOnly("org.slf4j:slf4j-simple:1.7.36")
 }
 
 tasks.named<Test>("test") {
