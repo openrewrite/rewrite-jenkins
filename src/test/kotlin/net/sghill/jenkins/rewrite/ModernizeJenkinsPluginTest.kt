@@ -9,8 +9,7 @@ import org.openrewrite.test.RewriteTest
 class ModernizeJenkinsPluginTest : RewriteTest {
 
     override fun defaults(spec: RecipeSpec) {
-        spec
-                .recipe("/META-INF/rewrite/rewrite.yml", "net.sghill.jenkins.ModernizePlugin")
+        spec.recipeFromResource("/META-INF/rewrite/rewrite.yml", "net.sghill.jenkins.ModernizePlugin")
     }
 
     @Test

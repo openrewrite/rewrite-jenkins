@@ -20,7 +20,7 @@ class ReplaceLibrariesWithApiPluginTest : RewriteTest {
     @Test
     fun yamlDefinition() = rewriteRun(
         { spec ->
-            spec.recipe(
+            spec.recipeFromResource(
                 "/replace-libraries-with-api-plugin.yml",
                 "net.sghill.jenkins.rewrite.CommonsLang3ToApiPlugin"
             )
