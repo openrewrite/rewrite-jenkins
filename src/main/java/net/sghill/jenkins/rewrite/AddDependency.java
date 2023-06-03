@@ -13,6 +13,9 @@ import org.openrewrite.xml.tree.Xml.Tag;
 
 import java.util.List;
 
+/**
+ * Always adds a dependency to the plugin's POM
+ */
 @Value
 @EqualsAndHashCode(callSuper = true)
 public class AddDependency extends Recipe {

@@ -5,6 +5,9 @@ import org.openrewrite.java.ChangePackage;
 import org.openrewrite.java.ChangeType;
 import org.openrewrite.java.OrderImports;
 
+/**
+ * Updates javax.annotations to Jenkins preferred replacement.
+ */
 public class JavaxAnnotationsToSpotbugs extends Recipe {
     @Override
     public String getDisplayName() {
@@ -16,6 +19,10 @@ public class JavaxAnnotationsToSpotbugs extends Recipe {
         return "Jenkins is no longer using JSR-305, likely due to Jigsaw concerns about split packages.";
     }
 
+    /**
+     * Changes javax.annotation.Nonnull -> spotbugs NonNull
+     * Updates packages javax.annotation -> spotbugs
+     */
     public JavaxAnnotationsToSpotbugs() {
         doNext(new ChangeType("javax.annotation.Nonnull", "edu.umd.cs.findbugs.annotations.NonNull", true));
         doNext(new ChangePackage("javax.annotation", "edu.umd.cs.findbugs.annotations", false));

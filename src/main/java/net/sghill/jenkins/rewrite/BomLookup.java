@@ -20,14 +20,26 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * A registry of versions that are supplied by the bom.
+ * Versions supplied by the pom can be removed from the dependency declarations.
+ */
 @Getter
 public class BomLookup {
     private final Set<GroupArtifact> groupArtifacts;
 
+    /**
+     * Creates a BomLookup with the default bom version and parent plugin version, writing to ~/.rewrite-cache
+     */
     public BomLookup() {
         this("bom-2.303.x:1409.v7659b_c072f18", "4.40");
     }
 
+    /**
+     * Creates a BomLookup, writing to ~/.rewrite-cache
+     * @param bomArtifactVersion bom version to index
+     * @param parentVersion parent plugin version
+     */
     public BomLookup(String bomArtifactVersion, String parentVersion) {
         PropertyPlaceholderHelper placeholderHelper = new PropertyPlaceholderHelper("${", "}", null);
         Properties props = new Properties();
@@ -60,6 +72,12 @@ public class BomLookup {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Checks if the bom contains a version for the dependency.
+     * @param groupId dependency's groupId
+     * @param artifactId dependency's artifactId
+     * @return true if version can be dropped from dependency
+     */
     public boolean inBom(String groupId, String artifactId) {
         return groupArtifacts.contains(new GroupArtifact(groupId, artifactId));
     }

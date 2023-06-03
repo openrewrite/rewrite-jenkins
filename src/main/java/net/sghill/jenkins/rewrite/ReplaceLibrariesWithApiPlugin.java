@@ -33,6 +33,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Replaces a set of libraries with an api plugin.
+ * Excludes libraries transitively with comments.
+ * Jenkins has as custom classloader that shares libraries through api plugins.
+ */
 @Value
 @EqualsAndHashCode(callSuper = true)
 public class ReplaceLibrariesWithApiPlugin extends Recipe {
@@ -43,12 +48,22 @@ public class ReplaceLibrariesWithApiPlugin extends Recipe {
     String pluginVersion;
     Set<Library> replaces;
 
+    /**
+     * The groupId:artifactId combos to be replaced if present.
+     */
     @Value
     public static class Library {
         String groupId;
         String artifactId;
     }
 
+    /**
+     * Replaces a set of libraries with an api plugin.
+     * @param pluginGroupId api plugin's groupId
+     * @param pluginArtifactId api plugin's artifactId
+     * @param pluginVersion api plugin's version
+     * @param replaces set of libraries included in the api plugin
+     */
     public ReplaceLibrariesWithApiPlugin(
             String pluginGroupId,
             String pluginArtifactId,

@@ -9,6 +9,10 @@ import org.openrewrite.semver.VersionComparator;
 import org.openrewrite.xml.XmlVisitor;
 import org.openrewrite.xml.tree.Xml;
 
+/**
+ * Determines if this project is a Jenkins plugin by checking if the POM
+ * has a managed version of jenkins-core.
+ */
 @Value
 @EqualsAndHashCode(callSuper = false)
 public class IsJenkinsPlugin extends Recipe {

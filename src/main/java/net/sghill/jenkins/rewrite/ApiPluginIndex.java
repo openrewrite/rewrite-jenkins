@@ -34,12 +34,20 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Proof-of-concept class used only in tests at the moment.
+ * Dynamically builds an index of plugins with api in the name.
+ * API Plugins allow Jenkins to share libraries.
+ */
 @Slf4j
 public class ApiPluginIndex {
     private final Injector injector;
     private final IndexingContext context;
     private final Indexer indexer;
 
+    /**
+     * Creates an index in ~/.jenkins/index
+     */
     public ApiPluginIndex() {
         this.injector = Guice.createInjector(new WireModule(new SpaceModule(new URLClassSpace(
                 ApiPluginIndex.class.getClassLoader()), new DefaultClassFinder("org.apache.maven.*"))));
@@ -71,6 +79,9 @@ public class ApiPluginIndex {
         }
     }
 
+    /**
+     * Updates the index, incrementally if possible
+     */
     public void updateIndex() {
         try {
             IndexUpdater indexUpdater = injector.getInstance(DefaultIndexUpdater.class);
@@ -94,6 +105,10 @@ public class ApiPluginIndex {
         }
     }
 
+    /**
+     * Demonstrates searching through the index for a term.
+     * Prints to stdout.
+     */
     public void searchIndex() {
         try {
             IndexSearcher searcher = context.acquireIndexSearcher();

@@ -15,6 +15,10 @@ import java.nio.file.PathMatcher;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Creates the src/main/resources/index.jelly with the project's description
+ * if it doesn't exist.
+ */
 public class CreateIndexJelly extends Recipe {
 
     @Override

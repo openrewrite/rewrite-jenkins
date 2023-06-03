@@ -11,6 +11,9 @@ import org.openrewrite.xml.ChangeTagValueVisitor;
 import org.openrewrite.xml.tree.Xml;
 import org.openrewrite.xml.tree.Xml.Tag;
 
+/**
+ * Atomically updates the Jenkins version and parent pom version
+ */
 @Value
 @EqualsAndHashCode(callSuper = true)
 public class ChangeJenkinsVersion extends Recipe {

@@ -10,6 +10,10 @@ import org.openrewrite.xml.AddOrUpdateChild;
 import org.openrewrite.xml.tree.Xml;
 import org.openrewrite.xml.tree.Xml.Tag;
 
+/**
+ * Disables local file resolution for parent POM, as recommended by the
+ * <a href="https://www.jenkins.io/doc/developer/plugin-development/updating-parent/">plugin development guide</a>.
+ */
 @Value
 @EqualsAndHashCode(callSuper = true)
 public class DisableLocalResolutionForParentPom extends Recipe {
