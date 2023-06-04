@@ -128,7 +128,7 @@ publishing {
         }
     }
     publications {
-        create<MavenPublication>("mavenJava") {
+        named<MavenPublication>("nebula") {
             pom {
                 licenses {
                     license {
@@ -147,7 +147,7 @@ publishing {
 }
 
 signing {
-    sign(publishing.publications["mavenJava"])
+    sign(publishing.publications["nebula"])
     useGpgCmd()
 }
 
