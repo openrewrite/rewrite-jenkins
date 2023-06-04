@@ -4,10 +4,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Option;
-import org.openrewrite.Recipe;
+import org.openrewrite.Preconditions;
+import org.openrewrite.ScanningRecipe;
 import org.openrewrite.TreeVisitor;
-import org.openrewrite.internal.ListUtils;
+import org.openrewrite.marker.SearchResult;
 import org.openrewrite.maven.AddManagedDependency;
+import org.openrewrite.maven.AddManagedDependencyVisitor;
+import org.openrewrite.maven.MavenIsoVisitor;
 import org.openrewrite.maven.MavenVisitor;
 import org.openrewrite.maven.RemoveRedundantDependencyVersions;
 import org.openrewrite.maven.tree.ResolvedDependency;
@@ -25,7 +28,7 @@ import org.openrewrite.xml.tree.Xml;
  */
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class AddPluginsBom extends Recipe {
+public class AddPluginsBom extends ScanningRecipe<AddPluginsBom.Scanned> {
     @Option(displayName = "artifactId",
             description = "Middle part of `io.jenkins.tools.bom:bom-2.303.x:VERSION`.",
             example = "bom-2.303.x")
@@ -47,42 +50,56 @@ public class AddPluginsBom extends Recipe {
     }
 
     @Override
-    protected TreeVisitor<?, ExecutionContext> getVisitor() {
-        return new MavenVisitor<ExecutionContext>() {
-            private boolean bomAlreadyAdded = false;
-            private final BomLookup lookup = new BomLookup();
+    public Scanned getInitialValue(ExecutionContext ctx) {
+        return new Scanned();
+    }
+
+    @Override
+    public TreeVisitor<?, ExecutionContext> getScanner(Scanned acc) {
+        BomLookup lookup = new BomLookup();
+        return Preconditions.check(acc.hasDependencyInBom, new MavenIsoVisitor<>() {
+            @Override
+            public Xml.Document visitDocument(Xml.Document document, ExecutionContext executionContext) {
+                if (acc.hasDependencyInBom) {
+                    return SearchResult.found(document);
+                }
+                return super.visitDocument(document, executionContext);
+            }
 
             @Override
-            public Xml visitTag(Xml.Tag tag, ExecutionContext executionContext) {
+            public Xml.Tag visitTag(Xml.Tag tag, ExecutionContext executionContext) {
+                Xml.Tag t = super.visitTag(tag, executionContext);
                 if (!isManagedDependencyTag()) {
                     ResolvedDependency dependency = findDependency(tag);
-                    if (dependency != null && inBom(dependency)) {
-                        if (!bomAlreadyAdded) {
-                            doNext(new AddManagedDependency(
-                                    "io.jenkins.tools.bom",
-                                    bomName,
-                                    bomVersion,
-                                    "import",
-                                    "pom",
-                                    null,
-                                    null,
-                                    true,
-                                    null,
-                                    false
-                            ));
-                            bomAlreadyAdded = true;
-                        }
-                        // taken from 
-                        Xml.Tag version = tag.getChild("version").orElse(null);
-                        return tag.withContent(ListUtils.map(tag.getContent(), c -> c == version ? null : c));
+                    if (dependency != null) {
+                        acc.hasDependencyInBom = acc.hasDependencyInBom || lookup.inBom(dependency.getGroupId(), dependency.getArtifactId());
                     }
                 }
-                return super.visitTag(tag, executionContext);
+                return t;
             }
+        });
+    }
 
-            private boolean inBom(ResolvedDependency dependency) {
-                return lookup.inBom(dependency.getGroupId(), dependency.getArtifactId());
+    @Override
+    public TreeVisitor<?, ExecutionContext> getVisitor(Scanned acc) {
+        return Preconditions.check(acc.hasDependencyInBom, new MavenVisitor<>() {
+            @Override
+            public Xml visitDocument(Xml.Document document, ExecutionContext executionContext) {
+                Xml maven = super.visitDocument(document, executionContext);
+                doAfterVisit(new AddManagedDependencyVisitor(
+                        "io.jenkins.tools.bom",
+                        bomName,
+                        bomVersion,
+                        "import",
+                        "pom",
+                        null
+                ));
+                return maven;
             }
-        };
+        });
+    }
+    
+    static class Scanned {
+        boolean hasDependencyInBom;
     }
 }

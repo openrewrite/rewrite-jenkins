@@ -1,0 +1,13 @@
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: org.openrewrite.java.upgrade.MigrateToRewrite8sghill
+displayName: Migrate rewrite from 7 to 8
+description: |
+  Migrate rewrite recipe and test from version 7 to version 8.
+  While most parts can be automatically migrated, there are some complex and open-ended scenarios that require manual attention.
+  In those cases, this recipe will add a comment to the code and request a human to review and handle it manually.
+  Reference : Migration guide (URL to be written).
+recipeList:
+  - org.openrewrite.java.recipes.MigrateRecipeToRewrite8
+  - org.openrewrite.java.recipes.MigrateTestToRewrite8
+  - org.openrewrite.java.recipes.MigrateMarkersSearchResult

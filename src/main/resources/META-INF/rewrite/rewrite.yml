@@ -35,3 +35,17 @@ recipeList:
       propertyName: java.level
   - net.sghill.jenkins.RemoveDep
   - org.openrewrite.maven.security.UseHttpsForRepositories
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: net.sghill.jenkins.rewrite.JavaxAnnotationsToSpotbugs
+recipeList:
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: javax.annotation.Nonnull
+      newFullyQualifiedTypeName: edu.umd.cs.findbugs.annotations.NonNull
+      ignoreDefinition: true
+  - org.openrewrite.java.ChangePackage:
+      oldPackageName: javax.annotation
+      newPackageName: edu.umd.cs.findbugs.annotations
+      recursive: false
+  - org.openrewrite.java.OrderImports:
+      removeUnused: false

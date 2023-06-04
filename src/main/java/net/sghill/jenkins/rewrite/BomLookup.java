@@ -59,7 +59,8 @@ public class BomLookup {
                 .parse(ctx, placeholderHelper.replacePlaceholders(StringUtils.readFully(
                         requireNonNull(BomLookup.class.getResourceAsStream("/jenkins-bom.xml"))
                 ), props))
-                .get(0);
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Classpath resource could not be found"));
 
         MavenResolutionResult resolved = maven.getMarkers().findFirst(MavenResolutionResult.class)
                 .orElseThrow(() -> new IllegalStateException("Expected a resolution result for BOM"));

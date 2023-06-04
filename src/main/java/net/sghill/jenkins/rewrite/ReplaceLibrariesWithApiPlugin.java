@@ -73,10 +73,11 @@ public class ReplaceLibrariesWithApiPlugin extends Recipe {
         this.pluginArtifactId = pluginArtifactId;
         this.pluginVersion = pluginVersion;
         this.replaces = replaces;
-        for (Library replace : replaces) {
-            String xPath = "/project/dependencies/dependency/exclusions/exclusion[./artifactId = '" + replace.artifactId + "']";
-            doNext(new AddCommentToXmlTag(xPath, " brought in by " + pluginArtifactId + " "));
-        }
+//        for (Library replace : replaces) {
+//            String xPath = "/project/dependencies/dependency/exclusions/exclusion[./artifactId = '" + replace.artifactId + "']";
+//            // [Rewrite8 migration] Method `Recipe#doNext(..)` is removed, you might want to change the recipe to be a scanning recipe, or just simply replace to use `TreeVisitor#doAfterVisit`, please follow the migration guide here: https://to-be-written
+//            getVisitor().doAfterVisit(new AddCommentToXmlTag(xPath, " brought in by " + pluginArtifactId + " ").getVisitor());
+//        }
     }
 
     @Override
@@ -90,7 +91,7 @@ public class ReplaceLibrariesWithApiPlugin extends Recipe {
     }
 
     @Override
-    protected TreeVisitor<?, ExecutionContext> getVisitor() {
+    public TreeVisitor<?, ExecutionContext> getVisitor() {
         return new MavenVisitor<ExecutionContext>() {
             @Override
             public Xml visitTag(Tag tag, ExecutionContext executionContext) {
@@ -104,8 +105,8 @@ public class ReplaceLibrariesWithApiPlugin extends Recipe {
                             if (found == null) {
                                 continue;
                             }
-                            doNext(new AddDependency(pluginGroupId, pluginArtifactId, pluginVersion));
-                            doNext(new RemoveDependency(groupId, artifactId, null));
+                            doAfterVisit(new AddDependency(pluginGroupId, pluginArtifactId, pluginVersion).getVisitor());
+                            doAfterVisit(new RemoveDependency(groupId, artifactId, null).getVisitor());
                             if (found != dependency) {
                                 Optional<Tag> maybeExclusions = tag.getChild("exclusions");
                                 if (maybeExclusions.isPresent()) {

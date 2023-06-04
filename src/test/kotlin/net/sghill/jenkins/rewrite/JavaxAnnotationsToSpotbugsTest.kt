@@ -10,7 +10,7 @@ class JavaxAnnotationsToSpotbugsTest : RewriteTest {
 
     override fun defaults(spec: RecipeSpec) {
         spec.parser(JavaParser.fromJavaVersion().classpath("jsr305", "spotbugs-annotations"))
-        spec.recipe(JavaxAnnotationsToSpotbugs())
+        spec.recipeFromResource("/META-INF/rewrite/rewrite.yml", "net.sghill.jenkins.rewrite.JavaxAnnotationsToSpotbugs")
     }
 
     @Test

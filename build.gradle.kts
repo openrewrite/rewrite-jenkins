@@ -17,6 +17,8 @@ plugins {
     alias(nn.plugins.publish.verification)
     alias(nn.plugins.release)
     alias(nn.plugins.source.jar)
+
+    id("org.openrewrite.rewrite").version("6.0.0")
 }
 
 configure<ReleasePluginExtension> {
@@ -30,15 +32,12 @@ repositories {
     mavenCentral()
 }
 
-//The bom version can also be set to a specific version or latest.release.
-val rewriteBomVersion = "1.19.4"
-
 dependencies {
     compileOnly("org.projectlombok:lombok:latest.release")
     compileOnly("com.google.code.findbugs:jsr305:latest.release")
     annotationProcessor("org.projectlombok:lombok:latest.release")
-    implementation(platform("org.openrewrite.recipe:rewrite-recipe-bom:${rewriteBomVersion}"))
-    implementation(platform("org.openrewrite:rewrite-bom:7.40.8"))
+    implementation(platform(libs.rewrite.recipe.bom))
+    implementation(platform(libs.rewrite.bom))
 
     implementation("org.rocksdb:rocksdbjni:7.2.2")
     implementation("org.openrewrite:rewrite-java")
@@ -70,6 +69,9 @@ dependencies {
     testRuntimeOnly("com.github.spotbugs:spotbugs-annotations:4.7.0")
     testRuntimeOnly("com.google.code.findbugs:jsr305:3.0.2")
     testRuntimeOnly("org.slf4j:slf4j-simple:1.7.36")
+    
+    rewrite(platform("org.openrewrite.recipe:rewrite-recipe-bom:2.0.0"))
+    rewrite("org.openrewrite:rewrite-java:8.0.0")
 }
 
 tasks.test {
@@ -109,4 +111,8 @@ publishing {
           url = uri("https://us-west1-maven.pkg.dev/moderne-dev/moderne-recipe")
       }
   }
+}
+
+rewrite {
+    activeRecipe("org.openrewrite.java.upgrade.MigrateToRewrite8sghill")
 }

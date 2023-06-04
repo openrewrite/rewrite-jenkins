@@ -27,6 +27,11 @@ public class IsJenkinsPlugin extends Recipe {
     }
 
     @Override
+    public String getDescription() {
+        return "Checks if the project is a Jenkins plugin by the presence of a managed version of jenkins-core";
+    }
+
+    @Override
     public Validated validate() {
         Validated validated = super.validate();
         //noinspection ConstantConditions

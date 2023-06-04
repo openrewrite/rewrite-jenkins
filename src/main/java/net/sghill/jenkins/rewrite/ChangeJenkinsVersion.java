@@ -31,7 +31,7 @@ public class ChangeJenkinsVersion extends Recipe {
     }
 
     @Override
-    protected TreeVisitor<?, ExecutionContext> getVisitor() {
+    public TreeVisitor<?, ExecutionContext> getVisitor() {
         return new MavenVisitor<ExecutionContext>() {
             @Override
             public Xml visitTag(Tag tag, ExecutionContext executionContext) {
