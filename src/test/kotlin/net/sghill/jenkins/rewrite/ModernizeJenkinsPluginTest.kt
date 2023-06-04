@@ -40,13 +40,13 @@ class ModernizeJenkinsPluginTest : RewriteTest {
                             <parent>
                                 <groupId>org.jenkins-ci.plugins</groupId>
                                 <artifactId>plugin</artifactId>
-                                <version>4.42</version>
+                                <version>4.64</version>
                                 <relativePath/>
                             </parent>
                             <artifactId>permissive-script-security</artifactId>
                             <version>0.8-SNAPSHOT</version>
                             <properties>
-                                <jenkins.version>2.303.3</jenkins.version>
+                                <jenkins.version>2.332.1</jenkins.version>
                             </properties>
                             <repositories>
                                 <repository>
