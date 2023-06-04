@@ -2,9 +2,11 @@ import nebula.plugin.contacts.Contact
 import nebula.plugin.contacts.ContactsExtension
 import nebula.plugin.release.NetflixOssStrategies
 import nebula.plugin.release.git.base.ReleasePluginExtension
+import java.net.URI
 
 plugins {
     `java-library`
+    signing
 
     alias(kt.plugins.jvm)
 
@@ -65,11 +67,11 @@ dependencies {
     testImplementation("org.openrewrite:rewrite-test")
     testImplementation("org.openrewrite:rewrite-java-tck")
     testImplementation("org.assertj:assertj-core:latest.release")
-    
+
     testRuntimeOnly("com.github.spotbugs:spotbugs-annotations:4.7.0")
     testRuntimeOnly("com.google.code.findbugs:jsr305:3.0.2")
     testRuntimeOnly("org.slf4j:slf4j-simple:1.7.36")
-    
+
     rewrite(platform("org.openrewrite.recipe:rewrite-recipe-bom:2.0.0"))
     rewrite("org.openrewrite:rewrite-java:8.0.0")
 }
@@ -105,13 +107,52 @@ configure<PublishingExtension> {
     }
 }
 
+val targetRepo: Provider<URI> = providers.provider {
+    if (version.toString().endsWith("SNAPSHOT")) {
+        uri("https://oss.sonatype.org/content/repositories/snapshots/")
+    } else {
+        uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+    }
+}
+
 publishing {
-  repositories {
-      maven {
-          name = "moderne"
-          url = uri("https://us-west1-maven.pkg.dev/moderne-dev/moderne-recipe")
-      }
-  }
+    repositories {
+        repositories {
+            maven {
+                url = targetRepo.get()
+                credentials {
+                    username = providers.gradleProperty("ossrhUsername").getOrElse("Unknown user")
+                    password = providers.gradleProperty("ossrhPassword").getOrElse("Unknown password")
+                }
+            }
+        }
+    }
+    publications {
+        create<MavenPublication>("mavenJava") {
+            pom {
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:https://github.com/sghill/rewrite-jenkins.git")
+                    developerConnection.set("scm:git:git@github.com:sghill/rewrite-jenkins.git")
+                    url.set("https://github.com/sghill/rewrite-jenkins")
+                }
+            }
+        }
+    }
+}
+
+signing {
+    sign(publishing.publications["mavenJava"])
+    useGpgCmd()
+}
+
+tasks.withType<Sign>() {
+    onlyIf { gradle.taskGraph.hasTask(":publish") }
 }
 
 rewrite {
