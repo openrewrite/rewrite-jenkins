@@ -86,9 +86,10 @@ java {
 }
 
 configure<ContactsExtension> {
-    val j = Contact("team@moderne.io")
-    j.moniker("Team Moderne")
-    people["team@moderne.io"] = j
+    val j = Contact("sghill.dev@gmail.com")
+    j.moniker("Steve Hill")
+    j.github("sghill")
+    people["sghill.dev@gmail.com"] = j
 }
 
 tasks.withType<JavaCompile>().configureEach {
