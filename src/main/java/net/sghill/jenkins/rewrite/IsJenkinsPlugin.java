@@ -43,7 +43,7 @@ public class IsJenkinsPlugin extends Recipe {
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {
-        Validated versionValidation = Semver.validate(version, null);
+        Validated<VersionComparator> versionValidation = Semver.validate(version, null);
         if (versionValidation.isValid()) {
             VersionComparator versionComparator = versionValidation.getValue();
             if (versionComparator != null) {

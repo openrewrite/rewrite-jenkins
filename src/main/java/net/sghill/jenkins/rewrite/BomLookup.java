@@ -60,6 +60,7 @@ public class BomLookup {
                         requireNonNull(BomLookup.class.getResourceAsStream("/jenkins-bom.xml"))
                 ), props))
                 .findFirst()
+                .map(o -> (Xml.Document) o)
                 .orElseThrow(() -> new IllegalStateException("Classpath resource could not be found"));
 
         MavenResolutionResult resolved = maven.getMarkers().findFirst(MavenResolutionResult.class)
