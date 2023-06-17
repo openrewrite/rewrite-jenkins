@@ -1,5 +1,43 @@
 ---
 type: specs.openrewrite.org/v1beta/recipe
+name: net.sghill.jenkins.rewrite.UpgradeHtmlUnit_3_3_0
+recipeList:
+  - org.openrewrite.java.ChangePackage:
+      oldPackageName: com.gargoylesoftware.htmlunit
+      newPackageName: org.htmlunit
+      recursive: true
+  - org.openrewrite.java.OrderImports:
+      removeUnused: false
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: org.htmlunit.html.HtmlInput getValueAttribute()
+      newMethodName: getValue
+      ignoreDefinition: true
+      matchOverrides: true
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: org.htmlunit.html.HtmlInput setValueAttribute(String)
+      newMethodName: setValue
+      ignoreDefinition: true
+      matchOverrides: true
+# TODO match if the first attribute is a literal
+#  - org.openrewrite.java.ChangeMethodName:
+#      methodPattern: org.htmlunit.html.HtmlInput setAttribute("value", String)
+#      newMethodName: setValue
+#      ignoreDefinition: true
+#      matchOverrides: true
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_66
+displayName: Migrate to Parent POM 4.66
+description: Upgrade to Parent POM 4.66
+recipeList:
+  - org.openrewrite.maven.ChangeParentPom:
+      oldGroupId: org.jenkins-ci.plugins
+      oldArtifactId: plugin
+      newVersion: 4.66
+      allowVersionDowngrades: false
+  - net.sghill.jenkins.rewrite.UpgradeHtmlUnit_3_3_0
+---
+type: specs.openrewrite.org/v1beta/recipe
 name: net.sghill.jenkins.RemoveDep
 recipeList:
   - org.openrewrite.maven.RemoveDependency:
