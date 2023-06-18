@@ -39,6 +39,54 @@ recipeList:
   - net.sghill.jenkins.rewrite.UpgradeHtmlUnit_3_3_0
 ---
 type: specs.openrewrite.org/v1beta/recipe
+name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_52
+displayName: Migrate to Parent POM 4.52
+description: Upgrade to Parent POM 4.52 (requires Java 11)
+recipeList:
+  - org.openrewrite.maven.ChangeParentPom:
+      oldGroupId: org.jenkins-ci.plugins
+      oldArtifactId: plugin
+      newVersion: 4.52
+      allowVersionDowngrades: false
+  - org.openrewrite.maven.ChangePropertyValue:
+      key: jenkins.version
+      newValue: 2.361.4
+      addIfMissing: false
+  - org.openrewrite.maven.ChangeManagedDependencyGroupIdAndArtifactId:
+      oldGroupId: io.jenkins.tools.bom
+      oldArtifactId: bom-2.303.x
+      newGroupId: io.jenkins.tools.bom
+      newArtifactId: bom-2.361.x
+      newVersion: 2102.v854b_fec19c92
+  - net.sghill.jenkins.rewrite.UpgradeParentPom_4_50
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_50
+displayName: Migrate to Parent POM 4.50
+description: Upgrade to Parent POM 4.50
+recipeList:
+  - org.openrewrite.maven.ChangeParentPom:
+      oldGroupId: org.jenkins-ci.plugins
+      oldArtifactId: plugin
+      newVersion: 4.50
+      allowVersionDowngrades: false
+  - net.sghill.jenkins.rewrite.UpgradeParentPom_4_49
+# TODO: min jenkins 2.326 if jcip annotations used
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_49
+displayName: Migrate to Parent POM 4.49
+description: Upgrade to Parent POM 4.49
+recipeList:
+  - org.openrewrite.maven.ChangeParentPom:
+      oldGroupId: org.jenkins-ci.plugins
+      oldArtifactId: plugin
+      newVersion: 4.49
+      allowVersionDowngrades: false
+  - net.sghill.jenkins.rewrite.UpgradeParentPom_4_46
+# TODO: run build and check for you-must-override-the-yarn.version-property to know if properties must be added
+---
+type: specs.openrewrite.org/v1beta/recipe
 name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_46
 displayName: Migrate to Parent POM 4.46
 description: Upgrade to Parent POM 4.46
