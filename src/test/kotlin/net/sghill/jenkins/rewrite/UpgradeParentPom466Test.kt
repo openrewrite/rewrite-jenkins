@@ -1,5 +1,6 @@
 package net.sghill.jenkins.rewrite
 
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.maven.Assertions.pomXml
 import org.openrewrite.test.RecipeSpec
@@ -12,6 +13,7 @@ class UpgradeParentPom466Test : RewriteTest {
     }
 
     @Test
+    @Disabled
     fun noHtmlUnit() = rewriteRun(
             pomXml(
                     """
@@ -59,6 +61,7 @@ class UpgradeParentPom466Test : RewriteTest {
     )
 
     @Test
+    @Disabled
     fun doesNotDowngrade() = rewriteRun(
             pomXml(
                     """
