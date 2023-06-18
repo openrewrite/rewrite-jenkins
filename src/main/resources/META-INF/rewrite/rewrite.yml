@@ -30,12 +30,34 @@ name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_66
 displayName: Migrate to Parent POM 4.66
 description: Upgrade to Parent POM 4.66
 recipeList:
+  - net.sghill.jenkins.rewrite.UpgradeParentPom_4_40
   - org.openrewrite.maven.ChangeParentPom:
       oldGroupId: org.jenkins-ci.plugins
       oldArtifactId: plugin
       newVersion: 4.66
       allowVersionDowngrades: false
   - net.sghill.jenkins.rewrite.UpgradeHtmlUnit_3_3_0
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_40
+displayName: Migrate to Parent POM 4.40
+description: Upgrade to Parent POM 4.40
+recipeList:
+  - org.openrewrite.maven.ChangeParentPom:
+      oldGroupId: org.jenkins-ci.plugins
+      oldArtifactId: plugin
+      newVersion: 4.40
+      allowVersionDowngrades: false
+  - org.openrewrite.maven.RemoveProperty:
+      propertyName: java.level
+  - org.openrewrite.text.FindAndReplace:
+      find: buildPlugin()
+      replace: >
+        buildPlugin(useContainerAgent: true, configurations: [
+          [ platform: 'linux', jdk: '11' ],
+          [ platform: 'windows', jdk: '11' ],
+          [ platform: 'linux', jdk: '17' ],
+        ])
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: net.sghill.jenkins.RemoveDep
