@@ -6,8 +6,6 @@ recipeList:
       oldPackageName: com.gargoylesoftware.htmlunit
       newPackageName: org.htmlunit
       recursive: true
-  - org.openrewrite.java.OrderImports:
-      removeUnused: false
   - org.openrewrite.java.ChangeMethodName:
       methodPattern: org.htmlunit.html.HtmlInput getValueAttribute()
       newMethodName: getValue
@@ -60,8 +58,15 @@ recipeList:
       oldArtifactId: plugin
       newVersion: 4.55
       allowVersionDowngrades: false
+  - org.openrewrite.maven.ChangeDependencyGroupIdAndArtifactId:
+      oldGroupId: org.mockito
+      oldArtifactId: mockito-inline
+      newGroupId: org.mockito
+      newArtifactId: mockito-core
+      newVersion: 5.0.0
+      overrideManagedVersion: false
+  # TODO: More Mockito 5 migration
   - net.sghill.jenkins.rewrite.UpgradeParentPom_4_52
-# TODO: Mockito 5 migration
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_52
