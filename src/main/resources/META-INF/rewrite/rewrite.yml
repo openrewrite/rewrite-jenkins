@@ -39,6 +39,22 @@ recipeList:
   - net.sghill.jenkins.rewrite.UpgradeHtmlUnit_3_3_0
 ---
 type: specs.openrewrite.org/v1beta/recipe
+name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_46
+displayName: Migrate to Parent POM 4.46
+description: Upgrade to Parent POM 4.46
+recipeList:
+  - org.openrewrite.maven.ChangeParentPom:
+      oldGroupId: org.jenkins-ci.plugins
+      oldArtifactId: plugin
+      newVersion: 4.46
+      allowVersionDowngrades: false
+  - org.openrewrite.maven.RemoveRedundantDependencyVersions:
+      groupPattern: junit
+      artifactPattern: junit
+      onlyIfVersionsMatch: false
+  - net.sghill.jenkins.rewrite.UpgradeParentPom_4_43_1
+---
+type: specs.openrewrite.org/v1beta/recipe
 name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_43_1
 displayName: Migrate to Parent POM 4.43.1
 description: Upgrade to Parent POM 4.43.1
