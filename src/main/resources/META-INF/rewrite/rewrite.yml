@@ -30,13 +30,26 @@ name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_66
 displayName: Migrate to Parent POM 4.66
 description: Upgrade to Parent POM 4.66
 recipeList:
-  - net.sghill.jenkins.rewrite.UpgradeParentPom_4_40
   - org.openrewrite.maven.ChangeParentPom:
       oldGroupId: org.jenkins-ci.plugins
       oldArtifactId: plugin
       newVersion: 4.66
       allowVersionDowngrades: false
   - net.sghill.jenkins.rewrite.UpgradeHtmlUnit_3_3_0
+  - net.sghill.jenkins.rewrite.UpgradeParentPom_4_55
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_55
+displayName: Migrate to Parent POM 4.55
+description: Upgrade to Parent POM 4.55
+recipeList:
+  - org.openrewrite.maven.ChangeParentPom:
+      oldGroupId: org.jenkins-ci.plugins
+      oldArtifactId: plugin
+      newVersion: 4.55
+      allowVersionDowngrades: false
+  - net.sghill.jenkins.rewrite.UpgradeParentPom_4_52
+# TODO: Mockito 5 migration
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_52
