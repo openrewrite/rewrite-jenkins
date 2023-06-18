@@ -26,6 +26,18 @@ recipeList:
 #      matchOverrides: true
 ---
 type: specs.openrewrite.org/v1beta/recipe
+name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_67
+displayName: Migrate to Parent POM 4.67
+description: Upgrade to Parent POM 4.67
+recipeList:
+  - org.openrewrite.maven.ChangeParentPom:
+      oldGroupId: org.jenkins-ci.plugins
+      oldArtifactId: plugin
+      newVersion: 4.67
+      allowVersionDowngrades: false
+  - net.sghill.jenkins.rewrite.UpgradeParentPom_4_66
+---
+type: specs.openrewrite.org/v1beta/recipe
 name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_66
 displayName: Migrate to Parent POM 4.66
 description: Upgrade to Parent POM 4.66
