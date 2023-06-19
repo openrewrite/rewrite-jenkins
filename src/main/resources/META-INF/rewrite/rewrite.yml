@@ -78,10 +78,9 @@ recipeList:
       oldArtifactId: plugin
       newVersion: 4.52
       allowVersionDowngrades: false
-  - org.openrewrite.maven.ChangePropertyValue:
+  - net.sghill.jenkins.rewrite.UpgradeVersionProperty:
       key: jenkins.version
-      newValue: 2.361.4
-      addIfMissing: false
+      minimumVersion: 2.361.4
   - org.openrewrite.maven.ChangeManagedDependencyGroupIdAndArtifactId:
       oldGroupId: io.jenkins.tools.bom
       oldArtifactId: bom-2.303.x
