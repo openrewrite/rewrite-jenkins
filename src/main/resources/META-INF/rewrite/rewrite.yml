@@ -86,7 +86,7 @@ recipeList:
       oldArtifactId: bom-2.303.x
       newGroupId: io.jenkins.tools.bom
       newArtifactId: bom-2.361.x
-      newVersion: 2102.v854b_fec19c92
+      newVersion: latest.release
   - net.sghill.jenkins.rewrite.UpgradeParentPom_4_50
 ---
 type: specs.openrewrite.org/v1beta/recipe
