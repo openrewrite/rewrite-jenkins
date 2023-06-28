@@ -5,22 +5,8 @@ import nebula.plugin.release.git.base.ReleasePluginExtension
 import java.net.URI
 
 plugins {
-    `java-library`
-    signing
-
+    id("org.openrewrite.build.recipe-library") version "latest.release"
     alias(kt.plugins.jvm)
-
-    alias(nn.plugins.contacts)
-    alias(nn.plugins.javadoc.jar)
-    alias(nn.plugins.info)
-    alias(nn.plugins.maven.manifest)
-    alias(nn.plugins.maven.publish)
-    alias(nn.plugins.maven.resolved.dependencies)
-    alias(nn.plugins.publish.verification)
-    alias(nn.plugins.release)
-    alias(nn.plugins.source.jar)
-
-    id("org.openrewrite.rewrite").version("6.0.0")
 }
 
 configure<ReleasePluginExtension> {
@@ -71,9 +57,6 @@ dependencies {
     testRuntimeOnly("com.github.spotbugs:spotbugs-annotations:4.7.0")
     testRuntimeOnly("com.google.code.findbugs:jsr305:3.0.2")
     testRuntimeOnly("org.slf4j:slf4j-simple:1.7.36")
-
-    rewrite(platform("org.openrewrite.recipe:rewrite-recipe-bom:2.0.0"))
-    rewrite("org.openrewrite:rewrite-java:8.0.0")
 }
 
 tasks.test {
@@ -153,8 +136,4 @@ signing {
 
 tasks.withType<Sign>() {
     onlyIf { gradle.taskGraph.hasTask(":publish") }
-}
-
-rewrite {
-    activeRecipe("org.openrewrite.java.upgrade.MigrateToRewrite8sghill")
 }

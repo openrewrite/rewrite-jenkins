@@ -1,3 +1,18 @@
+/*
+ * Copyright 2023 the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * https://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package net.sghill.jenkins.rewrite;
 
 import lombok.EqualsAndHashCode;
@@ -52,7 +67,7 @@ public class UpgradeVersionProperty extends Recipe {
     public TreeVisitor<?, ExecutionContext> getVisitor() {
         VersionComparator versionComparator = Semver.validate(minimumVersion, null).getValue();
         assert versionComparator != null;
-        return Preconditions.check(new MavenVisitor<>() {
+        return Preconditions.check(new MavenVisitor<ExecutionContext>() {
             @Override
             public Xml visitDocument(Xml.Document document, ExecutionContext executionContext) {
                 String value = getResolutionResult().getPom().getProperties().get(key);
@@ -60,12 +75,12 @@ public class UpgradeVersionProperty extends Recipe {
                     return document;
                 }
                 Optional<String> upgrade = versionComparator.upgrade(value, Collections.singleton(minimumVersion));
-                if (upgrade.isEmpty()) {
+                if (!upgrade.isPresent()) {
                     return document;
                 }
                 return SearchResult.found(document);
             }
-        }, new MavenVisitor<>() {
+        }, new MavenVisitor<ExecutionContext>() {
             @Override
             public Xml visitTag(Tag tag, ExecutionContext ctx) {
                 Xml.Tag t = (Tag) super.visitTag(tag, ctx);

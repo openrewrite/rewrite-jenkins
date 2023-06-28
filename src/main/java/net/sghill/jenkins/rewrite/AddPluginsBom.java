@@ -1,3 +1,18 @@
+/*
+ * Copyright 2023 the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * https://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package net.sghill.jenkins.rewrite;
 
 import lombok.EqualsAndHashCode;
@@ -57,7 +72,7 @@ public class AddPluginsBom extends ScanningRecipe<AddPluginsBom.Scanned> {
     @Override
     public TreeVisitor<?, ExecutionContext> getScanner(Scanned acc) {
         BomLookup lookup = new BomLookup();
-        return Preconditions.check(acc.hasDependencyInBom, new MavenIsoVisitor<>() {
+        return Preconditions.check(acc.hasDependencyInBom, new MavenIsoVisitor<ExecutionContext>() {
             @Override
             public Xml.Document visitDocument(Xml.Document document, ExecutionContext executionContext) {
                 if (acc.hasDependencyInBom) {
@@ -82,7 +97,7 @@ public class AddPluginsBom extends ScanningRecipe<AddPluginsBom.Scanned> {
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor(Scanned acc) {
-        return Preconditions.check(acc.hasDependencyInBom, new MavenVisitor<>() {
+        return Preconditions.check(acc.hasDependencyInBom, new MavenVisitor<ExecutionContext>() {
             @Override
             public Xml visitDocument(Xml.Document document, ExecutionContext executionContext) {
                 Xml maven = super.visitDocument(document, executionContext);
