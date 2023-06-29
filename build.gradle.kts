@@ -6,7 +6,6 @@ import java.net.URI
 
 plugins {
     id("org.openrewrite.build.recipe-library") version "latest.release"
-    alias(kt.plugins.jvm)
 }
 
 configure<ReleasePluginExtension> {
@@ -42,8 +41,6 @@ dependencies {
 //    implementation("org.apache.maven:waggon-http-lightweight:latest.release")
 
     testImplementation("org.ow2.asm:asm:latest.release")
-    testImplementation("org.jetbrains.kotlin:kotlin-reflect")
-    testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     testImplementation(platform(libs.junit.bom))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
