@@ -203,7 +203,7 @@ recipeList:
           artifactId: commons-lang3
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: net.sghill.jenkins.ModernizePlugin
+name: org.openrewrite.jenkins.ModernizePlugin
 recipeList:
   - org.openrewrite.jenkins.ChangeJenkinsVersion:
       parentPomVersion: "4.64"
