@@ -16,7 +16,7 @@
 
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: net.sghill.jenkins.rewrite.UpgradeHtmlUnit_3_3_0
+name: org.openrewrite.jenkins.UpgradeHtmlUnit_3_3_0
 recipeList:
   - org.openrewrite.java.ChangePackage:
       oldPackageName: com.gargoylesoftware.htmlunit
@@ -219,7 +219,7 @@ recipeList:
   - org.openrewrite.maven.security.UseHttpsForRepositories
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: net.sghill.jenkins.rewrite.JavaxAnnotationsToSpotbugs
+name: org.openrewrite.jenkins.JavaxAnnotationsToSpotbugs
 recipeList:
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: javax.annotation.Nonnull
