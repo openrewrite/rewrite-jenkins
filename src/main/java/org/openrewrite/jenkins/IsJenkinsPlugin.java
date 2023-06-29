@@ -17,7 +17,6 @@ package org.openrewrite.jenkins;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import net.sghill.jenkins.rewrite.Jenkins;
 import org.openrewrite.*;
 import org.openrewrite.marker.SearchResult;
 import org.openrewrite.semver.Semver;

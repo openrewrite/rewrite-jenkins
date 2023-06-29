@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.sghill.jenkins.rewrite;
+package org.openrewrite.jenkins;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;
@@ -22,7 +22,6 @@ import org.openrewrite.Option;
 import org.openrewrite.Preconditions;
 import org.openrewrite.ScanningRecipe;
 import org.openrewrite.TreeVisitor;
-import org.openrewrite.jenkins.BomLookup;
 import org.openrewrite.marker.SearchResult;
 import org.openrewrite.maven.AddManagedDependency;
 import org.openrewrite.maven.AddManagedDependencyVisitor;

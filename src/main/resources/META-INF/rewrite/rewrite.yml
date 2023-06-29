@@ -40,7 +40,7 @@ recipeList:
 #      matchOverrides: true
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_67
+name: org.openrewrite.jenkins.UpgradeParentPom_4_67
 displayName: Migrate to Parent POM 4.67
 description: Upgrade to Parent POM 4.67
 recipeList:
@@ -49,7 +49,7 @@ recipeList:
       oldArtifactId: plugin
       newVersion: 4.67
       allowVersionDowngrades: false
-  - net.sghill.jenkins.rewrite.UpgradeParentPom_4_66
+  - org.openrewrite.jenkins.UpgradeParentPom_4_66
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.jenkins.UpgradeParentPom_4_66
@@ -61,11 +61,11 @@ recipeList:
       oldArtifactId: plugin
       newVersion: 4.66
       allowVersionDowngrades: false
-  - net.sghill.jenkins.rewrite.UpgradeHtmlUnit_3_3_0
-  - net.sghill.jenkins.rewrite.UpgradeParentPom_4_55
+  - org.openrewrite.jenkins.UpgradeHtmlUnit_3_3_0
+  - org.openrewrite.jenkins.UpgradeParentPom_4_55
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_55
+name: org.openrewrite.jenkins.UpgradeParentPom_4_55
 displayName: Migrate to Parent POM 4.55
 description: Upgrade to Parent POM 4.55
 recipeList:
@@ -82,10 +82,10 @@ recipeList:
       newVersion: 5.0.0
       overrideManagedVersion: false
   # TODO: More Mockito 5 migration
-  - net.sghill.jenkins.rewrite.UpgradeParentPom_4_52
+  - org.openrewrite.jenkins.UpgradeParentPom_4_52
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_52
+name: org.openrewrite.jenkins.UpgradeParentPom_4_52
 displayName: Migrate to Parent POM 4.52
 description: Upgrade to Parent POM 4.52 (requires Java 11)
 recipeList:
@@ -94,7 +94,7 @@ recipeList:
       oldArtifactId: plugin
       newVersion: 4.52
       allowVersionDowngrades: false
-  - net.sghill.jenkins.rewrite.UpgradeVersionProperty:
+  - org.openrewrite.jenkins.UpgradeVersionProperty:
       key: jenkins.version
       minimumVersion: 2.361.4
   - org.openrewrite.maven.ChangeManagedDependencyGroupIdAndArtifactId:
@@ -103,10 +103,10 @@ recipeList:
       newGroupId: io.jenkins.tools.bom
       newArtifactId: bom-2.361.x
       newVersion: latest.release
-  - net.sghill.jenkins.rewrite.UpgradeParentPom_4_50
+  - org.openrewrite.jenkins.UpgradeParentPom_4_50
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_50
+name: org.openrewrite.jenkins.UpgradeParentPom_4_50
 displayName: Migrate to Parent POM 4.50
 description: Upgrade to Parent POM 4.50
 recipeList:
@@ -115,11 +115,11 @@ recipeList:
       oldArtifactId: plugin
       newVersion: 4.50
       allowVersionDowngrades: false
-  - net.sghill.jenkins.rewrite.UpgradeParentPom_4_49
+  - org.openrewrite.jenkins.UpgradeParentPom_4_49
 # TODO: min jenkins 2.326 if jcip annotations used
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_49
+name: org.openrewrite.jenkins.UpgradeParentPom_4_49
 displayName: Migrate to Parent POM 4.49
 description: Upgrade to Parent POM 4.49
 recipeList:
@@ -128,11 +128,11 @@ recipeList:
       oldArtifactId: plugin
       newVersion: 4.49
       allowVersionDowngrades: false
-  - net.sghill.jenkins.rewrite.UpgradeParentPom_4_46
+  - org.openrewrite.jenkins.UpgradeParentPom_4_46
 # TODO: run build and check for you-must-override-the-yarn.version-property to know if properties must be added
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_46
+name: org.openrewrite.jenkins.UpgradeParentPom_4_46
 displayName: Migrate to Parent POM 4.46
 description: Upgrade to Parent POM 4.46
 recipeList:
@@ -145,10 +145,10 @@ recipeList:
       groupPattern: junit
       artifactPattern: junit
       onlyIfVersionsMatch: false
-  - net.sghill.jenkins.rewrite.UpgradeParentPom_4_43_1
+  - org.openrewrite.jenkins.UpgradeParentPom_4_43_1
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_43_1
+name: org.openrewrite.jenkins.UpgradeParentPom_4_43_1
 displayName: Migrate to Parent POM 4.43.1
 description: Upgrade to Parent POM 4.43.1
 recipeList:
@@ -157,11 +157,11 @@ recipeList:
       oldArtifactId: plugin
       newVersion: 4.43.1
       allowVersionDowngrades: false
-  - net.sghill.jenkins.rewrite.UpgradeParentPom_4_40
+  - org.openrewrite.jenkins.UpgradeParentPom_4_40
 # TODO: jenkins.version 2.249.1 w/o downgrades
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_40
+name: org.openrewrite.jenkins.UpgradeParentPom_4_40
 displayName: Migrate to Parent POM 4.40
 description: Upgrade to Parent POM 4.40
 recipeList:
@@ -182,7 +182,7 @@ recipeList:
         ])
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: net.sghill.jenkins.RemoveDep
+name: org.openrewrite.jenkins.RemoveDep
 recipeList:
   - org.openrewrite.maven.RemoveDependency:
       groupId: org.jenkins-ci
@@ -208,14 +208,14 @@ recipeList:
   - org.openrewrite.jenkins.ChangeJenkinsVersion:
       parentPomVersion: "4.64"
       jenkinsVersion: "2.332.1"
-  - net.sghill.jenkins.rewrite.AddPluginsBom:
+  - org.openrewrite.jenkins.AddPluginsBom:
       bomName: bom-2.332.x
       bomVersion: "1763.v092b_8980a_f5e"
   - org.openrewrite.jenkins.DisableLocalResolutionForParentPom
   - org.openrewrite.maven.RemoveProperty:
       # as of parent pom 4.40 this is deprecated and unused
       propertyName: java.level
-  - net.sghill.jenkins.RemoveDep
+  - org.openrewrite.jenkins.RemoveDep
   - org.openrewrite.maven.security.UseHttpsForRepositories
 ---
 type: specs.openrewrite.org/v1beta/recipe
