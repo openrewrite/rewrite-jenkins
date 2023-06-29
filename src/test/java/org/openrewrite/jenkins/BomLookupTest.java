@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.sghill.jenkins.rewrite;
+package org.openrewrite.jenkins;
 
 import org.junit.jupiter.api.Test;
 import org.openrewrite.maven.tree.GroupArtifact;
@@ -24,12 +24,12 @@ public class BomLookupTest {
     static final BomLookup bomLookup = new BomLookup();
 
     @Test
-    void lookup() {
+    void shouldLookupByGroupIdAndArtifactId() {
         assertThat(bomLookup.inBom("io.jenkins.plugins", "theme-manager")).isTrue();
     }
 
     @Test
-    void allPlugins() {
+    void shouldPrintAllPlugins() {
         bomLookup.getGroupArtifacts().stream()
                 .filter(groupArtifact -> groupArtifact.getGroupId().equals("io.jenkins.plugins"))
                 .map(GroupArtifact::getArtifactId)
