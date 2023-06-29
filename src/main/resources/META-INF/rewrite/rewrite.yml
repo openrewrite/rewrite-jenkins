@@ -205,7 +205,7 @@ recipeList:
 type: specs.openrewrite.org/v1beta/recipe
 name: net.sghill.jenkins.ModernizePlugin
 recipeList:
-  - net.sghill.jenkins.rewrite.ChangeJenkinsVersion:
+  - org.openrewrite.jenkins.ChangeJenkinsVersion:
       parentPomVersion: "4.64"
       jenkinsVersion: "2.332.1"
   - net.sghill.jenkins.rewrite.AddPluginsBom:

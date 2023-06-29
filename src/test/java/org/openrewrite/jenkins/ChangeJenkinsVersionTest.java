@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.sghill.jenkins.rewrite
+package org.openrewrite.jenkins;
 
-import org.junit.jupiter.api.Test
-import org.openrewrite.maven.Assertions.pomXml
-import org.openrewrite.test.RecipeSpec
-import org.openrewrite.test.RewriteTest
+import org.junit.jupiter.api.Test;
+import org.openrewrite.test.RecipeSpec;
+import org.openrewrite.test.RewriteTest;
 
-class ChangeJenkinsVersionTest: RewriteTest {
+import static org.openrewrite.maven.Assertions.pomXml;
 
-    override fun defaults(spec: RecipeSpec) {
-        spec
-                .recipe(ChangeJenkinsVersion("4.40", "2.303.3"))
+class ChangeJenkinsVersionTest implements RewriteTest {
+    @Override
+    public void defaults(RecipeSpec spec) {
+        spec.recipe(new ChangeJenkinsVersion("4.40", "2.303.3"));
     }
 
     @Test
-    fun majorVersionUpgrade() = rewriteRun(
-            pomXml(
-                    """
+    void shouldDoMajorVersionUpgrade() {
+        rewriteRun(pomXml(
+                """
                         <project>
                             <parent>
                                 <groupId>org.jenkins-ci.plugins</groupId>
@@ -49,7 +49,8 @@ class ChangeJenkinsVersionTest: RewriteTest {
                                 </repository>
                             </repositories>
                         </project>
-                    """, """
+                        """.stripIndent(),
+                """
                         <project>
                             <parent>
                                 <groupId>org.jenkins-ci.plugins</groupId>
@@ -68,14 +69,13 @@ class ChangeJenkinsVersionTest: RewriteTest {
                                 </repository>
                             </repositories>
                         </project>
-                    """
-            )
-    )
-    
+                        """.stripIndent()));
+    }
+
     @Test
-    fun addPropertyIfMissing() = rewriteRun(
-            pomXml(
-                    """
+    void shouldAddPropertyIfMissing() {
+        rewriteRun(pomXml(
+                """
                         <project>
                             <parent>
                                 <groupId>org.jenkins-ci.plugins</groupId>
@@ -93,7 +93,8 @@ class ChangeJenkinsVersionTest: RewriteTest {
                                 </repository>
                             </repositories>
                         </project>
-                    """, """
+                        """.stripIndent(),
+                """
                         <project>
                             <parent>
                                 <groupId>org.jenkins-ci.plugins</groupId>
@@ -112,14 +113,14 @@ class ChangeJenkinsVersionTest: RewriteTest {
                                 </repository>
                             </repositories>
                         </project>
-                    """
-            )
-    )
-    
+                        """.stripIndent()
+        ));
+    }
+
     @Test
-    fun addPropertyIfNoProperties() = rewriteRun(
-            pomXml(
-                    """
+    void shouldAddPropertyIfNoProperties() {
+        rewriteRun(pomXml(
+                """
                         <project>
                             <parent>
                                 <groupId>org.jenkins-ci.plugins</groupId>
@@ -135,7 +136,8 @@ class ChangeJenkinsVersionTest: RewriteTest {
                                 </repository>
                             </repositories>
                         </project>
-                    """, """
+                        """.stripIndent(),
+                """
                         <project>
                             <parent>
                                 <groupId>org.jenkins-ci.plugins</groupId>
@@ -154,7 +156,7 @@ class ChangeJenkinsVersionTest: RewriteTest {
                                 </repository>
                             </repositories>
                         </project>
-                    """
-            )
-    )
+                        """.stripIndent()
+        ));
+    }
 }
