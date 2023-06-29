@@ -13,25 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.sghill.jenkins.rewrite
+package org.openrewrite.jenkins;
 
-import org.junit.jupiter.api.Disabled
-import org.junit.jupiter.api.Test
-import org.openrewrite.maven.Assertions.pomXml
-import org.openrewrite.test.RecipeSpec
-import org.openrewrite.test.RewriteTest
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.openrewrite.test.RecipeSpec;
+import org.openrewrite.test.RewriteTest;
 
-class UpgradeParentPom466Test : RewriteTest {
+import static org.openrewrite.maven.Assertions.pomXml;
 
-    override fun defaults(spec: RecipeSpec) {
-        spec.recipeFromResource("/META-INF/rewrite/rewrite.yml", "net.sghill.jenkins.rewrite.UpgradeParentPom_4_66")
+@Disabled
+class UpgradeParentPom466Test implements RewriteTest {
+    @Override
+    public void defaults(RecipeSpec spec) {
+        spec.recipeFromResource("/META-INF/rewrite/rewrite.yml", "org.openrewrite.jenkins.UpgradeParentPom_4_66");
     }
 
     @Test
-    @Disabled
-    fun noHtmlUnit() = rewriteRun(
-            pomXml(
-                    """
+    void shouldHandleNoHtmlUnit() {
+        rewriteRun(pomXml(
+                """
                         <project>
                             <parent>
                                 <groupId>org.jenkins-ci.plugins</groupId>
@@ -51,7 +52,8 @@ class UpgradeParentPom466Test : RewriteTest {
                                 </repository>
                             </repositories>
                         </project>
-                    """, """
+                        """.stripIndent(),
+                """
                         <project>
                             <parent>
                                 <groupId>org.jenkins-ci.plugins</groupId>
@@ -71,15 +73,14 @@ class UpgradeParentPom466Test : RewriteTest {
                                 </repository>
                             </repositories>
                         </project>
-                    """
-            )
-    )
+                        """.stripIndent()
+        ));
+    }
 
     @Test
-    @Disabled
-    fun doesNotDowngrade() = rewriteRun(
-            pomXml(
-                    """
+    void shouldNotDowngrade() {
+        rewriteRun(pomXml(
+                """
                         <project>
                             <parent>
                                 <groupId>org.jenkins-ci.plugins</groupId>
@@ -99,6 +100,7 @@ class UpgradeParentPom466Test : RewriteTest {
                                 </repository>
                             </repositories>
                         </project>
-                    """            )
-    )
+                        """.stripIndent()
+        ));
+    }
 }

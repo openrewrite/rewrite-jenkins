@@ -52,7 +52,7 @@ recipeList:
   - net.sghill.jenkins.rewrite.UpgradeParentPom_4_66
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: net.sghill.jenkins.rewrite.UpgradeParentPom_4_66
+name: org.openrewrite.jenkins.UpgradeParentPom_4_66
 displayName: Migrate to Parent POM 4.66
 description: Upgrade to Parent POM 4.66
 recipeList:
