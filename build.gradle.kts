@@ -26,7 +26,7 @@ dependencies {
 
     testImplementation("org.ow2.asm:asm:latest.release")
 
-    testImplementation(platform(libs.junit.bom))
+    testImplementation(platform("org.junit:junit-bom:latest.release"))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
