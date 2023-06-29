@@ -1,13 +1,45 @@
 rootProject.name = "rewrite-jenkins"
 
-dependencyResolutionManagement {
-    versionCatalogs {
-        create("libs") {
-            library("junit-bom", "org.junit", "junit-bom").version {
-                strictly("[5.9.1, 6.0.0[")
+pluginManagement {
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+    }
+}
+
+plugins {
+    id("com.gradle.enterprise") version "latest.release"
+    id("com.gradle.common-custom-user-data-gradle-plugin") version "latest.release"
+}
+
+gradleEnterprise {
+    val isCiServer = System.getenv("CI")?.equals("true") ?: false
+    server = "https://ge.openrewrite.org/"
+    val gradleCacheRemoteUsername: String? = System.getenv("GRADLE_ENTERPRISE_CACHE_USERNAME")
+    val gradleCacheRemotePassword: String? = System.getenv("GRADLE_ENTERPRISE_CACHE_PASSWORD")
+
+    buildCache {
+        remote(HttpBuildCache::class) {
+            url = uri("https://ge.openrewrite.org/cache/")
+            isPush = isCiServer
+            if (!gradleCacheRemoteUsername.isNullOrBlank() && !gradleCacheRemotePassword.isNullOrBlank()) {
+                credentials {
+                    username = gradleCacheRemoteUsername
+                    password = gradleCacheRemotePassword
+                }
             }
-            library("rewrite-bom", "org.openrewrite:rewrite-bom:8.1.2")
-            library("rewrite-recipe-bom", "org.openrewrite.recipe:rewrite-recipe-bom:2.0.1")
         }
+    }
+
+    buildScan {
+        capture {
+            isTaskInputFiles = true
+        }
+
+        isUploadInBackground = !isCiServer
+
+        publishAlways()
+        this as com.gradle.enterprise.gradleplugin.internal.extension.BuildScanExtensionWithHiddenFeatures
+        publishIfAuthenticated()
     }
 }
