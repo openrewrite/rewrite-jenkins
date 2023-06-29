@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.sghill.jenkins.rewrite
+package org.openrewrite.jenkins;
 
-import org.junit.jupiter.api.Test
-import org.openrewrite.maven.Assertions.pomXml
-import org.openrewrite.test.RecipeSpec
-import org.openrewrite.test.RewriteTest
+import org.junit.jupiter.api.Test;
+import org.openrewrite.test.RecipeSpec;
+import org.openrewrite.test.RewriteTest;
 
-class DisableLocalResolutionForParentPomTest: RewriteTest {
+import static org.openrewrite.maven.Assertions.pomXml;
 
-    override fun defaults(spec: RecipeSpec) {
-        spec
-                .recipe(DisableLocalResolutionForParentPom())
+class DisableLocalResolutionForParentPomTest implements RewriteTest {
+    @Override
+    public void defaults(RecipeSpec spec) {
+        spec.recipe(new DisableLocalResolutionForParentPom());
     }
 
     @Test
-    fun missing() = rewriteRun(
-            pomXml(
-                    """
+    void shouldAddRelativePathIfMissing() {
+        rewriteRun(pomXml(
+                """
                         <project>
                             <parent>
                                 <groupId>org.jenkins-ci.plugins</groupId>
@@ -47,7 +47,8 @@ class DisableLocalResolutionForParentPomTest: RewriteTest {
                                 </repository>
                             </repositories>
                         </project>
-                    """, """
+                        """.stripIndent(),
+                """
                         <project>
                             <parent>
                                 <groupId>org.jenkins-ci.plugins</groupId>
@@ -65,14 +66,14 @@ class DisableLocalResolutionForParentPomTest: RewriteTest {
                                 </repository>
                             </repositories>
                         </project>
-                    """
-            )
-    )
-    
+                        """.stripIndent()
+        ));
+    }
+
     @Test
-    fun alreadyPresent() = rewriteRun(
-            pomXml(
-                    """
+    void shouldNoOpIfRelativePathAlreadyPresent() {
+        rewriteRun(pomXml(
+                """
                         <project>
                             <parent>
                                 <groupId>org.jenkins-ci.plugins</groupId>
@@ -90,6 +91,7 @@ class DisableLocalResolutionForParentPomTest: RewriteTest {
                                 </repository>
                             </repositories>
                         </project>
-                    """)
-    )
+                        """.stripIndent()
+        ));
+    }
 }

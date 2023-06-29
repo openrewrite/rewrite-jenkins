@@ -211,7 +211,7 @@ recipeList:
   - net.sghill.jenkins.rewrite.AddPluginsBom:
       bomName: bom-2.332.x
       bomVersion: "1763.v092b_8980a_f5e"
-  - net.sghill.jenkins.rewrite.DisableLocalResolutionForParentPom
+  - org.openrewrite.jenkins.DisableLocalResolutionForParentPom
   - org.openrewrite.maven.RemoveProperty:
       # as of parent pom 4.40 this is deprecated and unused
       propertyName: java.level
