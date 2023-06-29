@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.sghill.jenkins.rewrite;
+package org.openrewrite.jenkins;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.maven.wagon.events.TransferEvent;
