@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.sghill.jenkins.rewrite;
+package org.openrewrite.jenkins;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;
+import net.sghill.jenkins.rewrite.AddDependency;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;

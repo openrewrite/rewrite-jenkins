@@ -192,9 +192,9 @@ recipeList:
       artifactId: symbol-annotation
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: net.sghill.jenkins.rewrite.CommonsLang3ToApiPlugin
+name: org.openrewrite.jenkins.CommonsLang3ToApiPlugin
 recipeList:
-  - net.sghill.jenkins.rewrite.ReplaceLibrariesWithApiPlugin:
+  - org.openrewrite.jenkins.ReplaceLibrariesWithApiPlugin:
       pluginGroupId: io.jenkins.plugins
       pluginArtifactId: commons-lang3-api
       pluginVersion: 3.12.0.0
