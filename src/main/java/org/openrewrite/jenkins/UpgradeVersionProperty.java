@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.sghill.jenkins.rewrite;
+package org.openrewrite.jenkins;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;
@@ -22,9 +22,7 @@ import org.openrewrite.Option;
 import org.openrewrite.Preconditions;
 import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
-import org.openrewrite.marker.Markers;
 import org.openrewrite.marker.SearchResult;
-import org.openrewrite.maven.MavenIsoVisitor;
 import org.openrewrite.maven.MavenVisitor;
 import org.openrewrite.semver.Semver;
 import org.openrewrite.semver.VersionComparator;
@@ -34,8 +32,6 @@ import org.openrewrite.xml.tree.Xml.Tag;
 
 import java.util.Collections;
 import java.util.Optional;
-
-import static org.openrewrite.Tree.randomId;
 
 /**
  * Updates the version property unless it is already greater than minimumVersion

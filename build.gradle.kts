@@ -64,12 +64,6 @@ tasks.test {
     jvmArgs = listOf("-XX:+UnlockDiagnosticVMOptions", "-XX:+ShowHiddenFrames")
 }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
-    }
-}
-
 configure<ContactsExtension> {
     val j = Contact("sghill.dev@gmail.com")
     j.moniker("Steve Hill")
