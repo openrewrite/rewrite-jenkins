@@ -26,7 +26,7 @@ public class JavaxAnnotationsToSpotBugsTest implements RewriteTest {
     @Override
     public void defaults(RecipeSpec spec) {
         spec.parser(JavaParser.fromJavaVersion().classpath("jsr305", "spotbugs-annotations"));
-        spec.recipeFromResource("/META-INF/rewrite/rewrite.yml", "org.openrewrite.jenkins.JavaxAnnotationsToSpotbugs");
+        spec.recipeFromResource("/META-INF/rewrite/jsr-305.yml", "org.openrewrite.jenkins.JavaxAnnotationsToSpotbugs");
     }
 
     @Test
