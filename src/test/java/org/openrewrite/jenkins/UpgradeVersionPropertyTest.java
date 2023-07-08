@@ -16,6 +16,7 @@
 package org.openrewrite.jenkins;
 
 import org.junit.jupiter.api.Test;
+import org.openrewrite.DocumentExample;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
@@ -26,7 +27,8 @@ public class UpgradeVersionPropertyTest implements RewriteTest {
     public void defaults(RecipeSpec spec) {
         spec.recipe(new UpgradeVersionProperty("jenkins.version", "2.364.1"));
     }
-    
+
+    @DocumentExample
     @Test
     void shouldUpgrade() {
         rewriteRun(pomXml(
