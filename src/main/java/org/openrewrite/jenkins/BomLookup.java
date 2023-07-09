@@ -15,15 +15,18 @@
  */
 package org.openrewrite.jenkins;
 
-import com.google.common.io.Resources;
 import lombok.Getter;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * A registry of versions that are supplied by the bom.
@@ -35,7 +38,8 @@ class BomLookup {
 
     /**
      * Checks if the bom contains a version for the dependency.
-     * @param groupId dependency's groupId
+     *
+     * @param groupId    dependency's groupId
      * @param artifactId dependency's artifactId
      * @return true if version can be dropped from dependency
      */
@@ -45,20 +49,22 @@ class BomLookup {
         }
         return artifactsInBom.contains(groupId + ":" + artifactId);
     }
-    
+
     private void init() {
-        try {
-            URL resource = Resources.getResource("jenkins-plugins-bom-lookup.txt");
-            List<String> groupArtifacts = Resources.readLines(resource, StandardCharsets.UTF_8);
-            for (String groupArtifact : groupArtifacts) {
-                if (groupArtifact == null) {
-                    continue;
+        try (InputStream is = BomLookup.class.getResourceAsStream("/jenkins-plugins-bom-lookup.txt")) {
+            Objects.requireNonNull(is);
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+                List<String> groupArtifacts = br.lines().collect(Collectors.toList());
+                for (String groupArtifact : groupArtifacts) {
+                    if (groupArtifact == null) {
+                        continue;
+                    }
+                    String tidy = groupArtifact.trim();
+                    if (tidy.isEmpty()) {
+                        continue;
+                    }
+                    artifactsInBom.add(tidy);
                 }
-                String tidy = groupArtifact.trim();
-                if (tidy.isEmpty()) {
-                    continue;
-                }
-                artifactsInBom.add(tidy);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
