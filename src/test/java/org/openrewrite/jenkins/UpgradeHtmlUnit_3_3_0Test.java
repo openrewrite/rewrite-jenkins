@@ -24,7 +24,7 @@ import org.openrewrite.test.RewriteTest;
 import static org.openrewrite.java.Assertions.java;
 import static org.openrewrite.java.Assertions.srcMainJava;
 
-public class UpgradeHtmlUnit330Test implements RewriteTest {
+public class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
     @Language("java")
     private final String webClient2 = """
         package com.gargoylesoftware.htmlunit;
@@ -102,7 +102,7 @@ public class UpgradeHtmlUnit330Test implements RewriteTest {
     @Override
     public void defaults(RecipeSpec spec) {
         spec.parser(JavaParser.fromJavaVersion().dependsOn(webClient2, htmlPage2, htmlForm2, htmlInput2, webClient3, htmlPage3, htmlForm3, htmlInput3));
-        spec.recipeFromResource("/META-INF/rewrite/rewrite.yml", "org.openrewrite.jenkins.UpgradeHtmlUnit_3_3_0");
+        spec.recipeFromResource("/META-INF/rewrite/htmlunit-3.yml", "org.openrewrite.jenkins.UpgradeHtmlUnit_3_3_0");
     }
     
     @Test

@@ -13,31 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
----
-type: specs.openrewrite.org/v1beta/recipe
-name: org.openrewrite.jenkins.UpgradeHtmlUnit_3_3_0
-recipeList:
-  - org.openrewrite.java.ChangePackage:
-      oldPackageName: com.gargoylesoftware.htmlunit
-      newPackageName: org.htmlunit
-      recursive: true
-  - org.openrewrite.java.ChangeMethodName:
-      methodPattern: org.htmlunit.html.HtmlInput getValueAttribute()
-      newMethodName: getValue
-      ignoreDefinition: true
-      matchOverrides: true
-  - org.openrewrite.java.ChangeMethodName:
-      methodPattern: org.htmlunit.html.HtmlInput setValueAttribute(String)
-      newMethodName: setValue
-      ignoreDefinition: true
-      matchOverrides: true
-# TODO match if the first attribute is a literal
-#  - org.openrewrite.java.ChangeMethodName:
-#      methodPattern: org.htmlunit.html.HtmlInput setAttribute("value", String)
-#      newMethodName: setValue
-#      ignoreDefinition: true
-#      matchOverrides: true
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.jenkins.UpgradeParentPom_4_67
