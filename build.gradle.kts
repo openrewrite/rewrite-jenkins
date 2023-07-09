@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "org.openrewrite.recipe"
-description = "A rewrite module automating migrations for Jenkins"
+description = "Modernize Jenkins plugins. Automatically."
 
 val rewriteVersion = rewriteRecipe.rewriteVersion.get()
 dependencies {
