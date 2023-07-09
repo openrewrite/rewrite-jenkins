@@ -13,7 +13,6 @@ dependencies {
 
     implementation(platform("org.openrewrite:rewrite-bom:$rewriteVersion"))
 
-    implementation("org.rocksdb:rocksdbjni:7.2.2")
     implementation("org.openrewrite:rewrite-java")
     implementation("org.openrewrite:rewrite-maven")
     implementation("org.openrewrite:rewrite-yaml")

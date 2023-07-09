@@ -16,24 +16,15 @@
 package org.openrewrite.jenkins;
 
 import org.junit.jupiter.api.Test;
-import org.openrewrite.maven.tree.GroupArtifact;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BomLookupTest {
-    static final BomLookup bomLookup = new BomLookup();
+    private final BomLookup bomLookup = new BomLookup();
 
     @Test
     void shouldLookupByGroupIdAndArtifactId() {
         assertThat(bomLookup.inBom("io.jenkins.plugins", "theme-manager")).isTrue();
-    }
-
-    @Test
-    void shouldPrintAllPlugins() {
-        bomLookup.getGroupArtifacts().stream()
-                .filter(groupArtifact -> groupArtifact.getGroupId().equals("io.jenkins.plugins"))
-                .map(GroupArtifact::getArtifactId)
-                .sorted()
-                .forEach(System.out::println);
+        assertThat(bomLookup.inBom("org.jenkins-ci.plugins", "artifactory")).isFalse();
     }
 }
