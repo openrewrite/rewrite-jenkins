@@ -17,6 +17,7 @@ package org.openrewrite.jenkins;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.openrewrite.DocumentExample;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
@@ -376,22 +377,29 @@ class ModernizePluginForJava8Test implements RewriteTest {
     }
 
     @Test
-    @Disabled
-    void shouldUpgradeMajorVersion() {
+    @DocumentExample
+    void shouldDoTheWorks() {
         rewriteRun(pomXml(
                 """
                         <project>
                             <parent>
                                 <groupId>org.jenkins-ci.plugins</groupId>
                                 <artifactId>plugin</artifactId>
-                                <version>3.40</version>
+                                <version>4.42</version>
                             </parent>
-                            <artifactId>permissive-script-security</artifactId>
+                            <artifactId>example-plugin</artifactId>
                             <version>0.8-SNAPSHOT</version>
                             <properties>
+                                <jenkins.version>2.303.3</jenkins.version>
                                 <java.level>8</java.level>
-                                <jenkins.version>2.107.3</jenkins.version>
                             </properties>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>org.jenkins-ci.plugins</groupId>
+                                    <artifactId>junit</artifactId>
+                                    <version>1.12</version>
+                                </dependency>
+                            </dependencies>
                             <repositories>
                                 <repository>
                                     <id>repo.jenkins-ci.org</id>
@@ -405,76 +413,20 @@ class ModernizePluginForJava8Test implements RewriteTest {
                             <parent>
                                 <groupId>org.jenkins-ci.plugins</groupId>
                                 <artifactId>plugin</artifactId>
-                                <version>4.64</version>
+                                <version>4.51</version>
                                 <relativePath/>
                             </parent>
-                            <artifactId>permissive-script-security</artifactId>
+                            <artifactId>example-plugin</artifactId>
                             <version>0.8-SNAPSHOT</version>
                             <properties>
-                                <jenkins.version>2.332.1</jenkins.version>
-                            </properties>
-                            <repositories>
-                                <repository>
-                                    <id>repo.jenkins-ci.org</id>
-                                    <url>https://repo.jenkins-ci.org/public/</url>
-                                </repository>
-                            </repositories>
-                        </project>
-                        """.stripIndent()
-        ));
-    }
-
-    @Test
-    @Disabled
-    void shouldHandlePluginInBom() {
-        rewriteRun(pomXml(
-                """
-                        <project>
-                            <parent>
-                                <groupId>org.jenkins-ci.plugins</groupId>
-                                <artifactId>plugin</artifactId>
-                                <version>4.42</version>
-                                <relativePath />
-                            </parent>
-                            <artifactId>permissive-script-security</artifactId>
-                            <version>0.8-SNAPSHOT</version>
-                            <properties>
-                                <jenkins.version>2.303.3</jenkins.version>
-                            </properties>
-                            <dependencies>
-                                <dependency>
-                                    <groupId>org.jenkins-ci.plugins</groupId>
-                                    <artifactId>junit</artifactId>
-                                    <version>1.12</version>
-                                </dependency>
-                            </dependencies>
-                            <repositories>
-                                <repository>
-                                    <id>repo.jenkins-ci.org</id>
-                                    <url>https://repo.jenkins-ci.org/public/</url>
-                                </repository>
-                            </repositories>
-                        </project>
-                        """.stripIndent(),
-                """
-                        <project>
-                            <parent>
-                                <groupId>org.jenkins-ci.plugins</groupId>
-                                <artifactId>plugin</artifactId>
-                                <version>4.42</version>
-                                <relativePath />
-                            </parent>
-                            <artifactId>permissive-script-security</artifactId>
-                            <version>0.8-SNAPSHOT</version>
-                            <properties>
-                                <jenkins.version>2.303.3</jenkins.version>
+                                <jenkins.version>2.346.3</jenkins.version>
                             </properties>
                             <dependencyManagement>
                                 <dependencies>
                                     <dependency>
                                         <groupId>io.jenkins.tools.bom</groupId>
-                                        <artifactId>bom-2.303.x</artifactId>
-                                        <version>1409.v7659b_c072f18</version>
+                                        <artifactId>bom-2.346.x</artifactId>
+                                        <version>1763.v092b_8980a_f5e</version>
                                         <type>pom</type>
                                         <scope>import</scope>
                                     </dependency>

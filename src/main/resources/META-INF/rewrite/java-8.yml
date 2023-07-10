@@ -25,6 +25,7 @@ description: >
 recipeList:
   - org.openrewrite.maven.security.UseHttpsForRepositories
   - org.openrewrite.jenkins.DisableLocalResolutionForParentPom
+  - org.openrewrite.jenkins.AddPluginsBom
   - org.openrewrite.maven.ChangeParentPom:
       oldGroupId: org.jenkins-ci.plugins
       oldArtifactId: plugin
@@ -33,7 +34,6 @@ recipeList:
   - org.openrewrite.jenkins.UpgradeVersionProperty:
       key: jenkins.version
       minimumVersion: 2.346.3
-  - org.openrewrite.jenkins.AddPluginsBom
   - org.openrewrite.maven.RemoveRedundantDependencyVersions:
       onlyIfVersionsMatch: false
   - org.openrewrite.maven.RemoveProperty:
