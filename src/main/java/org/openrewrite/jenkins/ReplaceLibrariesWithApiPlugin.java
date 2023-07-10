@@ -21,6 +21,7 @@ import org.openrewrite.ExecutionContext;
 import org.openrewrite.Option;
 import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
+import org.openrewrite.maven.AddDependencyVisitor;
 import org.openrewrite.maven.MavenVisitor;
 import org.openrewrite.maven.RemoveDependency;
 import org.openrewrite.maven.tree.ResolvedDependency;
@@ -114,7 +115,18 @@ public class ReplaceLibrariesWithApiPlugin extends Recipe {
                             if (found == null) {
                                 continue;
                             }
-                            doAfterVisit(new AddDependency(pluginGroupId, pluginArtifactId, pluginVersion).getVisitor());
+                            doAfterVisit(new AddDependencyVisitor(
+                                    pluginGroupId,
+                                    pluginArtifactId,
+                                    pluginVersion,
+                                    null,
+                                    null,
+                                    true,
+                                    null,
+                                    null,
+                                    false,
+                                    null
+                            ));
                             doAfterVisit(new RemoveDependency(groupId, artifactId, null).getVisitor());
                             if (found != dependency) {
                                 Optional<Tag> maybeExclusions = tag.getChild("exclusions");
