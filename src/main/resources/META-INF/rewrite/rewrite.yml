@@ -43,13 +43,14 @@ recipeList:
   - org.openrewrite.jenkins.AddPluginsBom
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: org.openrewrite.jenkins.UpgradeParentPom_4_40
-displayName: Migrate to Parent POM 4.40
-description: Upgrade to Parent POM 4.40
+name: org.openrewrite.jenkins.ModernizeJenkinsfile
+displayName: Modernize Jenkinsfile
+description: Updates `Jenkinsfile` to build with recommended Java versions, platforms, and settings.
 recipeList:
-  - org.openrewrite.text.FindAndReplace:
-      find: buildPlugin()
-      replace: >
+  - org.openrewrite.text.CreateTextFile:
+      relativeFileName: Jenkinsfile
+      overwriteExisting: true
+      fileContents: >
         buildPlugin(useContainerAgent: true, configurations: [
           [ platform: 'linux', jdk: '11' ],
           [ platform: 'windows', jdk: '11' ],
