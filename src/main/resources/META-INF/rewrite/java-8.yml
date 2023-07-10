@@ -33,9 +33,9 @@ recipeList:
   - org.openrewrite.jenkins.UpgradeVersionProperty:
       key: jenkins.version
       minimumVersion: 2.346.3
+  - org.openrewrite.jenkins.AddPluginsBom
   - org.openrewrite.maven.RemoveRedundantDependencyVersions:
       onlyIfVersionsMatch: false
   - org.openrewrite.maven.RemoveProperty:
       propertyName: java.level # deprecated in 4.40
-
 # TODO: run build and check for you-must-override-the-yarn.version-property to know if properties must be added

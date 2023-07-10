@@ -40,13 +40,7 @@ recipeList:
   - org.openrewrite.jenkins.UpgradeVersionProperty:
       key: jenkins.version
       minimumVersion: 2.375.4
-  - org.openrewrite.maven.ChangeManagedDependencyGroupIdAndArtifactId:
-      oldGroupId: io.jenkins.tools.bom
-      oldArtifactId: bom-2.303.x
-      newGroupId: io.jenkins.tools.bom
-      newArtifactId: bom-2.361.x
-      newVersion: latest.release
-  # TODO add bom-2.375.x at latest.release if any plugins in bom and remove all other bom versions
+  - org.openrewrite.jenkins.AddPluginsBom
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.jenkins.UpgradeParentPom_4_40
