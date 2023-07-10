@@ -16,6 +16,7 @@
 package org.openrewrite.jenkins;
 
 import org.junit.jupiter.api.Test;
+import org.openrewrite.DocumentExample;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
@@ -166,6 +167,7 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
     }
 
     @Test
+    @DocumentExample
     void shouldExcludeTransitivesFromBundledLibrary() {
         rewriteRun(pomXml(
                 """
@@ -222,6 +224,7 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                                     <version>5.1</version>
                                     <exclusions>
                                         <exclusion>
+                                            <!-- brought in by io.jenkins.plugins:commons-text-api -->
                                             <groupId>org.apache.commons</groupId>
                                             <artifactId>commons-text</artifactId>
                                         </exclusion>

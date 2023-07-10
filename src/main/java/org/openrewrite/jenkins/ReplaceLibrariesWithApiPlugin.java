@@ -18,6 +18,7 @@ package org.openrewrite.jenkins;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.openrewrite.ExecutionContext;
+import org.openrewrite.Option;
 import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.maven.MavenVisitor;
@@ -42,9 +43,23 @@ import java.util.Set;
 public class ReplaceLibrariesWithApiPlugin extends Recipe {
     private static final XPathMatcher DEPENDENCIES_MATCHER = new XPathMatcher("/project/dependencies");
 
+    @Option(displayName = "API Plugin's groupId",
+            description = "The first part of a dependency coordinate 'io.jenkins.plugins:ARTIFACT_ID:VERSION'.",
+            example = "io.jenkins.plugins")
     String pluginGroupId;
+
+    @Option(displayName = "API Plugin's artifactId",
+            description = "The second part of a dependency coordinate 'GROUP_ID:jackson2-api:VERSION'.",
+            example = "jackson2-api")
     String pluginArtifactId;
+
+    @Option(displayName = "API Plugin's version",
+            description = "An exact version number.",
+            example = "1981.v17df70e84a_a_1")
     String pluginVersion;
+
+    @Option(displayName = "Replaced Libraries",
+            description = "The set of library coordinates replaced by this API Plugin.")
     Set<Library> replaces;
 
     /**
@@ -72,11 +87,6 @@ public class ReplaceLibrariesWithApiPlugin extends Recipe {
         this.pluginArtifactId = pluginArtifactId;
         this.pluginVersion = pluginVersion;
         this.replaces = replaces;
-//        for (Library replace : replaces) {
-//            String xPath = "/project/dependencies/dependency/exclusions/exclusion[./artifactId = '" + replace.artifactId + "']";
-//            // [Rewrite8 migration] Method `Recipe#doNext(..)` is removed, you might want to change the recipe to be a scanning recipe, or just simply replace to use `TreeVisitor#doAfterVisit`, please follow the migration guide here: https://to-be-written
-//            getVisitor().doAfterVisit(new AddCommentToXmlTag(xPath, " brought in by " + pluginArtifactId + " ").getVisitor());
-//        }
     }
 
     @Override
@@ -117,6 +127,7 @@ public class ReplaceLibrariesWithApiPlugin extends Recipe {
                                                     artifactId.equals(exclusion.getChildValue("artifactId").orElse(null)))) {
                                         doAfterVisit(new AddToTagVisitor<>(exclusions, Tag.build("" +
                                                 "<exclusion>\n" +
+                                                "<!-- brought in by " + pluginGroupId + ":" + pluginArtifactId + " -->\n" +
                                                 "<groupId>" + groupId + "</groupId>\n" +
                                                 "<artifactId>" + artifactId + "</artifactId>\n" +
                                                 "</exclusion>")));
@@ -125,6 +136,7 @@ public class ReplaceLibrariesWithApiPlugin extends Recipe {
                                     doAfterVisit(new AddToTagVisitor<>(tag, Tag.build("" +
                                             "<exclusions>\n" +
                                             "<exclusion>\n" +
+                                            "<!-- brought in by " + pluginGroupId + ":" + pluginArtifactId + " -->\n" +
                                             "<groupId>" + groupId + "</groupId>\n" +
                                             "<artifactId>" + artifactId + "</artifactId>\n" +
                                             "</exclusion>\n" +
