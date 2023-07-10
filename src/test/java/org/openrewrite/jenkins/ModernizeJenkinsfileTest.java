@@ -16,6 +16,7 @@
 package org.openrewrite.jenkins;
 
 import org.junit.jupiter.api.Test;
+import org.openrewrite.DocumentExample;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
@@ -63,6 +64,7 @@ class ModernizeJenkinsfileTest implements RewriteTest {
     }
 
     @Test
+    @DocumentExample
     void shouldUpdateJenkinsfile() {
         rewriteRun(pomXml(
                         """
