@@ -40,23 +40,23 @@ import java.util.Optional;
 @EqualsAndHashCode(callSuper = true)
 public class UpgradeVersionProperty extends Recipe {
     @Option(displayName = "Key",
-            description = "The name of the property key whose value is to be changed.",
+            description = "The name of the property key to change.",
             example = "jenkins.version")
     String key;
 
     @Option(displayName = "Minimum Version",
-            description = "Value to apply to the matching property if currently < this.",
+            description = "Value to apply to the matching property if < this.",
             example = "2.375.1")
     String minimumVersion;
 
     @Override
     public String getDisplayName() {
-        return "Upgrade given property to version if necessary";
+        return "Upgrade property's value to version";
     }
 
     @Override
     public String getDescription() {
-        return "If the current value is a version < given version, upgrade it.";
+        return "If the current value is < given version, upgrade it.";
     }
 
     @Override
