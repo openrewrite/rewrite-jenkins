@@ -25,7 +25,6 @@ import org.openrewrite.marker.SearchResult;
 import org.openrewrite.maven.AddManagedDependency;
 import org.openrewrite.maven.MavenIsoVisitor;
 import org.openrewrite.maven.MavenVisitor;
-import org.openrewrite.maven.RemoveManagedDependency;
 import org.openrewrite.maven.RemoveRedundantDependencyVersions;
 import org.openrewrite.maven.tree.ResolvedDependency;
 import org.openrewrite.xml.RemoveContentVisitor;
@@ -120,13 +119,6 @@ public class AddPluginsBom extends ScanningRecipe<AddPluginsBom.Scanned> {
                             artifact.getGroupId(),
                             artifact.getArtifactId(),
                             false,
-                            null
-                    ).getVisitor());
-                }
-                for (Artifact artifact : acc.bomsToRemove()) {
-                    doAfterVisit(new RemoveManagedDependency(
-                            artifact.getGroupId(),
-                            artifact.getArtifactId(),
                             null
                     ).getVisitor());
                 }
