@@ -22,7 +22,7 @@ import org.openrewrite.maven.tree.MavenResolutionResult;
 /**
  * Utility class
  */
-public class Jenkins {
+class Jenkins {
     /**
      * Determines if this is a Jenkins Plugin Pom by checking for a managed version
      * of org.jenkins-ci.main:jenkins-core.
