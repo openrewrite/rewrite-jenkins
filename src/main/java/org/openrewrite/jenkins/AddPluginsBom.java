@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
 @EqualsAndHashCode(callSuper = true)
 public class AddPluginsBom extends ScanningRecipe<AddPluginsBom.Scanned> {
     private static final BomLookup LOOKUP = new BomLookup();
-    public static final String PLUGINS_BOM_GROUP_ID = "io.jenkins.tools.bom";
+    private static final String PLUGINS_BOM_GROUP_ID = "io.jenkins.tools.bom";
 
     @Override
     public String getDisplayName() {
