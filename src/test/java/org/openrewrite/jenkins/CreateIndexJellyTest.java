@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
+import org.openrewrite.test.SourceSpec;
 
 import static org.openrewrite.java.Assertions.mavenProject;
 import static org.openrewrite.java.Assertions.srcMainResources;
@@ -26,7 +27,6 @@ import static org.openrewrite.maven.Assertions.pomXml;
 import static org.openrewrite.test.SourceSpecs.other;
 import static org.openrewrite.test.SourceSpecs.text;
 
-@Disabled // TODO port to rewrite 8.x
 class CreateIndexJellyTest implements RewriteTest {
 
     @Override
@@ -40,38 +40,98 @@ class CreateIndexJellyTest implements RewriteTest {
                 spec.path("src/main/resources/index.jelly")));
     }
 
+    /*
+    The recipe added a source file "src/main/resources/index.jelly" that was not expected.
+     */
     @Test
+    @Disabled
     void shouldCreateIndexJelly() {
-        rewriteRun(mavenProject("plugin",
-                pomXml("""
-                        <project>
-                            <parent>
-                                <groupId>org.jenkins-ci.plugins</groupId>
-                                <artifactId>plugin</artifactId>
-                                <version>4.40</version>
-                            </parent>
-                            <artifactId>my-plugin</artifactId>
-                            <description>This is my plugin's description</description>
-                            <version>0.1</version>
-                            <repositories>
-                                <repository>
-                                    <id>repo.jenkins-ci.org</id>
-                                    <url>https://repo.jenkins-ci.org/public/</url>
-                                </repository>
-                            </repositories>
-                        </project>
-                        """.stripIndent()),
-                srcMainResources(
-                        text(null, """
+        rewriteRun(
+                pomXml(
+                        """
+                                <project>
+                                    <parent>
+                                        <groupId>org.jenkins-ci.plugins</groupId>
+                                        <artifactId>plugin</artifactId>
+                                        <version>4.40</version>
+                                    </parent>
+                                    <artifactId>my-plugin</artifactId>
+                                    <description>This is my plugin's description</description>
+                                    <version>0.1</version>
+                                    <repositories>
+                                        <repository>
+                                            <id>repo.jenkins-ci.org</id>
+                                            <url>https://repo.jenkins-ci.org/public/</url>
+                                        </repository>
+                                    </repositories>
+                                </project>
+                                """.stripIndent()
+                ),
+                text(
+                        null,
+                        """
                                 <?jelly escape-by-default='true'?>
                                 <div>
                                 This is my plugin's description
                                 </div>
-                                """.stripIndent(), spec -> spec.path("index.jelly"))
-                )));
+                                """.stripIndent(),
+                        spec -> spec.path("src/main/resources/index.jelly")
+                )
+        );
+    }
+
+    /*
+    org.opentest4j.AssertionFailedError: [Unexpected result in "src/main/resources/index.jelly"] 
+    expected: 
+      "<?jelly escape-by-default='true'?>
+      <div>
+      This is mismatched
+      </div>"
+     but was: 
+      "<?jelly escape-by-default='true'?>
+      <div>
+      This is my plugin's description
+      </div>"
+     */
+    @Test
+    @Disabled
+    void shouldCreateIndexJellyExample() {
+        rewriteRun(
+                pomXml(
+                        """
+                                <project>
+                                    <parent>
+                                        <groupId>org.jenkins-ci.plugins</groupId>
+                                        <artifactId>plugin</artifactId>
+                                        <version>4.40</version>
+                                    </parent>
+                                    <artifactId>my-plugin</artifactId>
+                                    <description>This is my plugin's description</description>
+                                    <version>0.1</version>
+                                    <repositories>
+                                        <repository>
+                                            <id>repo.jenkins-ci.org</id>
+                                            <url>https://repo.jenkins-ci.org/public/</url>
+                                        </repository>
+                                    </repositories>
+                                </project>
+                                """.stripIndent()
+                ),
+                text(
+                        null,
+                        """
+                                <?jelly escape-by-default='true'?>
+                                <div>
+                                This is mismatched
+                                </div>
+                                """.stripIndent(),
+                        spec -> spec.path("src/main/resources/index.jelly")
+                )
+        );
     }
 
     @Test
+    @Disabled
     void shouldCreateIndexJellyEmptyDescription() {
         rewriteRun(mavenProject("plugin",
                 pomXml("""
@@ -103,6 +163,7 @@ class CreateIndexJellyTest implements RewriteTest {
     }
 
     @Test
+    @Disabled
     void shouldCreateIndexJellyNoDescription() {
         rewriteRun(mavenProject("plugin",
                 pomXml("""

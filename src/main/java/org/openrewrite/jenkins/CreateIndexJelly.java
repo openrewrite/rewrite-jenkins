@@ -18,17 +18,22 @@ package org.openrewrite.jenkins;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Preconditions;
 import org.openrewrite.ScanningRecipe;
-import org.openrewrite.SourceFile;
-import org.openrewrite.Tree;
 import org.openrewrite.TreeVisitor;
-import org.openrewrite.internal.lang.Nullable;
-import org.openrewrite.maven.tree.MavenResolutionResult;
+import org.openrewrite.marker.SearchResult;
+import org.openrewrite.maven.MavenIsoVisitor;
 import org.openrewrite.text.CreateTextFile;
-import org.openrewrite.xml.search.FindTags;
+import org.openrewrite.text.PlainText;
+import org.openrewrite.text.PlainTextParser;
+import org.openrewrite.text.PlainTextVisitor;
 import org.openrewrite.xml.tree.Xml;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Objects;
+import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.stream.Collectors;
+
+import static java.util.Collections.emptyList;
 
 /**
  * Creates the src/main/resources/index.jelly with the project's description
@@ -48,46 +53,60 @@ public class CreateIndexJelly extends ScanningRecipe<CreateIndexJelly.Scanned> {
     }
 
     @Override
-    public TreeVisitor<?, ExecutionContext> getVisitor(Scanned acc) {
-        return Preconditions.check(acc.isJenkinsPlugin, new CreateTextFile(
-                acc.description,
-                acc.indexJellyPath.toString(),
-                true
-        ).getVisitor());
-    }
-
-    @Override
     public Scanned getInitialValue(ExecutionContext ctx) {
         return new Scanned();
     }
 
     @Override
+    public Collection<PlainText> generate(Scanned acc, ExecutionContext ctx) {
+        if (acc.needed()) {
+            return new PlainTextParser().parse(acc.contents())
+                    .map(brandNewFile -> (PlainText) brandNewFile.withSourcePath(acc.indexJellyPath))
+                    .collect(Collectors.toList());
+        }
+        return emptyList();
+    }
+
+    @Override
     public TreeVisitor<?, ExecutionContext> getScanner(Scanned acc) {
-        return Preconditions.check(!acc.isJenkinsPlugin, new TreeVisitor<Tree, ExecutionContext>() {
+        return new MavenIsoVisitor<ExecutionContext>() {
             @Override
-            public @Nullable Tree visit(@Nullable Tree tree, ExecutionContext executionContext) {
-                SourceFile sourceFile = (SourceFile) Objects.requireNonNull(tree);
-                if (!acc.isJenkinsPlugin) {
-                    if (Jenkins.isJenkinsPluginPom(sourceFile) != null) {
-                        Xml.Document pom = (Xml.Document) sourceFile;
-                        acc.description = FindTags.find(pom, "/project/description").stream()
-                                .findAny()
-                                .flatMap(Xml.Tag::getValue)
-                                .orElse(pom.getMarkers().findFirst(MavenResolutionResult.class)
-                                        .map(maven -> maven.getPom().getArtifactId())
-                                        .orElseThrow(() -> new IllegalStateException("Expected to find an artifact id")));
-                        acc.indexJellyPath = sourceFile.getSourcePath().resolve("../src/main/resources/index.jelly").normalize();
-                        acc.isJenkinsPlugin = true;
-                    }
-                }
-                return sourceFile;
+            public Xml.Document visitDocument(Xml.Document document, ExecutionContext executionContext) {
+                Xml.Document d = super.visitDocument(document, executionContext);
+                acc.isJenkinsPlugin = Jenkins.isJenkinsPluginPom(d) != null;
+                acc.indexJellyPath = d.getSourcePath().resolve("../src/main/resources/index.jelly").normalize();
+                return d;
             }
-        });
+
+            @Override
+            public Xml.Tag visitTag(Xml.Tag tag, ExecutionContext executionContext) {
+                Xml.Tag t = super.visitTag(tag, executionContext);
+                if ("description".equals(t.getName())) {
+                    acc.description = t.getValue().orElse("");
+                } else if ("artifactId".equals(t.getName()) && !isManagedDependencyTag() && !isDependencyTag()) {
+                    acc.artifactId = t.getValue().orElseThrow(() -> new IllegalStateException("Expected to find an artifact id"));
+                }
+                return t;
+            }
+        };
     }
 
     static class Scanned {
         boolean isJenkinsPlugin;
-        String description;
-        Path indexJellyPath;
+        String description = "";
+        String artifactId;
+        Path indexJellyPath = Paths.get("src/main/resources/index.jelly");
+
+        boolean needed() {
+            return isJenkinsPlugin && Files.notExists(indexJellyPath);
+        }
+        
+        String contents() {
+            String desc = description.isEmpty() ? artifactId : description;
+            return "<?jelly escape-by-default='true'?>\n" +
+                    "<div>\n" +
+                    desc + "\n" +
+                    "</div>\n";
+        }
     }
 }
