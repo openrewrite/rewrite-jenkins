@@ -15,11 +15,10 @@
  */
 package org.openrewrite.jenkins;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.openrewrite.DocumentExample;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
-import org.openrewrite.test.SourceSpec;
 
 import static org.openrewrite.java.Assertions.mavenProject;
 import static org.openrewrite.java.Assertions.srcMainResources;
@@ -40,12 +39,9 @@ class CreateIndexJellyTest implements RewriteTest {
                 spec.path("src/main/resources/index.jelly")));
     }
 
-    /*
-    The recipe added a source file "src/main/resources/index.jelly" that was not expected.
-     */
     @Test
-    @Disabled
-    void shouldCreateIndexJelly() {
+    @DocumentExample
+    void shouldCreateIndexJellyFromPomDescription() {
         rewriteRun(
                 pomXml(
                         """
@@ -75,27 +71,13 @@ class CreateIndexJellyTest implements RewriteTest {
                                 This is my plugin's description
                                 </div>
                                 """.stripIndent(),
-                        spec -> spec.path("src/main/resources/index.jelly")
+                        s -> s.path("src/main/resources/index.jelly")
                 )
         );
     }
 
-    /*
-    org.opentest4j.AssertionFailedError: [Unexpected result in "src/main/resources/index.jelly"] 
-    expected: 
-      "<?jelly escape-by-default='true'?>
-      <div>
-      This is mismatched
-      </div>"
-     but was: 
-      "<?jelly escape-by-default='true'?>
-      <div>
-      This is my plugin's description
-      </div>"
-     */
     @Test
-    @Disabled
-    void shouldCreateIndexJellyExample() {
+    void shouldCreateIndexJellyEmptyDescription() {
         rewriteRun(
                 pomXml(
                         """
@@ -106,7 +88,7 @@ class CreateIndexJellyTest implements RewriteTest {
                                         <version>4.40</version>
                                     </parent>
                                     <artifactId>my-plugin</artifactId>
-                                    <description>This is my plugin's description</description>
+                                    <description/>
                                     <version>0.1</version>
                                     <repositories>
                                         <repository>
@@ -122,74 +104,133 @@ class CreateIndexJellyTest implements RewriteTest {
                         """
                                 <?jelly escape-by-default='true'?>
                                 <div>
-                                This is mismatched
+                                my-plugin
                                 </div>
                                 """.stripIndent(),
-                        spec -> spec.path("src/main/resources/index.jelly")
+                        s -> s.path("src/main/resources/index.jelly")
                 )
         );
     }
 
     @Test
-    @Disabled
-    void shouldCreateIndexJellyEmptyDescription() {
-        rewriteRun(mavenProject("plugin",
-                pomXml("""
-                        <project>
-                            <parent>
-                                <groupId>org.jenkins-ci.plugins</groupId>
-                                <artifactId>plugin</artifactId>
-                                <version>4.40</version>
-                            </parent>
-                            <artifactId>my-plugin</artifactId>
-                            <description/>
-                            <version>0.1</version>
-                            <repositories>
-                                <repository>
-                                    <id>repo.jenkins-ci.org</id>
-                                    <url>https://repo.jenkins-ci.org/public/</url>
-                                </repository>
-                            </repositories>
-                        </project>
-                        """.stripIndent()),
-                srcMainResources(
-                        text(null, """
+    void shouldCreateIndexJellyNoDescription() {
+        rewriteRun(
+                pomXml(
+                        """
+                                <project>
+                                    <parent>
+                                        <groupId>org.jenkins-ci.plugins</groupId>
+                                        <artifactId>plugin</artifactId>
+                                        <version>4.40</version>
+                                    </parent>
+                                    <artifactId>my-plugin</artifactId>
+                                    <version>0.1</version>
+                                    <repositories>
+                                        <repository>
+                                            <id>repo.jenkins-ci.org</id>
+                                            <url>https://repo.jenkins-ci.org/public/</url>
+                                        </repository>
+                                    </repositories>
+                                </project>
+                                """.stripIndent()
+                ),
+                text(
+                        null,
+                        """
                                 <?jelly escape-by-default='true'?>
                                 <div>
                                 my-plugin
                                 </div>
-                                """.stripIndent(), spec -> spec.path("index.jelly"))
-                )));
+                                """.stripIndent(),
+                        s -> s.path("src/main/resources/index.jelly")
+                )
+        );
     }
 
     @Test
-    @Disabled
-    void shouldCreateIndexJellyNoDescription() {
-        rewriteRun(mavenProject("plugin",
-                pomXml("""
-                        <project>
-                            <parent>
-                                <groupId>org.jenkins-ci.plugins</groupId>
-                                <artifactId>plugin</artifactId>
-                                <version>4.40</version>
-                            </parent>
-                            <artifactId>my-plugin</artifactId>
-                            <version>0.1</version>
-                            <repositories>
-                                <repository>
-                                    <id>repo.jenkins-ci.org</id>
-                                    <url>https://repo.jenkins-ci.org/public/</url>
-                                </repository>
-                            </repositories>
-                        </project>
-                        """.stripIndent()),
-                srcMainResources(
-                        text(null, """
-                                <?jelly escape-by-default='true'?>
-                                <div>
-                                my-plugin
-                                </div>
-                                """.stripIndent(), spec -> spec.path("index.jelly"))
-                )));
+    void shouldCreateMultipleNestedIndexJellies() {
+        rewriteRun(
+                mavenProject("my-root",
+                        pomXml("""
+                                <project>
+                                    <groupId>org.example</groupId>
+                                    <artifactId>my-root</artifactId>
+                                    <version>0.1</version>
+                                    <packaging>pom</packaging>
+                                    <modules>
+                                        <module>plugin</module>
+                                        <module>different-plugin</module>
+                                        <module>non-plugin</module>
+                                    </modules>
+                                </project>
+                                """.stripIndent()),
+                        mavenProject("plugin",
+                                pomXml("""
+                                        <project>
+                                            <parent>
+                                                <groupId>org.jenkins-ci.plugins</groupId>
+                                                <artifactId>plugin</artifactId>
+                                                <version>4.40</version>
+                                            </parent>
+                                            <artifactId>my-plugin</artifactId>
+                                            <version>0.1</version>
+                                            <description>This is my plugin</description>
+                                            <repositories>
+                                                <repository>
+                                                    <id>repo.jenkins-ci.org</id>
+                                                    <url>https://repo.jenkins-ci.org/public/</url>
+                                                </repository>
+                                            </repositories>
+                                        </project>
+                                        """.stripIndent()),
+                                srcMainResources(
+                                        text(null,
+                                                """
+                                                        <?jelly escape-by-default='true'?>
+                                                        <div>
+                                                        This is my plugin
+                                                        </div>
+                                                        """.stripIndent(),
+                                                s -> s.path("index.jelly"))
+                                )),
+                        mavenProject("different-plugin",
+                                pomXml("""
+                                        <project>
+                                            <parent>
+                                                <groupId>org.jenkins-ci.plugins</groupId>
+                                                <artifactId>plugin</artifactId>
+                                                <version>4.40</version>
+                                            </parent>
+                                            <artifactId>different-plugin</artifactId>
+                                            <version>0.1</version>
+                                            <description>This is my second, different plugin</description>
+                                            <repositories>
+                                                <repository>
+                                                    <id>repo.jenkins-ci.org</id>
+                                                    <url>https://repo.jenkins-ci.org/public/</url>
+                                                </repository>
+                                            </repositories>
+                                        </project>
+                                        """.stripIndent()),
+                                srcMainResources(
+                                        text(null,
+                                                """
+                                                        <?jelly escape-by-default='true'?>
+                                                        <div>
+                                                        This is my second, different plugin
+                                                        </div>
+                                                        """.stripIndent(),
+                                                s -> s.path("index.jelly"))
+                                )),
+                        mavenProject("non-plugin",
+                                pomXml("""
+                                        <project>
+                                            <groupId>org.example</groupId>
+                                            <artifactId>non-plugin</artifactId>
+                                            <version>0.1</version>
+                                            <description>This is my non-plugin</description>
+                                        </project>
+                                        """.stripIndent())))
+        );
     }
 }
