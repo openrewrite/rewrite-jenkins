@@ -87,9 +87,9 @@ class AddPluginsBomTest implements RewriteTest {
                             </repositories>
                             <dependencies>
                                 <dependency>
-                                    <groupId>org.jenkins-ci.plugins</groupId>
-                                    <artifactId>artifactory</artifactId>
-                                    <version>3.18.4</version>
+                                    <groupId>com.lmax</groupId>
+                                    <artifactId>disruptor</artifactId>
+                                    <version>3.4.4</version>
                                 </dependency>
                             </dependencies>
                         </project>
