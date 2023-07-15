@@ -40,6 +40,7 @@ class AddPluginsBomTest implements RewriteTest {
 
     @Test
     void shouldNotAddBomIfNoDependencies() {
+        // language=xml
         rewriteRun(pomXml(
                 """
                         <project>
@@ -65,6 +66,7 @@ class AddPluginsBomTest implements RewriteTest {
 
     @Test
     void shouldNotAddBomIfNoManagedDependencies() {
+        // language=xml
         rewriteRun(pomXml(
                 """
                         <project>
@@ -98,6 +100,7 @@ class AddPluginsBomTest implements RewriteTest {
     @Test
     @DocumentExample
     void shouldAddBomIfManagedDependencies() {
+        // language=xml
         rewriteRun(pomXml(
                 """
                         <project>
@@ -166,6 +169,7 @@ class AddPluginsBomTest implements RewriteTest {
 
     @Test
     void shouldLeaveBomVersionIfAlreadyPresent() {
+        // language=xml
         rewriteRun(pomXml(
                 """
                         <project>
@@ -208,6 +212,7 @@ class AddPluginsBomTest implements RewriteTest {
 
     @Test
     void shouldFixOutdatedPluginsBom() {
+        // language=xml
         rewriteRun(pomXml(
                 """
                         <project>
@@ -292,7 +297,89 @@ class AddPluginsBomTest implements RewriteTest {
     }
 
     @Test
+    void shouldFixOutdatedPluginsBomEvenIfUnused() {
+        // language=xml
+        rewriteRun(pomXml(
+                """
+                        <project>
+                            <parent>
+                                <groupId>org.jenkins-ci.plugins</groupId>
+                                <artifactId>plugin</artifactId>
+                                <version>4.70</version>
+                                <relativePath/>
+                            </parent>
+                            <properties>
+                                <jenkins.version>2.361.4</jenkins.version>
+                            </properties>
+                            <dependencyManagement>
+                                <dependencies>
+                                    <dependency>
+                                        <groupId>io.jenkins.tools.bom</groupId>
+                                        <artifactId>bom-2.346.x</artifactId>
+                                        <version>1706.vc166d5f429f8</version>
+                                        <type>pom</type>
+                                        <scope>import</scope>
+                                    </dependency>
+                                </dependencies>
+                            </dependencyManagement>
+                            <repositories>
+                                <repository>
+                                    <id>repo.jenkins-ci.org</id>
+                                    <url>https://repo.jenkins-ci.org/public/</url>
+                                </repository>
+                            </repositories>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>com.lmax</groupId>
+                                    <artifactId>disruptor</artifactId>
+                                    <version>3.4.4</version>
+                                </dependency>
+                            </dependencies>
+                        </project>
+                        """.stripIndent(),
+                """
+                        <project>
+                            <parent>
+                                <groupId>org.jenkins-ci.plugins</groupId>
+                                <artifactId>plugin</artifactId>
+                                <version>4.70</version>
+                                <relativePath/>
+                            </parent>
+                            <properties>
+                                <jenkins.version>2.361.4</jenkins.version>
+                            </properties>
+                            <dependencyManagement>
+                                <dependencies>
+                                    <dependency>
+                                        <groupId>io.jenkins.tools.bom</groupId>
+                                        <artifactId>bom-2.361.x</artifactId>
+                                        <version>2102.v854b_fec19c92</version>
+                                        <type>pom</type>
+                                        <scope>import</scope>
+                                    </dependency>
+                                </dependencies>
+                            </dependencyManagement>
+                            <repositories>
+                                <repository>
+                                    <id>repo.jenkins-ci.org</id>
+                                    <url>https://repo.jenkins-ci.org/public/</url>
+                                </repository>
+                            </repositories>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>com.lmax</groupId>
+                                    <artifactId>disruptor</artifactId>
+                                    <version>3.4.4</version>
+                                </dependency>
+                            </dependencies>
+                        </project>
+                        """.stripIndent()
+        ));
+    }
+
+    @Test
     void shouldLeaveOtherBomsAlone() {
+        // language=xml
         rewriteRun(pomXml(
                 """
                         <project>
@@ -334,6 +421,125 @@ class AddPluginsBomTest implements RewriteTest {
         ));
     }
 
+    @Test
+    void shouldHandleCommentsInManagedDependency() {
+        // language=xml
+        rewriteRun(pomXml(
+                """
+                        <project>
+                          <parent>
+                            <groupId>org.jenkins-ci.plugins</groupId>
+                            <artifactId>plugin</artifactId>
+                            <version>4.51</version>
+                            <relativePath/>
+                          </parent>
+
+                          <artifactId>golang</artifactId>
+                          <version>1.5-SNAPSHOT</version>
+                          <packaging>hpi</packaging>
+
+                          <properties>
+                            <jenkins.version>2.346.3</jenkins.version>
+                          </properties>
+
+                          <dependencies>
+                            <!-- Install Pipeline when running locally, for testing -->
+                            <dependency>
+                              <groupId>org.jenkins-ci.plugins.workflow</groupId>
+                              <artifactId>workflow-api</artifactId>
+                              <version>2.6</version>
+                              <scope>test</scope>
+                            </dependency>
+                          </dependencies>
+
+                          <dependencyManagement>
+                            <!-- Simplifies inclusion of plugins: https://github.com/jenkinsci/bom -->
+                            <dependencies>
+                              <dependency>
+                                <groupId>io.jenkins.tools.bom</groupId>
+                                <artifactId>bom-2.190.x</artifactId>
+                                <version>16</version>
+                                <type>pom</type>
+                                <scope>import</scope>
+                              </dependency>
+                            </dependencies>
+                          </dependencyManagement>
+
+                          <!-- get every artifact through repo.jenkins-ci.org, which proxies all the artifacts that we need -->
+                          <repositories>
+                            <repository>
+                              <id>repo.jenkins-ci.org</id>
+                              <url>https://repo.jenkins-ci.org/public/</url>
+                            </repository>
+                          </repositories>
+
+                          <pluginRepositories>
+                            <pluginRepository>
+                              <id>repo.jenkins-ci.org</id>
+                              <url>https://repo.jenkins-ci.org/public/</url>
+                            </pluginRepository>
+                          </pluginRepositories>
+                        </project>
+                        """.stripIndent(),
+                """
+                        <project>
+                          <parent>
+                            <groupId>org.jenkins-ci.plugins</groupId>
+                            <artifactId>plugin</artifactId>
+                            <version>4.51</version>
+                            <relativePath/>
+                          </parent>
+
+                          <artifactId>golang</artifactId>
+                          <version>1.5-SNAPSHOT</version>
+                          <packaging>hpi</packaging>
+
+                          <properties>
+                            <jenkins.version>2.346.3</jenkins.version>
+                          </properties>
+
+                          <dependencies>
+                            <!-- Install Pipeline when running locally, for testing -->
+                            <dependency>
+                              <groupId>org.jenkins-ci.plugins.workflow</groupId>
+                              <artifactId>workflow-api</artifactId>
+                              <scope>test</scope>
+                            </dependency>
+                          </dependencies>
+
+                          <dependencyManagement>
+                            <!-- Simplifies inclusion of plugins: https://github.com/jenkinsci/bom -->
+                            <dependencies>
+                              <dependency>
+                                <groupId>io.jenkins.tools.bom</groupId>
+                                <artifactId>bom-2.346.x</artifactId>
+                                <version>1763.v092b_8980a_f5e</version>
+                                <type>pom</type>
+                                <scope>import</scope>
+                              </dependency>
+                            </dependencies>
+                          </dependencyManagement>
+
+                          <!-- get every artifact through repo.jenkins-ci.org, which proxies all the artifacts that we need -->
+                          <repositories>
+                            <repository>
+                              <id>repo.jenkins-ci.org</id>
+                              <url>https://repo.jenkins-ci.org/public/</url>
+                            </repository>
+                          </repositories>
+
+                          <pluginRepositories>
+                            <pluginRepository>
+                              <id>repo.jenkins-ci.org</id>
+                              <url>https://repo.jenkins-ci.org/public/</url>
+                            </pluginRepository>
+                          </pluginRepositories>
+                        </project>
+                        """.stripIndent()
+
+        ));
+    }
+
     /**
      * This is biased toward recency.
      * If we don't recognize the version as a LTS we assume it is very recent and wants the weekly bom.
@@ -354,6 +560,15 @@ class AddPluginsBomTest implements RewriteTest {
         AddPluginsBom.Scanned scanned = new AddPluginsBom.Scanned();
         scanned.jenkinsVersion = "2.263.4";
         scanned.foundPlugins.add(new AddPluginsBom.Artifact("org.jenkins-ci.jpi", "ant"));
+
+        assertThat(scanned.needsPluginsBom()).isTrue();
+    }
+
+    @Test
+    void shouldNeedPluginsBomIfOutdatedAndNoFoundPlugins() {
+        AddPluginsBom.Scanned scanned = new AddPluginsBom.Scanned();
+        scanned.jenkinsVersion = "2.263.4";
+        scanned.foundPluginsBoms.add(new AddPluginsBom.Artifact("io.jenkins.tools.bom", "bom-2.319.x"));
 
         assertThat(scanned.needsPluginsBom()).isTrue();
     }
@@ -394,7 +609,22 @@ class AddPluginsBomTest implements RewriteTest {
         AddPluginsBom.Scanned scanned = new AddPluginsBom.Scanned();
         scanned.foundPlugins.add(new AddPluginsBom.Artifact("org.jenkins-ci.jpi", "ant"));
 
+        assertThat(scanned.bomToChange()).isNull();
         assertThat(scanned.needsPluginsBom()).isFalse();
+    }
+
+    @Test
+    void shouldChangeABomToMinimizeCommentAndTagOrderingMoves() {
+        AddPluginsBom.Scanned scanned = new AddPluginsBom.Scanned();
+        AddPluginsBom.Artifact two319 = new AddPluginsBom.Artifact("io.jenkins.tools.bom", "bom-2.319.x");
+        AddPluginsBom.Artifact two332 = new AddPluginsBom.Artifact("io.jenkins.tools.bom", "bom-2.332.x");
+        scanned.foundPluginsBoms.add(two319);
+        scanned.foundPluginsBoms.add(two332);
+
+        Set<AddPluginsBom.Artifact> actual = scanned.bomsToRemove();
+
+        assertThat(scanned.bomToChange()).isEqualTo(two319);
+        assertThat(actual).containsExactly(two332);
     }
 
     @Test
@@ -407,7 +637,7 @@ class AddPluginsBomTest implements RewriteTest {
         scanned.foundPluginsBoms.add(two332);
 
         Set<AddPluginsBom.Artifact> actual = scanned.bomsToRemove();
-        
+
         assertThat(actual).containsExactlyInAnyOrder(two319, two332);
     }
 

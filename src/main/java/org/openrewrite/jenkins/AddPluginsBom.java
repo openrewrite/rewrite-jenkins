@@ -21,8 +21,10 @@ import org.openrewrite.ExecutionContext;
 import org.openrewrite.Preconditions;
 import org.openrewrite.ScanningRecipe;
 import org.openrewrite.TreeVisitor;
+import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.SearchResult;
 import org.openrewrite.maven.AddManagedDependency;
+import org.openrewrite.maven.ChangeManagedDependencyGroupIdAndArtifactId;
 import org.openrewrite.maven.MavenIsoVisitor;
 import org.openrewrite.maven.MavenVisitor;
 import org.openrewrite.maven.RemoveRedundantDependencyVersions;
@@ -31,6 +33,7 @@ import org.openrewrite.xml.RemoveContentVisitor;
 import org.openrewrite.xml.tree.Xml;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -50,7 +53,7 @@ public class AddPluginsBom extends ScanningRecipe<AddPluginsBom.Scanned> {
     @Override
     public String getDescription() {
         return "Adds [Jenkins plugins BOM](https://www.jenkins.io/doc/developer/plugin-development/dependency-management/#jenkins-plugin-bom) " +
-                "at the latest release if the project depends on any managed versions. " +
+                "at the latest release if the project depends on any managed versions or an outdated BOM is present. " +
                 "BOMs are expected to be synchronized to Jenkins LTS versions, so this will also remove any mismatched BOMs (Such as using Jenkins 2.387.3, but importing bom-2.319.x). " +
                 "If the expected BOM is already added, the version will not be upgraded.";
     }
@@ -102,18 +105,29 @@ public class AddPluginsBom extends ScanningRecipe<AddPluginsBom.Scanned> {
             @Override
             public Xml visitDocument(Xml.Document document, ExecutionContext executionContext) {
                 Xml maven = super.visitDocument(document, executionContext);
-                doAfterVisit(new AddManagedDependency(
-                        "io.jenkins.tools.bom",
-                        acc.bomName(),
-                        "latest.release",
-                        "import",
-                        "pom",
-                        null,
-                        null,
-                        true,
-                        null,
-                        null
-                ).getVisitor());
+                Artifact bomToChange = acc.bomToChange();
+                if (acc.foundPluginsBoms.isEmpty()) {
+                    doAfterVisit(new AddManagedDependency(
+                            "io.jenkins.tools.bom",
+                            acc.bomName(),
+                            "latest.release",
+                            "import",
+                            "pom",
+                            null,
+                            null,
+                            true,
+                            null,
+                            null
+                    ).getVisitor());
+                } else if (bomToChange != null) {
+                    doAfterVisit(new ChangeManagedDependencyGroupIdAndArtifactId(
+                            bomToChange.groupId,
+                            bomToChange.artifactId,
+                            bomToChange.groupId,
+                            acc.bomName(),
+                            "latest.release"
+                    ).getVisitor());
+                }
                 for (Artifact artifact : acc.foundPlugins) {
                     doAfterVisit(new RemoveRedundantDependencyVersions(
                             artifact.getGroupId(),
@@ -146,27 +160,26 @@ public class AddPluginsBom extends ScanningRecipe<AddPluginsBom.Scanned> {
             }
         });
     }
-    
+
     @Value
     static class Artifact {
         String groupId, artifactId;
     }
-    
+
     static class Scanned {
         private static final Predicate<String> LTS_PATTERN = Pattern.compile("^\\d\\.\\d+\\.\\d$").asPredicate();
         final Set<Artifact> foundPlugins = new HashSet<>();
-        final Set<Artifact> foundPluginsBoms = new HashSet<>();
+        final Set<Artifact> foundPluginsBoms = new LinkedHashSet<>();
         String jenkinsVersion = "";
-        
+
         boolean needsPluginsBom() {
             boolean hasPluginsThatBomIncludes = !foundPlugins.isEmpty();
             boolean hasJenkinsVersion = !jenkinsVersion.isEmpty();
-            Set<Artifact> expected = new HashSet<>();
-            expected.add(new Artifact("io.jenkins.tools.bom", bomName()));
-            boolean hasOnlyExpectedPluginsBom = foundPluginsBoms.equals(expected);
-            return hasPluginsThatBomIncludes && hasJenkinsVersion && !hasOnlyExpectedPluginsBom;
+            boolean hasOnlyExpectedPluginsBom = foundPluginsBoms.equals(expectedBoms());
+            boolean hasWrongPluginsBom = !foundPluginsBoms.isEmpty() && !hasOnlyExpectedPluginsBom;
+            return hasWrongPluginsBom || (hasPluginsThatBomIncludes && hasJenkinsVersion && !hasOnlyExpectedPluginsBom);
         }
-        
+
         String bomName() {
             boolean isLts = LTS_PATTERN.test(jenkinsVersion);
             if (!isLts) {
@@ -176,15 +189,41 @@ public class AddPluginsBom extends ScanningRecipe<AddPluginsBom.Scanned> {
             String prefix = jenkinsVersion.substring(0, lastIndex);
             return "bom-" + prefix + ".x";
         }
-        
+
+        @Nullable
+        Artifact bomToChange() {
+            if (foundPluginsBoms.isEmpty() || expectedBoms().equals(foundPluginsBoms)) {
+                return null;
+            }
+            Artifact expected = new Artifact(PLUGINS_BOM_GROUP_ID, bomName());
+            Artifact change = null;
+            for (Artifact bom : foundPluginsBoms) {
+                if (expected.equals(bom)) {
+                    return null;
+                } else if (change == null) {
+                    change = bom;
+                }
+            }
+            return change;
+        }
+
         Set<Artifact> bomsToRemove() {
             Set<Artifact> remove = new HashSet<>();
+            Artifact change = bomToChange();
             for (Artifact bom : foundPluginsBoms) {
-                if (!Objects.equals(bomName(), bom.getArtifactId())) {
+                boolean wanted = bomName().equals(bom.getArtifactId());
+                boolean changing = Objects.equals(change, bom);
+                if (!wanted && !changing) {
                     remove.add(bom);
                 }
             }
             return remove;
+        }
+
+        Set<Artifact> expectedBoms() {
+            Set<Artifact> expected = new HashSet<>();
+            expected.add(new Artifact(PLUGINS_BOM_GROUP_ID, bomName()));
+            return expected;
         }
     }
 }
