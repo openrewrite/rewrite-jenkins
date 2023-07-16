@@ -39,7 +39,7 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
     void shouldWorkFromYamlDefinition() {
         rewriteRun(spec -> spec.recipeFromResource(
                 "/replace-libraries-with-api-plugin.yml",
-                "org.openrewrite.jenkins.CommonsLang3ToApiPlugin"
+                "org.openrewrite.jenkins.CommonsTextToApiPlugin"
         ), pomXml(
                 """
                         <project>

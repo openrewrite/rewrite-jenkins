@@ -16,7 +16,7 @@
 
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: org.openrewrite.jenkins.CommonsLang3ToApiPlugin
+name: org.openrewrite.jenkins.CommonsTextToApiPlugin
 recipeList:
   - org.openrewrite.jenkins.ReplaceLibrariesWithApiPlugin:
       pluginGroupId: io.jenkins.plugins
