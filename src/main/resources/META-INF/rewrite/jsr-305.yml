@@ -27,5 +27,3 @@ recipeList:
       oldPackageName: javax.annotation
       newPackageName: edu.umd.cs.findbugs.annotations
       recursive: false
-  - org.openrewrite.java.OrderImports:
-      removeUnused: false

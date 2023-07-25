@@ -78,7 +78,7 @@ public class JavaxAnnotationsToSpotBugsTest implements RewriteTest {
 
     @Test
     @DocumentExample
-    void shouldOrderImports() {
+    void shouldNotOrderImports() {
         rewriteRun(java(
                 """
                         import javax.annotation.CheckForNull;
@@ -97,9 +97,9 @@ public class JavaxAnnotationsToSpotBugsTest implements RewriteTest {
                         }
                         """.stripIndent(),
                 """
-                        import edu.umd.cs.findbugs.annotations.CheckForNull;
                         import edu.umd.cs.findbugs.annotations.NonNull;
                                         
+                        import edu.umd.cs.findbugs.annotations.CheckForNull;
                         import java.util.Objects;
                                         
                         public class A {
