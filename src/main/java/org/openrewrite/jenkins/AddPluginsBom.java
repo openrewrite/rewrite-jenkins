@@ -163,7 +163,8 @@ public class AddPluginsBom extends ScanningRecipe<AddPluginsBom.Scanned> {
 
     @Value
     static class Artifact {
-        String groupId, artifactId;
+        String groupId;
+        String artifactId;
     }
 
     static class Scanned {

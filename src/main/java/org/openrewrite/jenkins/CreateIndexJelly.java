@@ -101,7 +101,9 @@ public class CreateIndexJelly extends ScanningRecipe<CreateIndexJelly.Scanned> {
     
     @Value
     private static class DescribedPlugin {
-        String artifactId, indexJellyPath, pomDescription;
+        String artifactId;
+        String indexJellyPath;
+        String pomDescription;
 
         String contents() {
             String desc = pomDescription.isEmpty() ? artifactId : pomDescription;
