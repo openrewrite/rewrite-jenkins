@@ -27,6 +27,7 @@ dependencies {
 
     testImplementation("org.openrewrite:rewrite-test")
     testImplementation("org.openrewrite:rewrite-java-tck")
+    testImplementation("org.openrewrite:rewrite-groovy")
     testImplementation("org.assertj:assertj-core:latest.release")
 
     testRuntimeOnly("com.github.spotbugs:spotbugs-annotations:4.7.0")

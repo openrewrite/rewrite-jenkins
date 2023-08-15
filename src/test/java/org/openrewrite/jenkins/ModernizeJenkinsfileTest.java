@@ -15,11 +15,14 @@
  */
 package org.openrewrite.jenkins;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openrewrite.DocumentExample;
+import org.openrewrite.Recipe;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
+import static org.openrewrite.groovy.Assertions.groovy;
 import static org.openrewrite.maven.Assertions.pomXml;
 import static org.openrewrite.test.SourceSpecs.text;
 
@@ -99,5 +102,137 @@ class ModernizeJenkinsfileTest implements RewriteTest {
                                 
                                 """.stripIndent(),
                         spec -> spec.path("Jenkinsfile")));
+    }
+
+    @Test
+    @Disabled
+    void shouldAddJdk21IfAbsent() {
+        rewriteRun(spec -> spec.recipe(new AddBuildPluginConfiguration("linux", "21")),
+                groovy("""
+                                buildPlugin()
+                                """.stripIndent(), """
+                                buildPlugin(configurations:[
+                                  [ platform: 'linux', jdk: '21' ]
+                                ])
+                                """.stripIndent(),
+                        spec -> spec.path("Jenkinsfile")
+                ));
+    }
+
+    @Test
+    @Disabled
+    void shouldRemoveJdk8IfPresent() {
+        rewriteRun(spec -> spec.recipe(new RemoveBuildPluginConfiguration("linux", "8")),
+                groovy("""
+                                buildPlugin(useContainerAgent: true, configurations: [
+                                  [ platform: 'linux', jdk: '8' ],
+                                  [ platform: 'windows', jdk: '8' ],
+                                  [ platform: 'windows', jdk: '11' ],
+                                  [ platform: 'linux', jdk: '17' ],
+                                ])
+                                """.stripIndent(), """
+                                buildPlugin(useContainerAgent: true, configurations: [
+                                  [ platform: 'windows', jdk: '8' ],
+                                  [ platform: 'windows', jdk: '11' ],
+                                  [ platform: 'linux', jdk: '17' ],
+                                ])
+                                """.stripIndent(),
+                        spec -> spec.path("Jenkinsfile")
+                ));
+    }
+
+    @Test
+    @Disabled
+    void shouldRemoveJdk8FromAllPlatformsIfPresent() {
+        rewriteRun(spec -> spec.recipe(new RemoveBuildPluginConfiguration("8")),
+                groovy("""
+                                buildPlugin(useContainerAgent: true, failFast: false, configurations: [
+                                  [ platform: 'linux', jdk: '8' ],
+                                  [ platform: 'windows', jdk: '8' ],
+                                  [ platform: 'windows', jdk: '11' ],
+                                  [ platform: 'linux', jdk: '17' ],
+                                ])
+                                """.stripIndent(), """
+                                buildPlugin(useContainerAgent: true, failFast: false, configurations: [
+                                  [ platform: 'windows', jdk: '11' ],
+                                  [ platform: 'linux', jdk: '17' ],
+                                ])
+                                """.stripIndent(),
+                        spec -> spec.path("Jenkinsfile")
+                ));
+    }
+
+    @Test
+    @Disabled
+    void shouldRemoveJenkinsVersionsLessThan() {
+        rewriteRun(spec -> spec.recipe(new RemoveJenkinsVersionsLessThan("2.346.3")),
+                groovy("""
+                                buildPlugin(jenkinsVersions: [null, '2.60.1', '2.387.3'])
+                                """.stripIndent(), """
+                                buildPlugin(jenkinsVersions: [null, '2.387.3'])
+                                """.stripIndent(),
+                        spec -> spec.path("Jenkinsfile")
+                ));
+    }
+
+    @Test
+    @Disabled
+    void shouldRemoveKeyIfRemoveJenkinsVersionsLessThanLeavesOnlyNull() {
+        rewriteRun(spec -> spec.recipe(new RemoveJenkinsVersionsLessThan("2.346.3")),
+                groovy("""
+                                buildPlugin(jenkinsVersions: [null, '2.60.1'])
+                                """.stripIndent(), """
+                                buildPlugin()
+                                """.stripIndent(),
+                        spec -> spec.path("Jenkinsfile")
+                ));
+    }
+
+    private static class AddBuildPluginConfiguration extends Recipe {
+        public AddBuildPluginConfiguration(String platform, String jdk) {
+        }
+
+        @Override
+        public String getDisplayName() {
+            return null;
+        }
+
+        @Override
+        public String getDescription() {
+            return null;
+        }
+    }
+
+    private static class RemoveBuildPluginConfiguration extends Recipe {
+        public RemoveBuildPluginConfiguration(String jdk) {
+        }
+
+        public RemoveBuildPluginConfiguration(String platform, String jdk) {
+        }
+
+        @Override
+        public String getDisplayName() {
+            return null;
+        }
+
+        @Override
+        public String getDescription() {
+            return null;
+        }
+    }
+
+    private class RemoveJenkinsVersionsLessThan extends Recipe {
+        public RemoveJenkinsVersionsLessThan(String version) {
+        }
+
+        @Override
+        public String getDisplayName() {
+            return null;
+        }
+
+        @Override
+        public String getDescription() {
+            return null;
+        }
     }
 }
