@@ -39,7 +39,7 @@ recipeList:
       overrideManagedVersion: false
   - org.openrewrite.jenkins.UpgradeVersionProperty:
       key: jenkins.version
-      minimumVersion: 2.375.4
+      minimumVersion: 2.387.3
   - org.openrewrite.jenkins.AddPluginsBom
 ---
 type: specs.openrewrite.org/v1beta/recipe
