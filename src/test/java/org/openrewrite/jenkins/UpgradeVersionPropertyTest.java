@@ -22,7 +22,7 @@ import org.openrewrite.test.RewriteTest;
 
 import static org.openrewrite.maven.Assertions.pomXml;
 
-public class UpgradeVersionPropertyTest implements RewriteTest {
+class UpgradeVersionPropertyTest implements RewriteTest {
     @Override
     public void defaults(RecipeSpec spec) {
         spec.recipe(new UpgradeVersionProperty("jenkins.version", "2.364.1"));

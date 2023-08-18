@@ -25,7 +25,7 @@ import org.openrewrite.test.RewriteTest;
 import static org.openrewrite.java.Assertions.java;
 import static org.openrewrite.java.Assertions.srcMainJava;
 
-public class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
+class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
     @Language("java")
     private final String webClient2 = """
       package com.gargoylesoftware.htmlunit;
