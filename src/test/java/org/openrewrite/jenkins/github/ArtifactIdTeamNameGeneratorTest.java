@@ -25,10 +25,10 @@ class ArtifactIdTeamNameGeneratorTest {
 
     @ParameterizedTest
     @CsvSource({
-            "commons-text-api,@jenkinsci/commons-text-api-plugin-developers",
-            "stashNotifier,@jenkinsci/stashnotifier-plugin-developers",
-            "aws-java-sdk-parent,@jenkinsci/aws-java-sdk-plugin-developers",
-            "warnings-ng-parent,@jenkinsci/warnings-ng-plugin-developers",
+      "commons-text-api,@jenkinsci/commons-text-api-plugin-developers",
+      "stashNotifier,@jenkinsci/stashnotifier-plugin-developers",
+      "aws-java-sdk-parent,@jenkinsci/aws-java-sdk-plugin-developers",
+      "warnings-ng-parent,@jenkinsci/warnings-ng-plugin-developers",
     })
     void shouldGenerateExpectedTeamName(String artifactId, String expected) {
         String actual = generator.generate(new TeamNameInput(artifactId));
