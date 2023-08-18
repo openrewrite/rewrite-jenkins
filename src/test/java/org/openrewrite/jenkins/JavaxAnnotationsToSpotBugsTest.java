@@ -23,7 +23,7 @@ import org.openrewrite.test.RewriteTest;
 
 import static org.openrewrite.java.Assertions.java;
 
-public class JavaxAnnotationsToSpotBugsTest implements RewriteTest {
+class JavaxAnnotationsToSpotBugsTest implements RewriteTest {
     @Override
     public void defaults(RecipeSpec spec) {
         spec.parser(JavaParser.fromJavaVersion().classpath("jsr305", "spotbugs-annotations"));
@@ -33,46 +33,46 @@ public class JavaxAnnotationsToSpotBugsTest implements RewriteTest {
     @Test
     void shouldChangeClassName() {
         rewriteRun(java(
-                """
-                        import javax.annotation.Nonnull;
-                                    
-                        public class A {
-                            static @Nonnull String CONSTANT = "A";
-                        }
-                        """.stripIndent(),
-                """
-                        import edu.umd.cs.findbugs.annotations.NonNull;
-                                    
-                        public class A {
-                            static @NonNull String CONSTANT = "A";
-                        }
-                        """.stripIndent()
+          """
+            import javax.annotation.Nonnull;
+                        
+            public class A {
+                static @Nonnull String CONSTANT = "A";
+            }
+            """.stripIndent(),
+          """
+            import edu.umd.cs.findbugs.annotations.NonNull;
+                        
+            public class A {
+                static @NonNull String CONSTANT = "A";
+            }
+            """.stripIndent()
         ));
     }
 
     @Test
     void shouldChangePackage() {
         rewriteRun(java(
-                """
-                        import javax.annotation.CheckForNull;
+          """
+            import javax.annotation.CheckForNull;
 
-                        public class A {
-                            @CheckForNull
-                            public String key() {
-                                return null;
-                            }
-                        }
-                        """.stripIndent(),
-                """
-                        import edu.umd.cs.findbugs.annotations.CheckForNull;
-                            
-                        public class A {
-                            @CheckForNull
-                            public String key() {
-                                return null;
-                            }
-                        }
-                        """.stripIndent()
+            public class A {
+                @CheckForNull
+                public String key() {
+                    return null;
+                }
+            }
+            """.stripIndent(),
+          """
+            import edu.umd.cs.findbugs.annotations.CheckForNull;
+                
+            public class A {
+                @CheckForNull
+                public String key() {
+                    return null;
+                }
+            }
+            """.stripIndent()
         ));
     }
 
@@ -80,39 +80,39 @@ public class JavaxAnnotationsToSpotBugsTest implements RewriteTest {
     @DocumentExample
     void shouldNotOrderImports() {
         rewriteRun(java(
-                """
-                        import javax.annotation.CheckForNull;
-                        import javax.annotation.Nonnull;
-                        import java.util.Objects;
-                                        
-                        public class A {
-                            @CheckForNull
-                            public String key() {
-                                return null;
-                            }
-                                        
-                            public @Nonnull String myMethod(String in) {
-                                return Objects.equals(in, "a") ? "yes" : "no";
-                            }
-                        }
-                        """.stripIndent(),
-                """
-                        import edu.umd.cs.findbugs.annotations.NonNull;
-                                        
-                        import edu.umd.cs.findbugs.annotations.CheckForNull;
-                        import java.util.Objects;
-                                        
-                        public class A {
-                            @CheckForNull
-                            public String key() {
-                                return null;
-                            }
-                                        
-                            public @NonNull String myMethod(String in) {
-                                return Objects.equals(in, "a") ? "yes" : "no";
-                            }
-                        }
-                        """.stripIndent()
+          """
+            import javax.annotation.CheckForNull;
+            import javax.annotation.Nonnull;
+            import java.util.Objects;
+                            
+            public class A {
+                @CheckForNull
+                public String key() {
+                    return null;
+                }
+                            
+                public @Nonnull String myMethod(String in) {
+                    return Objects.equals(in, "a") ? "yes" : "no";
+                }
+            }
+            """.stripIndent(),
+          """
+            import edu.umd.cs.findbugs.annotations.NonNull;
+                            
+            import edu.umd.cs.findbugs.annotations.CheckForNull;
+            import java.util.Objects;
+                            
+            public class A {
+                @CheckForNull
+                public String key() {
+                    return null;
+                }
+                            
+                public @NonNull String myMethod(String in) {
+                    return Objects.equals(in, "a") ? "yes" : "no";
+                }
+            }
+            """.stripIndent()
         ));
     }
 }

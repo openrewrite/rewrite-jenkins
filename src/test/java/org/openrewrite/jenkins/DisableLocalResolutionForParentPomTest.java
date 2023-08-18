@@ -32,68 +32,68 @@ class DisableLocalResolutionForParentPomTest implements RewriteTest {
     @DocumentExample
     void shouldAddRelativePathIfMissing() {
         rewriteRun(pomXml(
-                """
-                        <project>
-                            <parent>
-                                <groupId>org.jenkins-ci.plugins</groupId>
-                                <artifactId>plugin</artifactId>
-                                <version>4.40</version>
-                            </parent>
-                            <properties>
-                                <jenkins.version>2.303.3</jenkins.version>
-                            </properties>
-                            <repositories>
-                                <repository>
-                                    <id>repo.jenkins-ci.org</id>
-                                    <url>https://repo.jenkins-ci.org/public/</url>
-                                </repository>
-                            </repositories>
-                        </project>
-                        """.stripIndent(),
-                """
-                        <project>
-                            <parent>
-                                <groupId>org.jenkins-ci.plugins</groupId>
-                                <artifactId>plugin</artifactId>
-                                <version>4.40</version>
-                                <relativePath/>
-                            </parent>
-                            <properties>
-                                <jenkins.version>2.303.3</jenkins.version>
-                            </properties>
-                            <repositories>
-                                <repository>
-                                    <id>repo.jenkins-ci.org</id>
-                                    <url>https://repo.jenkins-ci.org/public/</url>
-                                </repository>
-                            </repositories>
-                        </project>
-                        """.stripIndent()
+          """
+            <project>
+                <parent>
+                    <groupId>org.jenkins-ci.plugins</groupId>
+                    <artifactId>plugin</artifactId>
+                    <version>4.40</version>
+                </parent>
+                <properties>
+                    <jenkins.version>2.303.3</jenkins.version>
+                </properties>
+                <repositories>
+                    <repository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>https://repo.jenkins-ci.org/public/</url>
+                    </repository>
+                </repositories>
+            </project>
+            """.stripIndent(),
+          """
+            <project>
+                <parent>
+                    <groupId>org.jenkins-ci.plugins</groupId>
+                    <artifactId>plugin</artifactId>
+                    <version>4.40</version>
+                    <relativePath/>
+                </parent>
+                <properties>
+                    <jenkins.version>2.303.3</jenkins.version>
+                </properties>
+                <repositories>
+                    <repository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>https://repo.jenkins-ci.org/public/</url>
+                    </repository>
+                </repositories>
+            </project>
+            """.stripIndent()
         ));
     }
 
     @Test
     void shouldNoOpIfRelativePathAlreadyPresent() {
         rewriteRun(pomXml(
-                """
-                        <project>
-                            <parent>
-                                <groupId>org.jenkins-ci.plugins</groupId>
-                                <artifactId>plugin</artifactId>
-                                <version>4.40</version>
-                                <relativePath/>
-                            </parent>
-                            <properties>
-                                <jenkins.version>2.303.3</jenkins.version>
-                            </properties>
-                            <repositories>
-                                <repository>
-                                    <id>repo.jenkins-ci.org</id>
-                                    <url>https://repo.jenkins-ci.org/public/</url>
-                                </repository>
-                            </repositories>
-                        </project>
-                        """.stripIndent()
+          """
+            <project>
+                <parent>
+                    <groupId>org.jenkins-ci.plugins</groupId>
+                    <artifactId>plugin</artifactId>
+                    <version>4.40</version>
+                    <relativePath/>
+                </parent>
+                <properties>
+                    <jenkins.version>2.303.3</jenkins.version>
+                </properties>
+                <repositories>
+                    <repository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>https://repo.jenkins-ci.org/public/</url>
+                    </repository>
+                </repositories>
+            </project>
+            """.stripIndent()
         ));
     }
 }
