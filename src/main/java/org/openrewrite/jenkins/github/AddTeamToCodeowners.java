@@ -25,6 +25,7 @@ import org.openrewrite.maven.MavenIsoVisitor;
 import org.openrewrite.text.PlainText;
 import org.openrewrite.text.PlainTextParser;
 import org.openrewrite.text.PlainTextVisitor;
+import org.openrewrite.xml.XPathMatcher;
 import org.openrewrite.xml.tree.Xml;
 
 import java.nio.file.Path;
@@ -152,11 +153,12 @@ public class AddTeamToCodeowners extends ScanningRecipe<AddTeamToCodeowners.Scan
 
     private static class ArtifactIdExtractor extends MavenIsoVisitor<ExecutionContext> {
         private String artifactId = "";
+        private static final XPathMatcher PROJECT_ARTIFACTID_MATCHER = new XPathMatcher("/project/artifactId");
 
         @Override
         public Xml.Tag visitTag(Xml.Tag tag, ExecutionContext executionContext) {
             Xml.Tag t = super.visitTag(tag, executionContext);
-            if ("artifactId".equals(t.getName()) && !isManagedDependencyTag() && !isDependencyTag()) {
+            if (PROJECT_ARTIFACTID_MATCHER.matches(getCursor())) {
                 artifactId = t.getValue().orElseThrow(() -> new IllegalStateException("Expected to find an artifact id"));
             }
             return t;
