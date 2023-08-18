@@ -27,19 +27,19 @@ class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
     @Language("java")
     // language=java
     private final String hudsonUtil = """
-            package hudson;
+      package hudson;
 
-            public class Util {
-                public static String getTimeSpanString(long duration) {
-                        return "anything";
-                }
+      public class Util {
+          public static String getTimeSpanString(long duration) {
+                  return "anything";
+          }
 
-                @Deprecated
-                public static String getPastTimeString(long duration) {
-                    return getTimeSpanString(duration);
-                }
-            }
-            """.stripIndent();
+          @Deprecated
+          public static String getPastTimeString(long duration) {
+              return getTimeSpanString(duration);
+          }
+      }
+      """.stripIndent();
 
     @Override
     public void defaults(RecipeSpec spec) {
@@ -51,24 +51,24 @@ class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
     void shouldReplaceFullyQualifiedMethodCall() {
         // language=java
         rewriteRun(java(
-                """
-                        package org.example;
+          """
+            package org.example;
 
-                        class MyConsumer {
-                            String format(long timestamp) {
-                                return hudson.Util.getPastTimeString(timestamp);
-                            }
-                        }
-                        """.stripIndent(),
-                """
-                        package org.example;
+            class MyConsumer {
+                String format(long timestamp) {
+                    return hudson.Util.getPastTimeString(timestamp);
+                }
+            }
+            """.stripIndent(),
+          """
+            package org.example;
 
-                        class MyConsumer {
-                            String format(long timestamp) {
-                                return hudson.Util.getTimeSpanString(timestamp);
-                            }
-                        }
-                        """.stripIndent()
+            class MyConsumer {
+                String format(long timestamp) {
+                    return hudson.Util.getTimeSpanString(timestamp);
+                }
+            }
+            """.stripIndent()
         ));
     }
 
@@ -76,28 +76,28 @@ class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
     void shouldReplaceImportedMethodCall() {
         // language=java
         rewriteRun(java(
-                """
-                        package org.example;
+          """
+            package org.example;
 
-                        import hudson.Util;
+            import hudson.Util;
 
-                        class MyConsumer {
-                            String format(long timestamp) {
-                                return Util.getPastTimeString(timestamp);
-                            }
-                        }
-                        """.stripIndent(),
-                """
-                        package org.example;
+            class MyConsumer {
+                String format(long timestamp) {
+                    return Util.getPastTimeString(timestamp);
+                }
+            }
+            """.stripIndent(),
+          """
+            package org.example;
 
-                        import hudson.Util;
+            import hudson.Util;
 
-                        class MyConsumer {
-                            String format(long timestamp) {
-                                return Util.getTimeSpanString(timestamp);
-                            }
-                        }
-                        """.stripIndent()
+            class MyConsumer {
+                String format(long timestamp) {
+                    return Util.getTimeSpanString(timestamp);
+                }
+            }
+            """.stripIndent()
         ));
     }
 
@@ -105,28 +105,28 @@ class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
     void shouldReplaceStaticImportedMethodCall() {
         // language=java
         rewriteRun(java(
-                """
-                        package org.example;
+          """
+            package org.example;
 
-                        import static hudson.Util.getPastTimeString;
+            import static hudson.Util.getPastTimeString;
 
-                        class MyConsumer {
-                            String format(long timestamp) {
-                                return getPastTimeString(timestamp);
-                            }
-                        }
-                        """.stripIndent(),
-                """
-                        package org.example;
+            class MyConsumer {
+                String format(long timestamp) {
+                    return getPastTimeString(timestamp);
+                }
+            }
+            """.stripIndent(),
+          """
+            package org.example;
 
-                        import static hudson.Util.getTimeSpanString;
+            import static hudson.Util.getTimeSpanString;
 
-                        class MyConsumer {
-                            String format(long timestamp) {
-                                return getTimeSpanString(timestamp);
-                            }
-                        }
-                        """.stripIndent()
+            class MyConsumer {
+                String format(long timestamp) {
+                    return getTimeSpanString(timestamp);
+                }
+            }
+            """.stripIndent()
         ));
     }
 }
