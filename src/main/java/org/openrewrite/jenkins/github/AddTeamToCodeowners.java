@@ -84,7 +84,8 @@ public class AddTeamToCodeowners extends ScanningRecipe<AddTeamToCodeowners.Scan
             return Collections.emptyList();
         }
         PlainTextParser parser = new PlainTextParser();
-        return parser.parse("* " + acc.teamName())
+        String line = "* " + acc.teamName() + "\n";
+        return parser.parse(line)
                 .map(brandNewFile -> (PlainText) brandNewFile.withSourcePath(Paths.get(FILE_PATH)))
                 .collect(Collectors.toList());
     }
@@ -93,31 +94,41 @@ public class AddTeamToCodeowners extends ScanningRecipe<AddTeamToCodeowners.Scan
     public TreeVisitor<?, ExecutionContext> getVisitor(Scanned acc) {
         return new PlainTextVisitor<ExecutionContext>() {
             @Override
-            public PlainText visitText(PlainText text, ExecutionContext executionContext) {
-                if (acc.presentIn(text.getText())) {
-                    return text;
+            public PlainText visitText(PlainText plainText, ExecutionContext executionContext) {
+                if (!FILE_PATH.equals(plainText.getSourcePath().toString())) {
+                    return plainText;
                 }
+                String text = plainText.getText();
+                if (acc.presentIn(text)) {
+                    return plainText;
+                }
+                boolean endsWithNewLine = text.endsWith("\n");
                 List<String> lines = new LinkedList<>();
                 List<String> after = new LinkedList<>();
-                Scanner scanner = new Scanner(text.getText());
-                int atPos = 0;
-                boolean lastComment = true;
-                while (scanner.hasNextLine()) {
-                    String line = scanner.nextLine();
-                    if (atPos == 0 && line.contains("@")) {
-                        atPos = line.indexOf("@");
+                try (Scanner scanner = new Scanner(text)) {
+                    int atPos = 0;
+                    boolean lastComment = true;
+                    while (scanner.hasNextLine()) {
+                        String line = scanner.nextLine();
+                        if (atPos == 0 && line.contains("@")) {
+                            atPos = line.indexOf("@");
+                        }
+                        if (lastComment && line.startsWith("#")) {
+                            lines.add(line);
+                        } else {
+                            lastComment = false;
+                            after.add(line);
+                        }
                     }
-                    if (lastComment && line.startsWith("#")) {
-                        lines.add(line);
-                    } else {
-                        lastComment = false;
-                        after.add(line);
+                    int spaces = Math.max(1, atPos - 1);
+                    lines.add("*" + StringUtils.repeat(" ", spaces) + acc.teamName());
+                    lines.addAll(after);
+                    String updated = String.join("\n", lines);
+                    if (endsWithNewLine) {
+                        updated += "\n";
                     }
+                    return plainText.withText(updated);
                 }
-                int spaces = Math.max(1, atPos - 1);
-                lines.add("*" + StringUtils.repeat(" ", spaces) + acc.teamName());
-                lines.addAll(after);
-                return text.withText(String.join("\n", lines));
             }
         };
     }
@@ -133,7 +144,7 @@ public class AddTeamToCodeowners extends ScanningRecipe<AddTeamToCodeowners.Scan
         }
 
         boolean presentIn(String text) {
-            Pattern p = Pattern.compile("^\\*\\s+" + teamName() + "$");
+            Pattern p = Pattern.compile("^\\*\\s+" + teamName() + "\\s*$");
             try (Scanner s = new Scanner(text)) {
                 while (s.hasNextLine()) {
                     String line = s.nextLine();
