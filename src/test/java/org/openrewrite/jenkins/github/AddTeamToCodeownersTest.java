@@ -17,6 +17,8 @@ package org.openrewrite.jenkins.github;
 
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.openrewrite.DocumentExample;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
@@ -59,15 +61,15 @@ class AddTeamToCodeownersTest implements RewriteTest {
           pomXml(POM),
           text(null,
             """
-              * @jenkinsci/sample-plugin-developers
-              """.stripIndent(),
-            s -> s.path(".github/CODEOWNERS")
+            * @jenkinsci/sample-plugin-developers
+            """,
+            s -> s.path(".github/CODEOWNERS").noTrim()
           )
         );
     }
 
     @Test
-    void shouldAddLineIfTeamNotDefinedForAll() {
+    void shouldAddLineIfTeamNotDefinedForAllRetainingTrailingSpace() {
         rewriteRun(
           pomXml(POM),
           text(
@@ -76,15 +78,40 @@ class AddTeamToCodeownersTest implements RewriteTest {
               *       @global-owner1 @global-owner2
               *.js    @js-owner #This is an inline comment.
               /build/logs/ @doctocat
-              """.stripIndent(),
+              
+              """,
             """
               # This is a comment.
               *       @jenkinsci/sample-plugin-developers
               *       @global-owner1 @global-owner2
               *.js    @js-owner #This is an inline comment.
               /build/logs/ @doctocat
-              """.stripIndent(),
-            s -> s.path(".github/CODEOWNERS")
+              
+              """,
+            s -> s.path(".github/CODEOWNERS").noTrim()
+          )
+        );
+    }
+
+    @Test
+    void shouldAddLineIfTeamNotDefinedForAllRetaining() {
+        rewriteRun(
+          pomXml(POM),
+          text(
+            """
+              # This is a comment.
+              *       @global-owner1 @global-owner2
+              *.js    @js-owner #This is an inline comment.
+              /build/logs/ @doctocat
+              """,
+            """
+              # This is a comment.
+              *       @jenkinsci/sample-plugin-developers
+              *       @global-owner1 @global-owner2
+              *.js    @js-owner #This is an inline comment.
+              /build/logs/ @doctocat
+              """,
+            s -> s.path(".github/CODEOWNERS").noTrim()
           )
         );
     }
@@ -104,7 +131,7 @@ class AddTeamToCodeownersTest implements RewriteTest {
                       <module>different-plugin</module>
                   </modules>
               </project>
-              """.stripIndent()),
+              """),
             mavenProject("plugin",
               pomXml("""
                 <project>
@@ -122,7 +149,7 @@ class AddTeamToCodeownersTest implements RewriteTest {
                         </repository>
                     </repositories>
                 </project>
-                """.stripIndent())),
+                """)),
             mavenProject("different-plugin",
               pomXml("""
                 <project>
@@ -140,24 +167,42 @@ class AddTeamToCodeownersTest implements RewriteTest {
                         </repository>
                     </repositories>
                 </project>
-                """.stripIndent()))),
+                """))),
           text(
             null,
             """
               * @jenkinsci/sample-plugin-developers
-              """.stripIndent(),
-            s -> s.path(".github/CODEOWNERS")
+              """,
+            s -> s.path(".github/CODEOWNERS").noTrim()
           ));
     }
 
-    @Test
-    void shouldNoOpIfTeamAlreadyDefinedForAll() {
+    @ParameterizedTest
+    @ValueSource(strings = {
+      "* @jenkinsci/sample-plugin-developers",
+      "\n* @jenkinsci/sample-plugin-developers ",
+      "\n* @jenkinsci/sample-plugin-developers\n",
+    })
+    void shouldNoOpIfTeamAlreadyDefinedForAll(String content) {
         rewriteRun(
           pomXml(POM),
           text(
-            "* @jenkinsci/sample-plugin-developers",
-            s -> s.path(".github/CODEOWNERS")
+            content,
+            s -> s.path(".github/CODEOWNERS").noTrim()
           )
+        );
+    }
+
+    @Test
+    void shouldNotModifyNonCodeowners() {
+        rewriteRun(
+                pomXml(POM),
+                text("*.iml",
+                        s -> s.path(".gitignore")),
+                text(
+                        "* @jenkinsci/sample-plugin-developers",
+                        s -> s.path(".github/CODEOWNERS").noTrim()
+                )
         );
     }
 }
