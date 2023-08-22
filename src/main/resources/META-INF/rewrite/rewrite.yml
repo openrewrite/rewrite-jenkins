@@ -40,6 +40,10 @@ recipeList:
   - org.openrewrite.jenkins.UpgradeVersionProperty:
       key: jenkins.version
       minimumVersion: 2.387.3
+  - org.openrewrite.maven.RemoveDependency:
+      # Provided by core as of 2.349
+      groupId: org.jenkins-ci
+      artifactId: symbol-annotation
   - org.openrewrite.jenkins.AddPluginsBom
 ---
 type: specs.openrewrite.org/v1beta/recipe
