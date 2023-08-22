@@ -26,6 +26,9 @@ recipeList:
       oldArtifactId: plugin
       newVersion: latest.release
       allowVersionDowngrades: false
+  - org.openrewrite.java.RemoveAnnotation:
+      # https://github.com/jenkinsci/plugin-pom/releases/tag/plugin-4.52 removed Animal Sniffer
+      annotationPattern: "@org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement"
   - org.openrewrite.jenkins.UpgradeHtmlUnit_3_3_0
       # https://github.com/jenkinsci/plugin-pom/releases/tag/plugin-4.66 bumped htmlunit to 3.3.0
   - org.openrewrite.maven.ChangeDependencyGroupIdAndArtifactId:
