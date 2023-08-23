@@ -29,6 +29,10 @@ class ArtifactIdTeamNameGeneratorTest {
       "stashNotifier,@jenkinsci/stashnotifier-plugin-developers",
       "aws-java-sdk-parent,@jenkinsci/aws-java-sdk-plugin-developers",
       "warnings-ng-parent,@jenkinsci/warnings-ng-plugin-developers",
+      "build-user-vars-plugin,@jenkinsci/build-user-vars-plugin-developers",
+      "project-stats-plugin,@jenkinsci/project-stats-plugin-developers",
+      "plugin-usage-plugin,@jenkinsci/plugin-usage-plugin-developers",
+      "build-keeper-plugin,@jenkinsci/build-keeper-plugin-developers",
     })
     void shouldGenerateExpectedTeamName(String artifactId, String expected) {
         String actual = generator.generate(new TeamNameInput(artifactId));

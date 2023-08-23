@@ -23,7 +23,7 @@ class ArtifactIdTeamNameGenerator implements TeamNameGenerator<TeamNameInput> {
     public String generate(TeamNameInput input) {
         String artifactId = input.getArtifactId();
         String withoutParent = artifactId;
-        if (artifactId.endsWith("-parent")) {
+        if (artifactId.endsWith("-parent") || artifactId.endsWith("-plugin")) {
             withoutParent = artifactId.substring(0, artifactId.lastIndexOf('-'));
         }
         return ("@jenkinsci/" + (withoutParent + "-plugin-developers")).toLowerCase(Locale.ROOT);
