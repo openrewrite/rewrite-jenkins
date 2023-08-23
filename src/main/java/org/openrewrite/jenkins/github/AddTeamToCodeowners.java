@@ -54,7 +54,7 @@ public class AddTeamToCodeowners extends ScanningRecipe<AddTeamToCodeowners.Scan
 
     @Override
     public Scanned getInitialValue(ExecutionContext ctx) {
-        return new Scanned(new ArtifactIdTeamNameGenerator());
+        return new Scanned(new ArtifactIdTeamNameGenerator(), new InMemoryTeamNameValidator());
     }
 
     @Override
@@ -92,7 +92,7 @@ public class AddTeamToCodeowners extends ScanningRecipe<AddTeamToCodeowners.Scan
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor(Scanned acc) {
-        return new PlainTextVisitor<ExecutionContext>() {
+        return Preconditions.check(acc.hasValidTeamName(), new PlainTextVisitor<ExecutionContext>() {
             @Override
             public PlainText visitText(PlainText plainText, ExecutionContext executionContext) {
                 if (!FILE_PATH.equals(plainText.getSourcePath().toString())) {
@@ -130,17 +130,19 @@ public class AddTeamToCodeowners extends ScanningRecipe<AddTeamToCodeowners.Scan
                     return plainText.withText(updated);
                 }
             }
-        };
+        });
     }
 
     @Data
     public static class Scanned {
         private final TeamNameGenerator<TeamNameInput> generator;
+        private final TeamNameValidator validator;
         String artifactId;
         boolean foundFile;
 
-        public Scanned(TeamNameGenerator<TeamNameInput> generator) {
+        public Scanned(TeamNameGenerator<TeamNameInput> generator, TeamNameValidator validator) {
             this.generator = generator;
+            this.validator = validator;
         }
 
         boolean presentIn(String text) {
@@ -159,6 +161,10 @@ public class AddTeamToCodeowners extends ScanningRecipe<AddTeamToCodeowners.Scan
 
         String teamName() {
             return generator.generate(new TeamNameInput(artifactId));
+        }
+
+        boolean hasValidTeamName() {
+            return validator.isValid(teamName());
         }
     }
 

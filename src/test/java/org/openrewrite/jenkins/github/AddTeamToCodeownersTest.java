@@ -194,6 +194,33 @@ class AddTeamToCodeownersTest implements RewriteTest {
     }
 
     @Test
+    void shouldNoOpIfInvalidTeamGenerated() {
+        rewriteRun(
+          pomXml("""
+            <project>
+                <parent>
+                    <groupId>org.jenkins-ci.plugins</groupId>
+                    <artifactId>plugin</artifactId>
+                    <version>4.72</version>
+                </parent>
+                <artifactId>custom-tools-plugin</artifactId>
+                <version>0.1</version>
+                <repositories>
+                    <repository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>https://repo.jenkins-ci.org/public/</url>
+                    </repository>
+                </repositories>
+            </project>
+            """),
+          text(
+            "* @global-owner1",
+            s -> s.path(".github/CODEOWNERS").noTrim()
+          )
+        );
+    }
+
+    @Test
     void shouldNotModifyNonCodeowners() {
         rewriteRun(
                 pomXml(POM),

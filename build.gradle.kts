@@ -23,6 +23,8 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:latest.release"))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
+    testImplementation(platform("org.mockito:mockito-bom:latest.release"))
+    testImplementation("org.mockito:mockito-junit-jupiter")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 
     testImplementation("org.openrewrite:rewrite-test")
