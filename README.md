@@ -28,7 +28,7 @@ To run the `org.openrewrite.jenkins.github.AddTeamToCodeowners` recipe:
 ```shell
 $ mvn -U org.openrewrite.maven:rewrite-maven-plugin:run \
       -Drewrite.recipeArtifactCoordinates=org.openrewrite.recipe:rewrite-jenkins:RELEASE \
-      -Drewrite.activeRecipes=org.openrewrite.jenkins.migrate.hudson.UtilGetPastTimeStringToGetTimeSpanString
+      -Drewrite.activeRecipes=org.openrewrite.jenkins.github.AddTeamToCodeowners
 ```
 
 [mvn-cli]: https://docs.openrewrite.org/running-recipes/running-rewrite-on-a-maven-project-without-modifying-the-build
