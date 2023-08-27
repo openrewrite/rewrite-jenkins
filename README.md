@@ -20,6 +20,19 @@ Additionally, depending on newer versions of Jenkins allows our builds to pick u
 These deprecations can often be migrated with new OpenRewrite recipes.
 Proactively handling deprecations in the plugins we depend on allows us to avoid runtime issues if and when the deprecated code is removed.
 
+## Quick start
+
+[Running Rewrite on a Maven project without modifying the build][mvn-cli] is very helpful for getting started.
+To run the `org.openrewrite.jenkins.github.AddTeamToCodeowners` recipe:
+
+```shell
+$ mvn -U org.openrewrite.maven:rewrite-maven-plugin:run \
+      -Drewrite.recipeArtifactCoordinates=org.openrewrite.recipe:rewrite-jenkins:RELEASE \
+      -Drewrite.activeRecipes=org.openrewrite.jenkins.migrate.hudson.UtilGetPastTimeStringToGetTimeSpanString
+```
+
+[mvn-cli]: https://docs.openrewrite.org/running-recipes/running-rewrite-on-a-maven-project-without-modifying-the-build
+
 ## How to use?
 
 See the full documentation at [docs.openrewrite.org](https://docs.openrewrite.org/).
