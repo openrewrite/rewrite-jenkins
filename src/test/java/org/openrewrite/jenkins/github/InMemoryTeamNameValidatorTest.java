@@ -35,7 +35,6 @@ class InMemoryTeamNameValidatorTest {
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {
-      "@jenkinsci/custom-tools-plugin-developers", // actual: @jenkinsci/customtools-plugin-developers
       "@jenkinsci/-plugin-developers",             // we didn't get anything for the artifactId
     })
     void shouldNotValidate(String input) {

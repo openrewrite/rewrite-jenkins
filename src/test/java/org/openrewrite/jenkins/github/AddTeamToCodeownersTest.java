@@ -203,7 +203,7 @@ class AddTeamToCodeownersTest implements RewriteTest {
                     <artifactId>plugin</artifactId>
                     <version>4.72</version>
                 </parent>
-                <artifactId>custom-tools-plugin</artifactId>
+                <artifactId>tool-labels-plugin</artifactId>
                 <version>0.1</version>
                 <repositories>
                     <repository>

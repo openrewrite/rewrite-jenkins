@@ -15,17 +15,46 @@
  */
 package org.openrewrite.jenkins.github;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
 
 class ArtifactIdTeamNameGenerator implements TeamNameGenerator<TeamNameInput> {
+    private static final String EXCLUDE = "EXCLUDE";
+    private static final String ORG = "@jenkinsci/";
+    private final Map<String, String> artifactIdAdvice = loadAdvice();
 
     @Override
     public String generate(TeamNameInput input) {
         String artifactId = input.getArtifactId();
+        String advice = artifactIdAdvice.get(artifactId);
+        if (EXCLUDE.equalsIgnoreCase(advice)) {
+            return "";
+        }
+        if (advice != null) {
+            return ORG + advice;
+        }
         String withoutParent = artifactId;
         if (artifactId.endsWith("-parent") || artifactId.endsWith("-plugin")) {
             withoutParent = artifactId.substring(0, artifactId.lastIndexOf('-'));
         }
-        return ("@jenkinsci/" + (withoutParent + "-plugin-developers")).toLowerCase(Locale.ROOT);
+        return (ORG + (withoutParent + "-plugin-developers")).toLowerCase(Locale.ROOT);
+    }
+
+    private static Map<String, String> loadAdvice() {
+        Properties p = new Properties();
+        try (InputStream is = ArtifactIdTeamNameGenerator.class.getResourceAsStream("teams.properties")) {
+            Map<String, String> o = new HashMap<>();
+            p.load(is);
+            for (Map.Entry<Object, Object> entry : p.entrySet()) {
+                o.put((String) entry.getKey(), (String) entry.getValue());
+            }
+            return o;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -41,7 +41,6 @@ class InMemoryTeamNameValidator implements TeamNameValidator {
      */
     private static Set<String> banned() {
         Set<String> banned = new HashSet<>();
-        banned.add("@jenkinsci/custom-tools-plugin-developers");
         banned.add("@jenkinsci/-plugin-developers");
         return banned;
     }
