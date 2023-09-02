@@ -61,8 +61,8 @@ class AddTeamToCodeownersTest implements RewriteTest {
           pomXml(POM),
           text(null,
             """
-            * @jenkinsci/sample-plugin-developers
-            """,
+              * @jenkinsci/sample-plugin-developers
+              """,
             s -> s.path(".github/CODEOWNERS").noTrim()
           )
         );
@@ -78,7 +78,7 @@ class AddTeamToCodeownersTest implements RewriteTest {
               *       @global-owner1 @global-owner2
               *.js    @js-owner #This is an inline comment.
               /build/logs/ @doctocat
-              
+                            
               """,
             """
               # This is a comment.
@@ -86,7 +86,7 @@ class AddTeamToCodeownersTest implements RewriteTest {
               *       @global-owner1 @global-owner2
               *.js    @js-owner #This is an inline comment.
               /build/logs/ @doctocat
-              
+                            
               """,
             s -> s.path(".github/CODEOWNERS").noTrim()
           )
@@ -223,13 +223,13 @@ class AddTeamToCodeownersTest implements RewriteTest {
     @Test
     void shouldNotModifyNonCodeowners() {
         rewriteRun(
-                pomXml(POM),
-                text("*.iml",
-                        s -> s.path(".gitignore")),
-                text(
-                        "* @jenkinsci/sample-plugin-developers",
-                        s -> s.path(".github/CODEOWNERS").noTrim()
-                )
+          pomXml(POM),
+          text("*.iml",
+            s -> s.path(".gitignore")),
+          text(
+            "* @jenkinsci/sample-plugin-developers",
+            s -> s.path(".github/CODEOWNERS").noTrim()
+          )
         );
     }
 }
