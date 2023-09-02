@@ -61,8 +61,8 @@ class AddTeamToCodeownersTest implements RewriteTest {
           pomXml(POM),
           text(null,
             """
-            * @jenkinsci/sample-plugin-developers
-            """,
+              * @jenkinsci/sample-plugin-developers
+              """,
             s -> s.path(".github/CODEOWNERS").noTrim()
           )
         );
@@ -78,7 +78,7 @@ class AddTeamToCodeownersTest implements RewriteTest {
               *       @global-owner1 @global-owner2
               *.js    @js-owner #This is an inline comment.
               /build/logs/ @doctocat
-              
+                            
               """,
             """
               # This is a comment.
@@ -86,7 +86,7 @@ class AddTeamToCodeownersTest implements RewriteTest {
               *       @global-owner1 @global-owner2
               *.js    @js-owner #This is an inline comment.
               /build/logs/ @doctocat
-              
+                            
               """,
             s -> s.path(".github/CODEOWNERS").noTrim()
           )
@@ -221,15 +221,38 @@ class AddTeamToCodeownersTest implements RewriteTest {
     }
 
     @Test
+    void shouldNoOpIfInvalidTeamGeneratedAndCodeownersFileAbsent() {
+        rewriteRun(
+          pomXml("""
+            <project>
+                <parent>
+                    <groupId>org.jenkins-ci.plugins</groupId>
+                    <artifactId>plugin</artifactId>
+                    <version>4.72</version>
+                </parent>
+                <artifactId>tool-labels-plugin</artifactId>
+                <version>0.1</version>
+                <repositories>
+                    <repository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>https://repo.jenkins-ci.org/public/</url>
+                    </repository>
+                </repositories>
+            </project>
+            """)
+        );
+    }
+
+    @Test
     void shouldNotModifyNonCodeowners() {
         rewriteRun(
-                pomXml(POM),
-                text("*.iml",
-                        s -> s.path(".gitignore")),
-                text(
-                        "* @jenkinsci/sample-plugin-developers",
-                        s -> s.path(".github/CODEOWNERS").noTrim()
-                )
+          pomXml(POM),
+          text("*.iml",
+            s -> s.path(".gitignore")),
+          text(
+            "* @jenkinsci/sample-plugin-developers",
+            s -> s.path(".github/CODEOWNERS").noTrim()
+          )
         );
     }
 }

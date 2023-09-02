@@ -80,7 +80,7 @@ public class AddTeamToCodeowners extends ScanningRecipe<AddTeamToCodeowners.Scan
 
     @Override
     public Collection<? extends SourceFile> generate(Scanned acc, ExecutionContext ctx) {
-        if (acc.foundFile) {
+        if (acc.foundFile || !acc.hasValidTeamName()) {
             return Collections.emptyList();
         }
         PlainTextParser parser = new PlainTextParser();
