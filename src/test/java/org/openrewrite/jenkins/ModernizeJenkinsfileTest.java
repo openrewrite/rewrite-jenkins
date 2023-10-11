@@ -32,7 +32,9 @@ class ModernizeJenkinsfileTest implements RewriteTest {
 
     @Test
     void shouldCreateJenkinsfile() {
-        rewriteRun(pomXml(
+        rewriteRun(
+          //language=xml
+          pomXml(
             """
               <project>
                   <parent>
@@ -54,19 +56,28 @@ class ModernizeJenkinsfileTest implements RewriteTest {
                   </repositories>
               </project>
               """),
-          text(null, """
-              buildPlugin(useContainerAgent: true, configurations: [
-                [ platform: 'linux', jdk: '11' ],
-                [ platform: 'windows', jdk: '11' ],
-                [ platform: 'linux', jdk: '17' ],
-              ])""".stripIndent(),
+          //language=groovy
+          text(null,
+            """
+              /*
+               See the documentation for more options:
+               https://github.com/jenkins-infra/pipeline-library/
+              */ buildPlugin(
+                useContainerAgent: true, // Set to `false` if you need to use Docker for containerized tests
+                configurations: [
+                  [platform: 'linux', jdk: 21],
+                  [platform: 'windows', jdk: 17],
+              ])
+              """,
             spec -> spec.path("Jenkinsfile")));
     }
 
     @Test
     @DocumentExample
     void shouldUpdateJenkinsfile() {
-        rewriteRun(pomXml(
+        rewriteRun(
+          //language=xml
+          pomXml(
             """
               <project>
                   <parent>
@@ -87,17 +98,21 @@ class ModernizeJenkinsfileTest implements RewriteTest {
                       </repository>
                   </repositories>
               </project>
-              """),
-          text("""
-              buildPlugin()
-              """.stripIndent(), """
-              buildPlugin(useContainerAgent: true, configurations: [
-                [ platform: 'linux', jdk: '11' ],
-                [ platform: 'windows', jdk: '11' ],
-                [ platform: 'linux', jdk: '17' ],
+              """
+          ),
+          //language=groovy
+          text("buildPlugin()",
+            """
+              /*
+               See the documentation for more options:
+               https://github.com/jenkins-infra/pipeline-library/
+              */ buildPlugin(
+                useContainerAgent: true, // Set to `false` if you need to use Docker for containerized tests
+                configurations: [
+                  [platform: 'linux', jdk: 21],
+                  [platform: 'windows', jdk: 17],
               ])
-                                              
-              """.stripIndent(),
-            spec -> spec.path("Jenkinsfile")));
+              """,
+            spec -> spec.noTrim().path("Jenkinsfile")));
     }
 }
