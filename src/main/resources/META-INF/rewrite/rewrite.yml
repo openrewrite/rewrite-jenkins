@@ -42,12 +42,17 @@ recipeList:
       overrideManagedVersion: false
   - org.openrewrite.jenkins.UpgradeVersionProperty:
       key: jenkins.version
-      minimumVersion: 2.387.3
+      minimumVersion: 2.401.3
   - org.openrewrite.maven.RemoveDependency:
       # Provided by core as of 2.349
       groupId: org.jenkins-ci
       artifactId: symbol-annotation
   - org.openrewrite.jenkins.AddPluginsBom
+  - org.openrewrite.java.ChangePackage:
+      # 2.401.2 started providing Guice 6.x, which supports the `jakarta.inject` namespace
+      oldPackageName: javax.inject
+      newPackageName: jakarta.inject
+      recursive: true
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.jenkins.ModernizeJenkinsfile
