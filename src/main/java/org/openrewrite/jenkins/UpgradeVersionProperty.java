@@ -87,6 +87,7 @@ public class UpgradeVersionProperty extends Recipe {
                     return t;
                 }
                 doAfterVisit(new ChangeTagValueVisitor<>(t, minimumVersion));
+                doAfterVisit(new AddPluginsBom().getVisitor());
                 return t;
             }
         });

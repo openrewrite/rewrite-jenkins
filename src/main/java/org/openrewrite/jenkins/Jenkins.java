@@ -16,16 +16,23 @@
 package org.openrewrite.jenkins;
 
 import org.openrewrite.SourceFile;
+import org.openrewrite.internal.lang.NonNull;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.maven.tree.MavenResolutionResult;
+
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 /**
  * Utility class
  */
 class Jenkins {
+    private static final Predicate<String> LTS_PATTERN = Pattern.compile("^\\d\\.\\d+\\.\\d$").asPredicate();
+
     /**
      * Determines if this is a Jenkins Plugin Pom by checking for a managed version
      * of org.jenkins-ci.main:jenkins-core.
+     *
      * @param sourceFile POM
      * @return jenkins-core's version if managed, otherwise null
      */
@@ -36,5 +43,15 @@ class Jenkins {
                 .map(mavenResolution -> mavenResolution.getPom().getManagedVersion("org.jenkins-ci.main",
                             "jenkins-core", null, null))
                 .orElse(null);
+    }
+
+    @NonNull
+    public static String bomNameForJenkinsVersion(@NonNull String version) {
+        if (LTS_PATTERN.test(version)) {
+            int lastIndex = version.lastIndexOf(".");
+            String prefix = version.substring(0, lastIndex);
+            return "bom-" + prefix + ".x";
+        }
+        return "bom-weekly";
     }
 }
