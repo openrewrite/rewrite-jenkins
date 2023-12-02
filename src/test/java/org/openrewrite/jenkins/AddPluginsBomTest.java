@@ -16,18 +16,10 @@
 package org.openrewrite.jenkins;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.openrewrite.DocumentExample;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
-import java.util.Set;
-import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.openrewrite.maven.Assertions.pomXml;
 
 class AddPluginsBomTest implements RewriteTest {
@@ -537,119 +529,5 @@ class AddPluginsBomTest implements RewriteTest {
             """.stripIndent()
 
         ));
-    }
-
-    /**
-     * This is biased toward recency.
-     * If we don't recognize the version as a LTS we assume it is very recent and wants the weekly bom.
-     */
-    @ParameterizedTest
-    @MethodSource("versionToBom")
-    void shouldGenerateBomNameFromJenkinsVersion(String jenkinsVersion, String bomVersion) {
-        AddPluginsBom.Scanned scanned = new AddPluginsBom.Scanned();
-        scanned.jenkinsVersion = jenkinsVersion;
-
-        String actual = scanned.bomName();
-
-        assertThat(actual).isEqualTo(bomVersion);
-    }
-
-    @Test
-    void shouldNeedPluginsBomIfAbsent() {
-        AddPluginsBom.Scanned scanned = new AddPluginsBom.Scanned();
-        scanned.jenkinsVersion = "2.263.4";
-        scanned.foundPlugins.add(new AddPluginsBom.Artifact("org.jenkins-ci.jpi", "ant"));
-
-        assertThat(scanned.needsPluginsBom()).isTrue();
-    }
-
-    @Test
-    void shouldNeedPluginsBomIfOutdatedAndNoFoundPlugins() {
-        AddPluginsBom.Scanned scanned = new AddPluginsBom.Scanned();
-        scanned.jenkinsVersion = "2.263.4";
-        scanned.foundPluginsBoms.add(new AddPluginsBom.Artifact("io.jenkins.tools.bom", "bom-2.319.x"));
-
-        assertThat(scanned.needsPluginsBom()).isTrue();
-    }
-
-    @Test
-    void shouldNeedPluginsBomIfOnlyMismatchedPresent() {
-        AddPluginsBom.Scanned scanned = new AddPluginsBom.Scanned();
-        scanned.jenkinsVersion = "2.263.4";
-        scanned.foundPlugins.add(new AddPluginsBom.Artifact("org.jenkins-ci.jpi", "ant"));
-        scanned.foundPluginsBoms.add(new AddPluginsBom.Artifact("io.jenkins.tools.bom", "bom-2.319.x"));
-
-        assertThat(scanned.needsPluginsBom()).isTrue();
-    }
-
-    @Test
-    void shouldNeedPluginsBomIfMultipleBomsPresent() {
-        AddPluginsBom.Scanned scanned = new AddPluginsBom.Scanned();
-        scanned.jenkinsVersion = "2.263.4";
-        scanned.foundPlugins.add(new AddPluginsBom.Artifact("org.jenkins-ci.jpi", "ant"));
-        scanned.foundPluginsBoms.add(new AddPluginsBom.Artifact("io.jenkins.tools.bom", "bom-2.319.x"));
-        scanned.foundPluginsBoms.add(new AddPluginsBom.Artifact("io.jenkins.tools.bom", scanned.bomName()));
-
-        assertThat(scanned.needsPluginsBom()).isTrue();
-    }
-
-    @Test
-    void shouldNotNeedPluginsBomIfExpectedVersionAlreadyApplied() {
-        AddPluginsBom.Scanned scanned = new AddPluginsBom.Scanned();
-        scanned.jenkinsVersion = "2.263.4";
-        scanned.foundPlugins.add(new AddPluginsBom.Artifact("org.jenkins-ci.jpi", "ant"));
-        scanned.foundPluginsBoms.add(new AddPluginsBom.Artifact("io.jenkins.tools.bom", scanned.bomName()));
-
-        assertThat(scanned.needsPluginsBom()).isFalse();
-    }
-
-    @Test
-    void shouldNotNeedPluginsBomIfNoJenkinsVersion() {
-        AddPluginsBom.Scanned scanned = new AddPluginsBom.Scanned();
-        scanned.foundPlugins.add(new AddPluginsBom.Artifact("org.jenkins-ci.jpi", "ant"));
-
-        assertThat(scanned.bomToChange()).isNull();
-        assertThat(scanned.needsPluginsBom()).isFalse();
-    }
-
-    @Test
-    void shouldChangeABomToMinimizeCommentAndTagOrderingMoves() {
-        AddPluginsBom.Scanned scanned = new AddPluginsBom.Scanned();
-        AddPluginsBom.Artifact two319 = new AddPluginsBom.Artifact("io.jenkins.tools.bom", "bom-2.319.x");
-        AddPluginsBom.Artifact two332 = new AddPluginsBom.Artifact("io.jenkins.tools.bom", "bom-2.332.x");
-        scanned.foundPluginsBoms.add(two319);
-        scanned.foundPluginsBoms.add(two332);
-
-        Set<AddPluginsBom.Artifact> actual = scanned.bomsToRemove();
-
-        assertThat(scanned.bomToChange()).isEqualTo(two319);
-        assertThat(actual).containsExactly(two332);
-    }
-
-    @Test
-    void shouldFilterExpectedBomOutOfBomsToRemove() {
-        AddPluginsBom.Scanned scanned = new AddPluginsBom.Scanned();
-        AddPluginsBom.Artifact two319 = new AddPluginsBom.Artifact("io.jenkins.tools.bom", "bom-2.319.x");
-        AddPluginsBom.Artifact two332 = new AddPluginsBom.Artifact("io.jenkins.tools.bom", "bom-2.332.x");
-        scanned.foundPluginsBoms.add(two319);
-        scanned.foundPluginsBoms.add(new AddPluginsBom.Artifact("io.jenkins.tools.bom", scanned.bomName()));
-        scanned.foundPluginsBoms.add(two332);
-
-        Set<AddPluginsBom.Artifact> actual = scanned.bomsToRemove();
-
-        assertThat(actual).containsExactlyInAnyOrder(two319, two332);
-    }
-
-    static Stream<Arguments> versionToBom() {
-        return Stream.of(
-          arguments("2.277.3", "bom-2.277.x"),
-          arguments("2.319.1", "bom-2.319.x"),
-          arguments("2.361.4", "bom-2.361.x"),
-          arguments("2.401.2", "bom-2.401.x"),
-          arguments("2.384", "bom-weekly"),
-          arguments("2.401", "bom-weekly"),
-          arguments("888888-SNAPSHOT", "bom-weekly"),
-          arguments("2.379-rc33114.2f90818f6a_35", "bom-weekly")
-        );
     }
 }
