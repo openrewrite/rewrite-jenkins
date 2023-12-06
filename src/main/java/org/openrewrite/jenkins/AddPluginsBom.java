@@ -29,6 +29,7 @@ import org.openrewrite.maven.tree.*;
 import org.openrewrite.xml.RemoveContentVisitor;
 import org.openrewrite.xml.tree.Xml;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -57,16 +58,18 @@ public class AddPluginsBom extends Recipe {
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {
         return new MavenIsoVisitor<ExecutionContext>() {
-            private boolean alreadyChanged = false;
+            private final List<Xml.Tag> boms = new LinkedList<>();
             private String bomName = "";
 
             @Override
-            public Xml.Document visitDocument(Xml.Document document, ExecutionContext ctx) {
-                Xml.Document d = super.visitDocument(document, ctx);
+            public Xml.Document visitDocument(Xml.Document document, ExecutionContext executionContext) {
                 Markers m = document.getMarkers();
                 Optional<MavenResolutionResult> maybeMavenResult = m.findFirst(MavenResolutionResult.class);
                 if (!maybeMavenResult.isPresent()) {
-                    return d;
+                    return document;
+                }
+                if (Jenkins.isJenkinsPluginPom(document) == null) {
+                    return document;
                 }
                 MavenResolutionResult result = maybeMavenResult.get();
                 ResolvedPom resolvedPom = result.getPom();
@@ -97,6 +100,10 @@ public class AddPluginsBom extends Recipe {
                         ).getVisitor());
                     }
                 }
+                Xml.Document d = super.visitDocument(document, executionContext);
+                if (bomName == null) {
+                    throw new IllegalStateException("Could not find jenkins.version property");
+                }
                 if (!bomFound && hasDependencyInBom) {
                     return (Xml.Document) new AddManagedDependency(
                             PLUGINS_BOM_GROUP_ID,
@@ -109,9 +116,37 @@ public class AddPluginsBom extends Recipe {
                             true,
                             null,
                             null
-                    ).getVisitor().visitNonNull(d, ctx, getCursor().getParentOrThrow());
+                    ).getVisitor().visitNonNull(d, executionContext, getCursor().getParentOrThrow());
+                } else if (bomFound) {
+                    Xml.Tag exact = null;
+                    Xml.Tag change = null;
+                    for (Xml.Tag bom : boms) {
+                        String artifactId = bom.getChildValue("artifactId")
+                                .orElseThrow(() -> new IllegalStateException("No artifactId found on bom"));
+                        if (artifactId.equals(bomName) && exact == null) {
+                            exact = bom;
+                        } else if (change == null) {
+                            change = bom;
+                        } else {
+                            doAfterVisit(new RemoveContentVisitor<>(bom, true));
+                        }
+                    }
+                    if (exact != null && change != null) {
+                        doAfterVisit(new RemoveContentVisitor<>(change, true));
+                    } else if (change != null) {
+                        String artifactId = change.getChildValue("artifactId")
+                                .orElseThrow(() -> new IllegalStateException("No artifactId found on bom"));
+                        doAfterVisit(new ChangeManagedDependencyGroupIdAndArtifactId(
+                                PLUGINS_BOM_GROUP_ID,
+                                artifactId,
+                                PLUGINS_BOM_GROUP_ID,
+                                bomName,
+                                LATEST_RELEASE,
+                                VERSION_METADATA_PATTERN
+                        ).getVisitor());
+                    }
                 }
-                return document;
+                return d;
             }
 
             @Override
@@ -121,21 +156,7 @@ public class AddPluginsBom extends Recipe {
                     String groupId = tag.getChildValue("groupId").orElse("");
                     String artifactId = tag.getChildValue("artifactId").orElse("");
                     if (PLUGINS_BOM_GROUP_ID.equals(groupId) && !artifactId.isEmpty()) {
-                        if (alreadyChanged) {
-                            doAfterVisit(new RemoveContentVisitor<>(t, true));
-                        } else {
-                            alreadyChanged = true;
-                            if (!Objects.equals(bomName, artifactId)) {
-                                doAfterVisit(new ChangeManagedDependencyGroupIdAndArtifactId(
-                                        groupId,
-                                        artifactId,
-                                        groupId,
-                                        bomName,
-                                        LATEST_RELEASE,
-                                        VERSION_METADATA_PATTERN
-                                ).getVisitor());
-                            }
-                        }
+                        boms.add(t);
                     }
                 } else if (isPropertyTag() && Objects.equals("jenkins.version", t.getName())) {
                     String jenkinsVersion = t.getValue().orElseThrow(() ->
@@ -145,11 +166,5 @@ public class AddPluginsBom extends Recipe {
                 return t;
             }
         };
-    }
-
-    @Value
-    static class Artifact {
-        String groupId;
-        String artifactId;
     }
 }
