@@ -78,7 +78,7 @@ public class CreateIndexJelly extends ScanningRecipe<CreateIndexJelly.Scanned> {
     public TreeVisitor<?, ExecutionContext> getScanner(Scanned acc) {
         return new TreeVisitor<Tree, ExecutionContext>() {
             @Override
-            public Tree visit(@Nullable Tree tree, ExecutionContext executionContext) {
+            public Tree visit(@Nullable Tree tree, ExecutionContext ctx) {
                 SourceFile sourceFile = (SourceFile) requireNonNull(tree);
                 Path path = sourceFile.getSourcePath();
                 String fileName = path.getFileName().toString();
@@ -87,7 +87,7 @@ public class CreateIndexJelly extends ScanningRecipe<CreateIndexJelly.Scanned> {
                 } else if (Jenkins.isJenkinsPluginPom(sourceFile) != null) {
                     Xml.Document pom = (Xml.Document) sourceFile;
                     TagExtractor tags = new TagExtractor();
-                    tags.visit(pom, executionContext);
+                    tags.visit(pom, ctx);
                     acc.plugins.add(new DescribedPlugin(
                             tags.artifactId,
                             path.resolve("../src/main/resources/index.jelly").normalize().toString(),
@@ -124,8 +124,8 @@ public class CreateIndexJelly extends ScanningRecipe<CreateIndexJelly.Scanned> {
         private String description = "";
 
         @Override
-        public Xml.Tag visitTag(Xml.Tag tag, ExecutionContext executionContext) {
-            Xml.Tag t = super.visitTag(tag, executionContext);
+        public Xml.Tag visitTag(Xml.Tag tag, ExecutionContext ctx) {
+            Xml.Tag t = super.visitTag(tag, ctx);
             if ("description".equals(t.getName())) {
                 description = t.getValue().orElse("");
             } else if ("artifactId".equals(t.getName()) && !isManagedDependencyTag() && !isDependencyTag()) {

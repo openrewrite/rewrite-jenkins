@@ -61,7 +61,7 @@ public class AddTeamToCodeowners extends ScanningRecipe<AddTeamToCodeowners.Scan
     public TreeVisitor<?, ExecutionContext> getScanner(Scanned acc) {
         return new TreeVisitor<Tree, ExecutionContext>() {
             @Override
-            public Tree visit(@Nullable Tree tree, ExecutionContext executionContext, Cursor parent) {
+            public Tree visit(@Nullable Tree tree, ExecutionContext ctx, Cursor parent) {
                 SourceFile sourceFile = (SourceFile) requireNonNull(tree);
                 Path path = sourceFile.getSourcePath();
                 String fileName = path.getFileName().toString();
@@ -70,7 +70,7 @@ public class AddTeamToCodeowners extends ScanningRecipe<AddTeamToCodeowners.Scan
                 } else if (acc.artifactId == null && "pom.xml".equals(fileName)) {
                     Xml.Document pom = (Xml.Document) sourceFile;
                     ArtifactIdExtractor extractor = new ArtifactIdExtractor();
-                    extractor.visit(pom, executionContext);
+                    extractor.visit(pom, ctx);
                     acc.artifactId = extractor.artifactId;
                 }
                 return sourceFile;
@@ -94,7 +94,7 @@ public class AddTeamToCodeowners extends ScanningRecipe<AddTeamToCodeowners.Scan
     public TreeVisitor<?, ExecutionContext> getVisitor(Scanned acc) {
         return Preconditions.check(acc.hasValidTeamName(), new PlainTextVisitor<ExecutionContext>() {
             @Override
-            public PlainText visitText(PlainText plainText, ExecutionContext executionContext) {
+            public PlainText visitText(PlainText plainText, ExecutionContext ctx) {
                 if (!FILE_PATH.equals(plainText.getSourcePath().toString())) {
                     return plainText;
                 }
@@ -173,8 +173,8 @@ public class AddTeamToCodeowners extends ScanningRecipe<AddTeamToCodeowners.Scan
         private static final XPathMatcher PROJECT_ARTIFACTID_MATCHER = new XPathMatcher("/project/artifactId");
 
         @Override
-        public Xml.Tag visitTag(Xml.Tag tag, ExecutionContext executionContext) {
-            Xml.Tag t = super.visitTag(tag, executionContext);
+        public Xml.Tag visitTag(Xml.Tag tag, ExecutionContext ctx) {
+            Xml.Tag t = super.visitTag(tag, ctx);
             if (PROJECT_ARTIFACTID_MATCHER.matches(getCursor())) {
                 artifactId = t.getValue().orElseThrow(() -> new IllegalStateException("Expected to find an artifact id"));
             }

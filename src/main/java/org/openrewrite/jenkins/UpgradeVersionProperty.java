@@ -65,7 +65,7 @@ public class UpgradeVersionProperty extends Recipe {
         assert versionComparator != null;
         return Preconditions.check(new MavenVisitor<ExecutionContext>() {
             @Override
-            public Xml visitDocument(Xml.Document document, ExecutionContext executionContext) {
+            public Xml visitDocument(Xml.Document document, ExecutionContext ctx) {
                 String value = getResolutionResult().getPom().getProperties().get(key);
                 if (value == null) {
                     return document;

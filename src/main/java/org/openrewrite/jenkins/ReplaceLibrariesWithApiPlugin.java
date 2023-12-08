@@ -104,7 +104,7 @@ public class ReplaceLibrariesWithApiPlugin extends Recipe {
     public TreeVisitor<?, ExecutionContext> getVisitor() {
         return new MavenVisitor<ExecutionContext>() {
             @Override
-            public Xml visitTag(Tag tag, ExecutionContext executionContext) {
+            public Xml visitTag(Tag tag, ExecutionContext ctx) {
                 if (isDependencyTag()) {
                     ResolvedDependency dependency = findDependency(tag);
                     if (dependency != null && !isApiPlugin(dependency)) {
@@ -159,7 +159,7 @@ public class ReplaceLibrariesWithApiPlugin extends Recipe {
                         }
                     }
                 }
-                return super.visitTag(tag, executionContext);
+                return super.visitTag(tag, ctx);
             }
 
             private boolean isApiPlugin(ResolvedDependency dependency) {

@@ -63,8 +63,8 @@ public class AddPluginsBom extends Recipe {
             private String bomName = "";
 
             @Override
-            public Xml.Document visitDocument(Xml.Document document, ExecutionContext executionContext) {
-                Xml.Document d = super.visitDocument(document, executionContext);
+            public Xml.Document visitDocument(Xml.Document document, ExecutionContext ctx) {
+                Xml.Document d = super.visitDocument(document, ctx);
                 Markers m = document.getMarkers();
                 Optional<MavenResolutionResult> maybeMavenResult = m.findFirst(MavenResolutionResult.class);
                 if (!maybeMavenResult.isPresent()) {
@@ -117,8 +117,8 @@ public class AddPluginsBom extends Recipe {
             }
 
             @Override
-            public Xml.Tag visitTag(Xml.Tag tag, ExecutionContext executionContext) {
-                Xml.Tag t = super.visitTag(tag, executionContext);
+            public Xml.Tag visitTag(Xml.Tag tag, ExecutionContext ctx) {
+                Xml.Tag t = super.visitTag(tag, ctx);
                 if (isManagedDependencyTag()) {
                     String groupId = tag.getChildValue("groupId").orElse("");
                     String artifactId = tag.getChildValue("artifactId").orElse("");

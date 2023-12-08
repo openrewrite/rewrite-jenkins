@@ -196,7 +196,8 @@ class AddTeamToCodeownersTest implements RewriteTest {
     @Test
     void shouldNoOpIfInvalidTeamGenerated() {
         rewriteRun(
-          pomXml("""
+          pomXml(
+                """
             <project>
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
@@ -223,7 +224,8 @@ class AddTeamToCodeownersTest implements RewriteTest {
     @Test
     void shouldNoOpIfInvalidTeamGeneratedAndCodeownersFileAbsent() {
         rewriteRun(
-          pomXml("""
+          pomXml(
+                """
             <project>
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
