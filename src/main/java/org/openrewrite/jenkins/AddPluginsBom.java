@@ -62,7 +62,7 @@ public class AddPluginsBom extends Recipe {
             private String bomName = "";
 
             @Override
-            public Xml.Document visitDocument(Xml.Document document, ExecutionContext executionContext) {
+            public Xml.Document visitDocument(Xml.Document document, ExecutionContext ctx) {
                 Markers m = document.getMarkers();
                 Optional<MavenResolutionResult> maybeMavenResult = m.findFirst(MavenResolutionResult.class);
                 if (!maybeMavenResult.isPresent()) {
@@ -100,7 +100,7 @@ public class AddPluginsBom extends Recipe {
                         ).getVisitor());
                     }
                 }
-                Xml.Document d = super.visitDocument(document, executionContext);
+                Xml.Document d = super.visitDocument(document, ctx);
                 if (bomName == null) {
                     throw new IllegalStateException("Could not find jenkins.version property");
                 }
@@ -116,7 +116,7 @@ public class AddPluginsBom extends Recipe {
                             true,
                             null,
                             null
-                    ).getVisitor().visitNonNull(d, executionContext, getCursor().getParentOrThrow());
+                    ).getVisitor().visitNonNull(d, ctx, getCursor().getParentOrThrow());
                 } else if (bomFound) {
                     Xml.Tag exact = null;
                     Xml.Tag change = null;
