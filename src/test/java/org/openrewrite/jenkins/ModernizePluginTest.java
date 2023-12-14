@@ -21,6 +21,9 @@ import org.openrewrite.java.JavaParser;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
+import java.util.regex.Pattern;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.java.Assertions.java;
 import static org.openrewrite.java.Assertions.srcMainJava;
 import static org.openrewrite.maven.Assertions.pomXml;
@@ -60,85 +63,23 @@ class ModernizePluginTest implements RewriteTest {
 
     @Test
     void shouldDoTheWorks() {
+        Versions versionsBefore = new Versions(
+          "4.75",
+          "2.387.3",
+          "bom-2.387.x",
+          "2516.v113cb_3d00317"
+        );
         rewriteRun(
-          //language=xml
           pomXml(
-            """
-              <project>
-                  <parent>
-                      <groupId>org.jenkins-ci.plugins</groupId>
-                      <artifactId>plugin</artifactId>
-                      <version>4.75</version>
-                      <relativePath/>
-                  </parent>
-                  <artifactId>example-plugin</artifactId>
-                  <version>0.8-SNAPSHOT</version>
-                  <properties>
-                      <jenkins.version>2.387.3</jenkins.version>
-                  </properties>
-                  <dependencyManagement>
-                      <dependencies>
-                          <dependency>
-                              <groupId>io.jenkins.tools.bom</groupId>
-                              <artifactId>bom-2.387.x</artifactId>
-                              <version>2516.v113cb_3d00317</version>
-                              <type>pom</type>
-                              <scope>import</scope>
-                          </dependency>
-                      </dependencies>
-                  </dependencyManagement>
-                  <dependencies>
-                      <dependency>
-                          <groupId>org.jenkins-ci.plugins</groupId>
-                          <artifactId>junit</artifactId>
-                      </dependency>
-                  </dependencies>
-                  <repositories>
-                      <repository>
-                          <id>repo.jenkins-ci.org</id>
-                          <url>https://repo.jenkins-ci.org/public/</url>
-                      </repository>
-                  </repositories>
-              </project>
-              """,
-            """
-              <project>
-                  <parent>
-                      <groupId>org.jenkins-ci.plugins</groupId>
-                      <artifactId>plugin</artifactId>
-                      <version>4.75</version>
-                      <relativePath/>
-                  </parent>
-                  <artifactId>example-plugin</artifactId>
-                  <version>0.8-SNAPSHOT</version>
-                  <properties>
-                      <jenkins.version>2.401.3</jenkins.version>
-                  </properties>
-                  <dependencyManagement>
-                      <dependencies>
-                          <dependency>
-                              <groupId>io.jenkins.tools.bom</groupId>
-                              <artifactId>bom-2.401.x</artifactId>
-                              <version>2612.v3d6a_2128c0ef</version>
-                              <type>pom</type>
-                              <scope>import</scope>
-                          </dependency>
-                      </dependencies>
-                  </dependencyManagement>
-                  <dependencies>
-                      <dependency>
-                          <groupId>org.jenkins-ci.plugins</groupId>
-                          <artifactId>junit</artifactId>
-                      </dependency>
-                  </dependencies>
-                  <repositories>
-                      <repository>
-                          <id>repo.jenkins-ci.org</id>
-                          <url>https://repo.jenkins-ci.org/public/</url>
-                      </repository>
-                  </repositories>
-              </project>
-              """
+            versionsBefore.asPomXml(),
+            spec -> spec.after(after -> {
+                Versions versionsAfter = Versions.parse(after);
+                assertThat(versionsAfter.parentVersion()).isGreaterThan(versionsBefore.parentVersion());
+                assertThat(versionsAfter.propertyVersion()).isGreaterThan(versionsBefore.propertyVersion());
+                assertThat(versionsAfter.bomArtifactId()).isGreaterThan(versionsBefore.bomArtifactId());
+                assertThat(versionsAfter.bomVersion()).isGreaterThan(versionsBefore.bomVersion());
+                return versionsAfter.asPomXml();
+            })
           ),
           srcMainJava(spec -> spec.path("something/Example.java"),
             //language=java
@@ -167,4 +108,61 @@ class ModernizePluginTest implements RewriteTest {
           )
         );
     }
+
+    record Versions(String parentVersion, String propertyVersion, String bomArtifactId, String bomVersion) {
+        static Versions parse(String pomXml) {
+            return new Versions(
+              firstGroupFromFirstRegexMatch("        <version>(4\\.[^<]+)", pomXml),
+              firstGroupFromFirstRegexMatch("<jenkins.version>([^<]+)", pomXml),
+              firstGroupFromFirstRegexMatch("<artifactId>(bom-[^<]+)", pomXml),
+              firstGroupFromFirstRegexMatch("                <version>([^<]+)", pomXml)
+            );
+        }
+
+        private static String firstGroupFromFirstRegexMatch(String regex, String pomXml) {
+            return Pattern.compile(regex).matcher(pomXml).results().findFirst().orElseThrow().group(1);
+        }
+
+        @Language("XML") String asPomXml() {
+            return """
+              <project>
+                  <parent>
+                      <groupId>org.jenkins-ci.plugins</groupId>
+                      <artifactId>plugin</artifactId>
+                      <version>%s</version>
+                      <relativePath/>
+                  </parent>
+                  <artifactId>example-plugin</artifactId>
+                  <version>0.8-SNAPSHOT</version>
+                  <properties>
+                      <jenkins.version>%s</jenkins.version>
+                  </properties>
+                  <dependencyManagement>
+                      <dependencies>
+                          <dependency>
+                              <groupId>io.jenkins.tools.bom</groupId>
+                              <artifactId>%s</artifactId>
+                              <version>%s</version>
+                              <type>pom</type>
+                              <scope>import</scope>
+                          </dependency>
+                      </dependencies>
+                  </dependencyManagement>
+                  <dependencies>
+                      <dependency>
+                          <groupId>org.jenkins-ci.plugins</groupId>
+                          <artifactId>junit</artifactId>
+                      </dependency>
+                  </dependencies>
+                  <repositories>
+                      <repository>
+                          <id>repo.jenkins-ci.org</id>
+                          <url>https://repo.jenkins-ci.org/public/</url>
+                      </repository>
+                  </repositories>
+              </project>
+              """.formatted(parentVersion, propertyVersion, bomArtifactId, bomVersion);
+        }
+    }
+
 }
