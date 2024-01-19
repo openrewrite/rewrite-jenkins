@@ -100,7 +100,7 @@ public class AddPluginsBom extends Recipe {
                     }
                 }
                 if (!bomFound && hasDependencyInBom) {
-                    doAfterVisit(new AddManagedDependency(
+                    return (Xml.Document) new AddManagedDependency(
                             PLUGINS_BOM_GROUP_ID,
                             bomName,
                             "latest.release",
@@ -111,7 +111,7 @@ public class AddPluginsBom extends Recipe {
                             true,
                             null,
                             null
-                    ).getVisitor());
+                    ).getVisitor().visitNonNull(d, ctx, getCursor().getParentOrThrow());
                 }
                 return document;
             }

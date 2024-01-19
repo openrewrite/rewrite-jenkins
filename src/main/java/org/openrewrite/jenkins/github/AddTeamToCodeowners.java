@@ -164,7 +164,7 @@ public class AddTeamToCodeowners extends ScanningRecipe<AddTeamToCodeowners.Scan
         }
 
         boolean hasValidTeamName() {
-            return validator.isValid(teamName());
+            return artifactId != null && validator.isValid(teamName());
         }
     }
 
