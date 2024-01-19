@@ -38,6 +38,7 @@ class AddTeamToCodeownersScannedTest {
         given(generator.generate(any())).willReturn(teamName);
         given(validator.isValid(teamName)).willReturn(false);
         Scanned scanned = new Scanned(generator, validator);
+        scanned.artifactId = teamName;
 
         boolean actual = scanned.hasValidTeamName();
 
@@ -51,6 +52,7 @@ class AddTeamToCodeownersScannedTest {
         given(generator.generate(any())).willReturn(teamName);
         given(validator.isValid(teamName)).willReturn(true);
         Scanned scanned = new Scanned(generator, validator);
+        scanned.artifactId = teamName;
 
         boolean actual = scanned.hasValidTeamName();
 
