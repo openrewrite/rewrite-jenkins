@@ -37,7 +37,7 @@ import java.util.Optional;
  * Updates the version property unless it is already greater than minimumVersion
  */
 @Value
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class UpgradeVersionProperty extends Recipe {
     @Option(displayName = "Key",
             description = "The name of the property key to change.",

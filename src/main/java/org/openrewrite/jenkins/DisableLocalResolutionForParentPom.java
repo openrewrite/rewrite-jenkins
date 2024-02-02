@@ -30,7 +30,7 @@ import org.openrewrite.xml.tree.Xml.Tag;
  * <a href="https://www.jenkins.io/doc/developer/plugin-development/updating-parent/">plugin development guide</a>.
  */
 @Value
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class DisableLocalResolutionForParentPom extends Recipe {
     @Override
     public String getDisplayName() {

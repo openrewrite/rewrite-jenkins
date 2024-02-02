@@ -40,7 +40,7 @@ import java.util.Set;
  * Jenkins has as custom classloader that shares libraries through api plugins.
  */
 @Value
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class ReplaceLibrariesWithApiPlugin extends Recipe {
     private static final XPathMatcher DEPENDENCIES_MATCHER = new XPathMatcher("/project/dependencies");
 

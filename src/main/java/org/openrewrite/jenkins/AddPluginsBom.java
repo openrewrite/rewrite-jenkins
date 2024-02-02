@@ -38,7 +38,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Value
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class AddPluginsBom extends Recipe {
     private static final BomLookup LOOKUP = new BomLookup();
     private static final String PLUGINS_BOM_GROUP_ID = "io.jenkins.tools.bom";

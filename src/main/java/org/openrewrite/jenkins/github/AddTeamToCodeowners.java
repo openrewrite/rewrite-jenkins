@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 import static java.util.Objects.requireNonNull;
 
 @Value
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class AddTeamToCodeowners extends ScanningRecipe<AddTeamToCodeowners.Scanned> {
     private static final String FILE_PATH = ".github/CODEOWNERS";
 
