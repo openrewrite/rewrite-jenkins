@@ -25,11 +25,7 @@ import org.openrewrite.maven.AddManagedDependency;
 import org.openrewrite.maven.ChangeManagedDependencyGroupIdAndArtifactId;
 import org.openrewrite.maven.MavenIsoVisitor;
 import org.openrewrite.maven.RemoveRedundantDependencyVersions;
-import org.openrewrite.maven.tree.Dependency;
-import org.openrewrite.maven.tree.ManagedDependency;
-import org.openrewrite.maven.tree.MavenResolutionResult;
-import org.openrewrite.maven.tree.Pom;
-import org.openrewrite.maven.tree.ResolvedPom;
+import org.openrewrite.maven.tree.*;
 import org.openrewrite.xml.RemoveContentVisitor;
 import org.openrewrite.xml.tree.Xml;
 
