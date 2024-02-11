@@ -60,7 +60,8 @@ public class ReplaceLibrariesWithApiPlugin extends Recipe {
     String pluginVersion;
 
     @Option(displayName = "Replaced Libraries",
-            description = "The set of library coordinates replaced by this API Plugin.")
+            description = "The set of library coordinates replaced by this API Plugin."
+            example= "groupId: org.apache.commons\nartifactId: commons-text")
     Set<Library> replaces;
 
     /**
