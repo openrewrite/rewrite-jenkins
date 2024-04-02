@@ -38,6 +38,8 @@ import java.util.Optional;
 public class AddPluginsBom extends Recipe {
     private static final BomLookup LOOKUP = new BomLookup();
     private static final String PLUGINS_BOM_GROUP_ID = "io.jenkins.tools.bom";
+    private static final String LATEST_RELEASE = "latest.release";
+    private static final String VERSION_METADATA_PATTERN = "\\.v[a-f0-9_]+";
 
     @Override
     public String getDisplayName() {
@@ -99,11 +101,11 @@ public class AddPluginsBom extends Recipe {
                     return (Xml.Document) new AddManagedDependency(
                             PLUGINS_BOM_GROUP_ID,
                             bomName,
-                            "latest.release",
+                            LATEST_RELEASE,
                             "import",
                             "pom",
                             null,
-                            null,
+                            VERSION_METADATA_PATTERN,
                             true,
                             null,
                             null
@@ -129,7 +131,8 @@ public class AddPluginsBom extends Recipe {
                                         artifactId,
                                         groupId,
                                         bomName,
-                                        "latest.release"
+                                        LATEST_RELEASE,
+                                        VERSION_METADATA_PATTERN
                                 ).getVisitor());
                             }
                         }
