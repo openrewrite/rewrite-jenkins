@@ -87,14 +87,8 @@ public class AddPluginsBom extends Recipe {
                     if (groupId == null || version == null) {
                         continue;
                     }
-                    if (LOOKUP.inBom(groupId, dependency.getArtifactId())) {
+                    if (!hasDependencyInBom && LOOKUP.inBom(groupId, dependency.getArtifactId())) {
                         hasDependencyInBom = true;
-                        doAfterVisit(new RemoveRedundantDependencyVersions(
-                                groupId,
-                                dependency.getArtifactId(),
-                                false,
-                                null
-                        ).getVisitor());
                     }
                 }
                 if (!bomFound && hasDependencyInBom) {

@@ -151,6 +151,7 @@ class AddPluginsBomTest implements RewriteTest {
                     <dependency>
                         <groupId>org.jenkins-ci.plugins</groupId>
                         <artifactId>ant</artifactId>
+                        <version>1.9</version>
                     </dependency>
                 </dependencies>
             </project>
@@ -494,6 +495,7 @@ class AddPluginsBomTest implements RewriteTest {
                 <dependency>
                   <groupId>org.jenkins-ci.plugins.workflow</groupId>
                   <artifactId>workflow-api</artifactId>
+                  <version>2.6</version>
                   <scope>test</scope>
                 </dependency>
               </dependencies>

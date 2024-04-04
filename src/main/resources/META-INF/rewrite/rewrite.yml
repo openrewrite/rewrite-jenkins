@@ -48,6 +48,8 @@ recipeList:
       groupId: org.jenkins-ci
       artifactId: symbol-annotation
   - org.openrewrite.jenkins.AddPluginsBom
+  - org.openrewrite.maven.RemoveRedundantDependencyVersions:
+      onlyIfVersionsMatch: false
   - org.openrewrite.java.ChangePackage:
       # 2.401.2 started providing Guice 6.x, which supports the `jakarta.inject` namespace
       oldPackageName: javax.inject
