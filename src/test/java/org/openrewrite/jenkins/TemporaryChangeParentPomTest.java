@@ -120,4 +120,84 @@ class TemporaryChangeParentPomTest implements RewriteTest {
             """
         ));
     }
+
+    @Test
+    void shouldNotAddToDependencyManagement() {
+        // language=xml
+        rewriteRun(pomXml(
+          """
+            <project>
+                <parent>
+                    <groupId>org.jenkins-ci.plugins</groupId>
+                    <artifactId>plugin</artifactId>
+                    <version>4.75</version>
+                    <relativePath/>
+                </parent>
+                <properties>
+                    <jenkins.version>2.387.3</jenkins.version>
+                </properties>
+                <repositories>
+                    <repository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>https://repo.jenkins-ci.org/public/</url>
+                    </repository>
+                </repositories>
+                <dependencyManagement>
+                  <dependencies>
+                      <dependency>
+                          <groupId>io.jenkins.tools.bom</groupId>
+                          <artifactId>bom-2.387.x</artifactId>
+                          <version>2516.v113cb_3d00317</version>
+                          <type>pom</type>
+                          <scope>import</scope>
+                      </dependency>
+                  </dependencies>
+                </dependencyManagement>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jenkins-ci.plugins</groupId>
+                        <artifactId>junit</artifactId>
+                    </dependency>
+                </dependencies>
+            </project>
+            """,
+          """
+            <project>
+                <parent>
+                    <groupId>org.jenkins-ci.plugins</groupId>
+                    <artifactId>plugin</artifactId>
+                    <version>4.81</version>
+                    <relativePath/>
+                </parent>
+                <properties>
+                    <jenkins.version>2.387.3</jenkins.version>
+                </properties>
+                <repositories>
+                    <repository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>https://repo.jenkins-ci.org/public/</url>
+                    </repository>
+                </repositories>
+                <dependencyManagement>
+                  <dependencies>
+                      <dependency>
+                          <groupId>io.jenkins.tools.bom</groupId>
+                          <artifactId>bom-2.387.x</artifactId>
+                          <version>2516.v113cb_3d00317</version>
+                          <type>pom</type>
+                          <scope>import</scope>
+                      </dependency>
+                  </dependencies>
+                </dependencyManagement>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jenkins-ci.plugins</groupId>
+                        <artifactId>junit</artifactId>
+                    </dependency>
+                </dependencies>
+            </project>
+            """
+        ));
+    }
+
 }
