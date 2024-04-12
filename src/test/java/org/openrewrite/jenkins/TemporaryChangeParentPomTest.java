@@ -127,6 +127,8 @@ class TemporaryChangeParentPomTest implements RewriteTest {
         rewriteRun(pomXml(
           """
             <project>
+                <modelVersion>4.0.0</modelVersion>
+                <artifactId>sample-plugin</artifactId>
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
@@ -142,6 +144,12 @@ class TemporaryChangeParentPomTest implements RewriteTest {
                         <url>https://repo.jenkins-ci.org/public/</url>
                     </repository>
                 </repositories>
+                <pluginRepositories>
+                    <pluginRepository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>https://repo.jenkins-ci.org/public/</url>
+                    </pluginRepository>
+                </pluginRepositories>
                 <dependencyManagement>
                   <dependencies>
                       <dependency>
@@ -163,6 +171,8 @@ class TemporaryChangeParentPomTest implements RewriteTest {
             """,
           """
             <project>
+                <modelVersion>4.0.0</modelVersion>
+                <artifactId>sample-plugin</artifactId>
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
@@ -178,6 +188,12 @@ class TemporaryChangeParentPomTest implements RewriteTest {
                         <url>https://repo.jenkins-ci.org/public/</url>
                     </repository>
                 </repositories>
+                <pluginRepositories>
+                    <pluginRepository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>https://repo.jenkins-ci.org/public/</url>
+                    </pluginRepository>
+                </pluginRepositories>
                 <dependencyManagement>
                   <dependencies>
                       <dependency>
