@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static java.util.Collections.emptyList;
+
 @Value
 @EqualsAndHashCode(callSuper = false)
 public class AddPluginsBom extends Recipe {
@@ -41,6 +43,8 @@ public class AddPluginsBom extends Recipe {
     private static final String PLUGINS_BOM_GROUP_ID = "io.jenkins.tools.bom";
     private static final String LATEST_RELEASE = "latest.release";
     private static final String VERSION_METADATA_PATTERN = "\\.v[a-f0-9_]+";
+    private static final String PLUGIN_BOMS_KEY = "pluginBoms";
+    private static final String PLUGIN_BOM_NAME_KEY = "pluginBomName";
 
     @Override
     public String getDisplayName() {
@@ -58,9 +62,6 @@ public class AddPluginsBom extends Recipe {
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {
         return new MavenIsoVisitor<ExecutionContext>() {
-            private final List<Xml.Tag> boms = new LinkedList<>();
-            private String bomName = "";
-
             @Override
             public Xml.Document visitDocument(Xml.Document document, ExecutionContext ctx) {
                 Markers m = document.getMarkers();
@@ -101,6 +102,7 @@ public class AddPluginsBom extends Recipe {
                     }
                 }
                 Xml.Document d = super.visitDocument(document, ctx);
+                String bomName = getCursor().getMessage(PLUGIN_BOM_NAME_KEY);
                 if (bomName == null) {
                     throw new IllegalStateException("Could not find jenkins.version property");
                 }
@@ -120,7 +122,8 @@ public class AddPluginsBom extends Recipe {
                 } else if (bomFound) {
                     Xml.Tag exact = null;
                     Xml.Tag change = null;
-                    for (Xml.Tag bom : boms) {
+                    List<Xml.Tag> pluginBoms = getCursor().getMessage(PLUGIN_BOMS_KEY, emptyList());
+                    for (Xml.Tag bom : pluginBoms) {
                         String artifactId = bom.getChildValue("artifactId")
                                 .orElseThrow(() -> new IllegalStateException("No artifactId found on bom"));
                         if (artifactId.equals(bomName) && exact == null) {
@@ -156,12 +159,15 @@ public class AddPluginsBom extends Recipe {
                     String groupId = tag.getChildValue("groupId").orElse("");
                     String artifactId = tag.getChildValue("artifactId").orElse("");
                     if (PLUGINS_BOM_GROUP_ID.equals(groupId) && !artifactId.isEmpty()) {
-                        boms.add(t);
+                        List<Xml.Tag> pluginBoms = getCursor().getNearestMessage(PLUGIN_BOMS_KEY, new LinkedList<>());
+                        pluginBoms.add(t);
+                        getCursor().putMessageOnFirstEnclosing(Xml.Document.class, PLUGIN_BOMS_KEY, pluginBoms);
                     }
                 } else if (isPropertyTag() && Objects.equals("jenkins.version", t.getName())) {
                     String jenkinsVersion = t.getValue().orElseThrow(() ->
                             new IllegalStateException("No value found for jenkins.version property tag"));
-                    bomName = Jenkins.bomNameForJenkinsVersion(jenkinsVersion);
+                    String bomName = Jenkins.bomNameForJenkinsVersion(jenkinsVersion);
+                    getCursor().putMessageOnFirstEnclosing(Xml.Document.class, PLUGIN_BOM_NAME_KEY, bomName);
                 }
                 return t;
             }
