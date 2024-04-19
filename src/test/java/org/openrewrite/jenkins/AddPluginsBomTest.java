@@ -288,6 +288,85 @@ class AddPluginsBomTest implements RewriteTest {
     }
 
     @Test
+    void shouldFixOutdatedPluginsBomPropertiesBelowManagedDependencies() {
+        // language=xml
+        rewriteRun(pomXml(
+          """
+            <project>
+                <parent>
+                    <groupId>org.jenkins-ci.plugins</groupId>
+                    <artifactId>plugin</artifactId>
+                    <version>4.70</version>
+                    <relativePath/>
+                </parent>
+                <dependencyManagement>
+                    <dependencies>
+                        <dependency>
+                            <groupId>io.jenkins.tools.bom</groupId>
+                            <artifactId>bom-2.346.x</artifactId>
+                            <version>1706.vc166d5f429f8</version>
+                            <type>pom</type>
+                            <scope>import</scope>
+                        </dependency>
+                    </dependencies>
+                </dependencyManagement>
+                <repositories>
+                    <repository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>https://repo.jenkins-ci.org/public/</url>
+                    </repository>
+                </repositories>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jenkins-ci.plugins</groupId>
+                        <artifactId>ant</artifactId>
+                    </dependency>
+                </dependencies>
+                <properties>
+                    <jenkins.version>2.361.4</jenkins.version>
+                </properties>
+            </project>
+            """.stripIndent(),
+          """
+            <project>
+                <parent>
+                    <groupId>org.jenkins-ci.plugins</groupId>
+                    <artifactId>plugin</artifactId>
+                    <version>4.70</version>
+                    <relativePath/>
+                </parent>
+                <dependencyManagement>
+                    <dependencies>
+                        <dependency>
+                            <groupId>io.jenkins.tools.bom</groupId>
+                            <artifactId>bom-2.361.x</artifactId>
+                            <version>2102.v854b_fec19c92</version>
+                            <type>pom</type>
+                            <scope>import</scope>
+                        </dependency>
+                    </dependencies>
+                </dependencyManagement>
+                <repositories>
+                    <repository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>https://repo.jenkins-ci.org/public/</url>
+                    </repository>
+                </repositories>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jenkins-ci.plugins</groupId>
+                        <artifactId>ant</artifactId>
+                    </dependency>
+                </dependencies>
+                <properties>
+                    <jenkins.version>2.361.4</jenkins.version>
+                </properties>
+            </project>
+            """.stripIndent()
+        ));
+    }
+
+    @Test
     void shouldFixOutdatedPluginsBomEvenIfUnused() {
         // language=xml
         rewriteRun(pomXml(
