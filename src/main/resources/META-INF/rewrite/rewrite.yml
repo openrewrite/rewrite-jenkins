@@ -42,7 +42,7 @@ recipeList:
       overrideManagedVersion: false
   - org.openrewrite.jenkins.UpgradeVersionProperty:
       key: jenkins.version
-      minimumVersion: 2.401.3
+      minimumVersion: 2.426.3
   - org.openrewrite.maven.RemoveDependency:
       # Provided by core as of 2.349
       groupId: org.jenkins-ci
