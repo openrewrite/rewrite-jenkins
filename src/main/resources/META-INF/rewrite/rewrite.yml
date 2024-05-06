@@ -31,7 +31,7 @@ recipeList:
       annotationPattern: "@org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement"
   - org.openrewrite.jenkins.UpgradeHtmlUnit_3_3_0
       # https://github.com/jenkinsci/plugin-pom/releases/tag/plugin-4.66 bumped htmlunit to 3.3.0
-  - org.openrewrite.maven.ChangeDependencyGroupIdAndArtifactId:
+  - org.openrewrite.java.dependencies.ChangeDependency:
       # https://github.com/jenkinsci/plugin-pom/releases/tag/plugin-4.68 bumped mockito-bom to 5.4.0,
       # which dropped mockito-inline
       oldGroupId: org.mockito
@@ -43,7 +43,7 @@ recipeList:
   - org.openrewrite.jenkins.UpgradeVersionProperty:
       key: jenkins.version
       minimumVersion: 2.426.3
-  - org.openrewrite.maven.RemoveDependency:
+  - org.openrewrite.java.dependencies.RemoveDependency:
       # Provided by core as of 2.349
       groupId: org.jenkins-ci
       artifactId: symbol-annotation
