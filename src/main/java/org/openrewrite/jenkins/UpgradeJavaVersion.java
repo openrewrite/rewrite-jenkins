@@ -31,7 +31,7 @@ public class UpgradeJavaVersion extends Recipe {
     @Option(displayName = "Java version",
             description = "The Java version to upgrade to.",
             example = "17")
-    int version;
+    Integer version;
 
     @Option(displayName = "Distribution",
             description = "The distribution of Java to use. When omitted the current distribution is maintained.",
@@ -47,21 +47,21 @@ public class UpgradeJavaVersion extends Recipe {
     @Override
     public String getDescription() {
         return "Upgrades the version of java specified in Jenkins groovy scripts. " +
-                "Will not downgrade if the version is newer than the specified version.";
+               "Will not downgrade if the version is newer than the specified version.";
     }
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {
-        return Preconditions.check(new FindSourceFiles("**/Jenkinsfile"),  new GroovyIsoVisitor<ExecutionContext>() {
+        return Preconditions.check(new FindSourceFiles("**/Jenkinsfile"), new GroovyIsoVisitor<ExecutionContext>() {
             @Override
             public J.Assignment visitAssignment(J.Assignment assignment, ExecutionContext executionContext) {
                 J.Assignment a = super.visitAssignment(assignment, executionContext);
-                if(!(a.getVariable() instanceof J.Identifier) || !(a.getAssignment() instanceof J.Literal)) {
+                if (!(a.getVariable() instanceof J.Identifier) || !(a.getAssignment() instanceof J.Literal)) {
                     return a;
                 }
                 J.Identifier id = (J.Identifier) a.getVariable();
                 J.Literal value = (J.Literal) a.getAssignment();
-                if( !("java_version".equals(id.getSimpleName()) || "javaVersion".equals(id.getSimpleName())) || !(value.getValue() instanceof String)) {
+                if (!("java_version".equals(id.getSimpleName()) || "javaVersion".equals(id.getSimpleName())) || !(value.getValue() instanceof String)) {
                     return a;
                 }
                 String currentJdkString = ((String) value.getValue()).trim();
@@ -75,15 +75,15 @@ public class UpgradeJavaVersion extends Recipe {
                     return Markup.warn(a, new IllegalStateException("Unable to parse JDK version", e));
                 }
                 String targetVersion = currentJdkVersion;
-                if(jdkVersion < version) {
+                if (jdkVersion < version) {
                     targetVersion = String.valueOf(version);
                 }
                 String targetDistribution = currentJdkDistribution;
-                if(distribution != null) {
+                if (distribution != null) {
                     targetDistribution = distribution;
                 }
                 String targetJdkString = targetDistribution + targetVersion;
-                if(!targetJdkString.equals(currentJdkString)) {
+                if (!targetJdkString.equals(currentJdkString)) {
                     char quote = value.getValueSource() == null ? '\'' : value.getValueSource().charAt(0);
                     a = a.withAssignment(value.withValue(targetJdkString)
                             .withValueSource(quote + targetJdkString + quote));
