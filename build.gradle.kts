@@ -13,6 +13,7 @@ dependencies {
 
     implementation(platform("org.openrewrite:rewrite-bom:$rewriteVersion"))
 
+    implementation("org.openrewrite:rewrite-groovy")
     implementation("org.openrewrite:rewrite-java")
     implementation("org.openrewrite:rewrite-maven")
     implementation("org.openrewrite:rewrite-yaml")
