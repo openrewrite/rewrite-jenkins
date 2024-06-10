@@ -16,23 +16,26 @@
 package org.openrewrite.jenkins;
 
 import org.junit.jupiter.api.Test;
+import org.openrewrite.DocumentExample;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
 import static org.openrewrite.groovy.Assertions.groovy;
 
-public class UpgradeJavaVersionTest implements RewriteTest {
+class UpgradeJavaVersionTest implements RewriteTest {
 
     @Override
     public void defaults(RecipeSpec spec) {
         spec.recipe(new UpgradeJavaVersion(17, null));
     }
 
+    @DocumentExample
     @Test
     void openJdk() {
         rewriteRun(
           //language=groovy
-          groovy("""
+          groovy(
+                """
               #!/usr/bin/env groovy
               
               stage("Checkout") {
@@ -61,7 +64,8 @@ public class UpgradeJavaVersionTest implements RewriteTest {
         rewriteRun(
           spec -> spec.recipe(new UpgradeJavaVersion(17, "openjdk")),
           //language=groovy
-          groovy("""
+          groovy(
+                """
               node('cicd-build') {
                   stage ("Titan") {
                       titan {

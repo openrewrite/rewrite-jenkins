@@ -54,8 +54,8 @@ public class UpgradeJavaVersion extends Recipe {
     public TreeVisitor<?, ExecutionContext> getVisitor() {
         return Preconditions.check(new FindSourceFiles("**/Jenkinsfile"), new GroovyIsoVisitor<ExecutionContext>() {
             @Override
-            public J.Assignment visitAssignment(J.Assignment assignment, ExecutionContext executionContext) {
-                J.Assignment a = super.visitAssignment(assignment, executionContext);
+            public J.Assignment visitAssignment(J.Assignment assignment, ExecutionContext ctx) {
+                J.Assignment a = super.visitAssignment(assignment, ctx);
                 if (!(a.getVariable() instanceof J.Identifier) || !(a.getAssignment() instanceof J.Literal)) {
                     return a;
                 }
