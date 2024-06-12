@@ -29,6 +29,7 @@ import static org.mockito.BDDMockito.given;
 class AddTeamToCodeownersScannedTest {
     @Mock
     private TeamNameGenerator<TeamNameInput> generator;
+
     @Mock
     private TeamNameValidator validator;
 
