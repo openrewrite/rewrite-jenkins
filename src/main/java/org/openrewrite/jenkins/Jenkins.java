@@ -36,8 +36,7 @@ class Jenkins {
      * @param sourceFile POM
      * @return jenkins-core's version if managed, otherwise null
      */
-    @Nullable
-    public static String isJenkinsPluginPom(SourceFile sourceFile) {
+    public static @Nullable String isJenkinsPluginPom(SourceFile sourceFile) {
         return sourceFile.getMarkers()
                 .findFirst(MavenResolutionResult.class)
                 .map(mavenResolution -> mavenResolution.getPom().getManagedVersion("org.jenkins-ci.main",
