@@ -18,7 +18,7 @@
 type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.jenkins.ModernizePluginForJava8
 displayName: Modernize a Jenkins plugin to the latest versions supported by Java 8
-description: >
+description: >-
   This recipe is intended to break down the modernization of very old plugins into distinct steps.
   It allows modernizing all tooling up to the last versions that supported Java 8.
   This can then be followed by another recipe that makes the jump to Java 11.

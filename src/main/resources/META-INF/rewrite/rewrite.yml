@@ -17,7 +17,7 @@
 type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.jenkins.ModernizePlugin
 displayName: Modernize a Jenkins plugin to the latest recommended versions
-description: >
+description: >-
   This recipe is intended to change over time to reflect the most recent tooling and
   [recommended Jenkins baseline](https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/).
 recipeList:
