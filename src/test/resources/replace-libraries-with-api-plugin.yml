@@ -17,6 +17,8 @@
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.jenkins.CommonsTextToApiPlugin
+displayName: Replace Commons Text with Jenkins API Plugin
+description: Replaces usages of Apache Commons Text with the Jenkins API Plugin for Commons Text.
 recipeList:
   - org.openrewrite.jenkins.ReplaceLibrariesWithApiPlugin:
       pluginGroupId: io.jenkins.plugins

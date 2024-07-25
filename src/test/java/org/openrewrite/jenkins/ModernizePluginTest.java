@@ -32,11 +32,11 @@ class ModernizePluginTest implements RewriteTest {
     @Language("java")
     private final String javax = """
       package javax.inject;
-            
+
       import java.lang.annotation.Documented;
       import java.lang.annotation.Retention;
       import static java.lang.annotation.RetentionPolicy.RUNTIME;
-            
+
       @Documented
       @Retention(RUNTIME)
       public @interface Singleton {}
@@ -45,11 +45,11 @@ class ModernizePluginTest implements RewriteTest {
     @Language("java")
     private final String jakarta = """
       package jakarta.inject;
-            
+
       import java.lang.annotation.Documented;
       import java.lang.annotation.Retention;
       import static java.lang.annotation.RetentionPolicy.RUNTIME;
-            
+
       @Documented
       @Retention(RUNTIME)
       public @interface Singleton {}
@@ -86,9 +86,9 @@ class ModernizePluginTest implements RewriteTest {
             java(
               """
                 package something;
-                          
+          
                 import javax.inject.Singleton;
-                          
+          
                 @Singleton
                 class Example {
                     int add(int a, int b) { return a + b; }
@@ -96,9 +96,9 @@ class ModernizePluginTest implements RewriteTest {
                 """,
               """
                 package something;
-                          
+          
                 import jakarta.inject.Singleton;
-                          
+          
                 @Singleton
                 class Example {
                     int add(int a, int b) { return a + b; }

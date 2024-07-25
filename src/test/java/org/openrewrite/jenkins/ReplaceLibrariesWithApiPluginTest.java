@@ -49,11 +49,11 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                     <version>4.40</version>
                     <relativePath />
                 </parent>
-                            
+
                 <properties>
                     <jenkins.version>2.289.1</jenkins.version>
                 </properties>
-                            
+
                 <dependencies>
                     <dependency>
                         <groupId>org.apache.commons</groupId>
@@ -61,7 +61,7 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                         <version>1.9</version>
                     </dependency>
                 </dependencies>
-                            
+
                 <repositories>
                     <repository>
                         <id>repo.jenkins-ci.org</id>
@@ -78,11 +78,11 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                     <version>4.40</version>
                     <relativePath />
                 </parent>
-                            
+
                 <properties>
                     <jenkins.version>2.289.1</jenkins.version>
                 </properties>
-                            
+
                 <dependencies>
                     <dependency>
                         <groupId>io.jenkins.plugins</groupId>
@@ -90,7 +90,7 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                         <version>1.9-5.v7ea_44fe6061c</version>
                     </dependency>
                 </dependencies>
-                            
+
                 <repositories>
                     <repository>
                         <id>repo.jenkins-ci.org</id>
@@ -113,11 +113,11 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                     <version>4.40</version>
                     <relativePath />
                 </parent>
-                            
+
                 <properties>
                     <jenkins.version>2.289.1</jenkins.version>
                 </properties>
-                            
+
                 <dependencies>
                     <dependency>
                         <groupId>org.apache.commons</groupId>
@@ -125,7 +125,7 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                         <version>1.9</version>
                     </dependency>
                 </dependencies>
-                            
+
                 <repositories>
                     <repository>
                         <id>repo.jenkins-ci.org</id>
@@ -142,11 +142,11 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                     <version>4.40</version>
                     <relativePath />
                 </parent>
-                            
+
                 <properties>
                     <jenkins.version>2.289.1</jenkins.version>
                 </properties>
-                            
+
                 <dependencies>
                     <dependency>
                         <groupId>io.jenkins.plugins</groupId>
@@ -154,7 +154,7 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                         <version>1.9-5.v7ea_44fe6061c</version>
                     </dependency>
                 </dependencies>
-                            
+
                 <repositories>
                     <repository>
                         <id>repo.jenkins-ci.org</id>
@@ -178,11 +178,11 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                     <version>4.40</version>
                     <relativePath />
                 </parent>
-                            
+
                 <properties>
                     <jenkins.version>2.289.1</jenkins.version>
                 </properties>
-                            
+
                 <dependencies>
                     <dependency>
                         <groupId>org.apache.turbine</groupId>
@@ -190,7 +190,7 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                         <version>5.1</version>
                     </dependency>
                 </dependencies>
-                            
+
                 <repositories>
                     <repository>
                         <id>repo.jenkins-ci.org</id>
@@ -207,11 +207,11 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                     <version>4.40</version>
                     <relativePath />
                 </parent>
-                            
+
                 <properties>
                     <jenkins.version>2.289.1</jenkins.version>
                 </properties>
-                            
+
                 <dependencies>
                     <dependency>
                         <groupId>io.jenkins.plugins</groupId>
@@ -231,7 +231,7 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                         </exclusions>
                     </dependency>
                 </dependencies>
-                            
+
                 <repositories>
                     <repository>
                         <id>repo.jenkins-ci.org</id>
