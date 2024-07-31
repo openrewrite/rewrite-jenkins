@@ -49,7 +49,7 @@ class CreateIndexJellyTest implements RewriteTest {
                   <parent>
                       <groupId>org.jenkins-ci.plugins</groupId>
                       <artifactId>plugin</artifactId>
-                      <version>4.40</version>
+                      <version>4.86</version>
                   </parent>
                   <artifactId>my-plugin</artifactId>
                   <description>This is my plugin's description</description>
@@ -85,7 +85,7 @@ class CreateIndexJellyTest implements RewriteTest {
                   <parent>
                       <groupId>org.jenkins-ci.plugins</groupId>
                       <artifactId>plugin</artifactId>
-                      <version>4.40</version>
+                      <version>4.86</version>
                   </parent>
                   <artifactId>my-plugin</artifactId>
                   <description/>
@@ -121,7 +121,7 @@ class CreateIndexJellyTest implements RewriteTest {
                   <parent>
                       <groupId>org.jenkins-ci.plugins</groupId>
                       <artifactId>plugin</artifactId>
-                      <version>4.40</version>
+                      <version>4.86</version>
                   </parent>
                   <artifactId>my-plugin</artifactId>
                   <version>0.1</version>
@@ -170,7 +170,7 @@ class CreateIndexJellyTest implements RewriteTest {
                     <parent>
                         <groupId>org.jenkins-ci.plugins</groupId>
                         <artifactId>plugin</artifactId>
-                        <version>4.40</version>
+                        <version>4.86</version>
                     </parent>
                     <artifactId>my-plugin</artifactId>
                     <version>0.1</version>
@@ -199,7 +199,7 @@ class CreateIndexJellyTest implements RewriteTest {
                     <parent>
                         <groupId>org.jenkins-ci.plugins</groupId>
                         <artifactId>plugin</artifactId>
-                        <version>4.40</version>
+                        <version>4.86</version>
                     </parent>
                     <artifactId>different-plugin</artifactId>
                     <version>0.1</version>

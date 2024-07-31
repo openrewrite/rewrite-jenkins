@@ -38,11 +38,11 @@ class AddPluginsBomTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.70</version>
+                    <version>4.86</version>
                     <relativePath/>
                 </parent>
                 <properties>
-                    <jenkins.version>2.387.3</jenkins.version>
+                    <jenkins.version>2.440.3</jenkins.version>
                 </properties>
                 <repositories>
                     <repository>
@@ -64,11 +64,11 @@ class AddPluginsBomTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.70</version>
+                    <version>4.86</version>
                     <relativePath/>
                 </parent>
                 <properties>
-                    <jenkins.version>2.387.3</jenkins.version>
+                    <jenkins.version>2.440.3</jenkins.version>
                 </properties>
                 <repositories>
                     <repository>
@@ -98,11 +98,11 @@ class AddPluginsBomTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.70</version>
+                    <version>4.86</version>
                     <relativePath/>
                 </parent>
                 <properties>
-                    <jenkins.version>2.361.4</jenkins.version>
+                    <jenkins.version>2.440.3</jenkins.version>
                 </properties>
                 <repositories>
                     <repository>
@@ -124,18 +124,18 @@ class AddPluginsBomTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.70</version>
+                    <version>4.86</version>
                     <relativePath/>
                 </parent>
                 <properties>
-                    <jenkins.version>2.361.4</jenkins.version>
+                    <jenkins.version>2.440.3</jenkins.version>
                 </properties>
                 <dependencyManagement>
                     <dependencies>
                         <dependency>
                             <groupId>io.jenkins.tools.bom</groupId>
-                            <artifactId>bom-2.361.x</artifactId>
-                            <version>2102.v854b_fec19c92</version>
+                            <artifactId>bom-2.440.x</artifactId>
+                            <version>3221.ve8f7b_fdd149d</version>
                             <type>pom</type>
                             <scope>import</scope>
                         </dependency>
@@ -167,18 +167,18 @@ class AddPluginsBomTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.70</version>
+                    <version>4.86</version>
                     <relativePath/>
                 </parent>
                 <properties>
-                    <jenkins.version>2.361.4</jenkins.version>
+                    <jenkins.version>2.440.3</jenkins.version>
                 </properties>
                 <dependencyManagement>
                     <dependencies>
                         <dependency>
                             <groupId>io.jenkins.tools.bom</groupId>
-                            <artifactId>bom-2.361.x</artifactId>
-                            <version>1706.vc166d5f429f8</version>
+                            <artifactId>bom-2.440.x</artifactId>
+                            <version>3221.ve8f7b_fdd149d</version>
                             <type>pom</type>
                             <scope>import</scope>
                         </dependency>
@@ -210,11 +210,11 @@ class AddPluginsBomTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.70</version>
+                    <version>4.86</version>
                     <relativePath/>
                 </parent>
                 <properties>
-                    <jenkins.version>2.361.4</jenkins.version>
+                    <jenkins.version>2.440.3</jenkins.version>
                 </properties>
                 <dependencyManagement>
                     <dependencies>
@@ -253,18 +253,18 @@ class AddPluginsBomTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.70</version>
+                    <version>4.86</version>
                     <relativePath/>
                 </parent>
                 <properties>
-                    <jenkins.version>2.361.4</jenkins.version>
+                    <jenkins.version>2.440.3</jenkins.version>
                 </properties>
                 <dependencyManagement>
                     <dependencies>
                         <dependency>
                             <groupId>io.jenkins.tools.bom</groupId>
-                            <artifactId>bom-2.361.x</artifactId>
-                            <version>2102.v854b_fec19c92</version>
+                            <artifactId>bom-2.440.x</artifactId>
+                            <version>3221.ve8f7b_fdd149d</version>
                             <type>pom</type>
                             <scope>import</scope>
                         </dependency>
@@ -296,7 +296,7 @@ class AddPluginsBomTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.70</version>
+                    <version>4.86</version>
                     <relativePath/>
                 </parent>
                 <dependencyManagement>
@@ -323,7 +323,7 @@ class AddPluginsBomTest implements RewriteTest {
                     </dependency>
                 </dependencies>
                 <properties>
-                    <jenkins.version>2.361.4</jenkins.version>
+                    <jenkins.version>2.440.3</jenkins.version>
                 </properties>
             </project>
             """.stripIndent(),
@@ -332,15 +332,15 @@ class AddPluginsBomTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.70</version>
+                    <version>4.86</version>
                     <relativePath/>
                 </parent>
                 <dependencyManagement>
                     <dependencies>
                         <dependency>
                             <groupId>io.jenkins.tools.bom</groupId>
-                            <artifactId>bom-2.361.x</artifactId>
-                            <version>2102.v854b_fec19c92</version>
+                            <artifactId>bom-2.440.x</artifactId>
+                            <version>3221.ve8f7b_fdd149d</version>
                             <type>pom</type>
                             <scope>import</scope>
                         </dependency>
@@ -359,7 +359,7 @@ class AddPluginsBomTest implements RewriteTest {
                     </dependency>
                 </dependencies>
                 <properties>
-                    <jenkins.version>2.361.4</jenkins.version>
+                    <jenkins.version>2.440.3</jenkins.version>
                 </properties>
             </project>
             """.stripIndent()
@@ -375,11 +375,11 @@ class AddPluginsBomTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.70</version>
+                    <version>4.86</version>
                     <relativePath/>
                 </parent>
                 <properties>
-                    <jenkins.version>2.361.4</jenkins.version>
+                    <jenkins.version>2.440.3</jenkins.version>
                 </properties>
                 <dependencyManagement>
                     <dependencies>
@@ -412,18 +412,18 @@ class AddPluginsBomTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.70</version>
+                    <version>4.86</version>
                     <relativePath/>
                 </parent>
                 <properties>
-                    <jenkins.version>2.361.4</jenkins.version>
+                    <jenkins.version>2.440.3</jenkins.version>
                 </properties>
                 <dependencyManagement>
                     <dependencies>
                         <dependency>
                             <groupId>io.jenkins.tools.bom</groupId>
-                            <artifactId>bom-2.361.x</artifactId>
-                            <version>2102.v854b_fec19c92</version>
+                            <artifactId>bom-2.440.x</artifactId>
+                            <version>3221.ve8f7b_fdd149d</version>
                             <type>pom</type>
                             <scope>import</scope>
                         </dependency>
@@ -456,11 +456,11 @@ class AddPluginsBomTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.70</version>
+                    <version>4.86</version>
                     <relativePath/>
                 </parent>
                 <properties>
-                    <jenkins.version>2.361.4</jenkins.version>
+                    <jenkins.version>2.440.3</jenkins.version>
                 </properties>
                 <dependencyManagement>
                     <dependencies>
@@ -500,7 +500,7 @@ class AddPluginsBomTest implements RewriteTest {
               <parent>
                 <groupId>org.jenkins-ci.plugins</groupId>
                 <artifactId>plugin</artifactId>
-                <version>4.51</version>
+                <version>4.86</version>
                 <relativePath/>
               </parent>
 
@@ -556,7 +556,7 @@ class AddPluginsBomTest implements RewriteTest {
               <parent>
                 <groupId>org.jenkins-ci.plugins</groupId>
                 <artifactId>plugin</artifactId>
-                <version>4.51</version>
+                <version>4.86</version>
                 <relativePath/>
               </parent>
 

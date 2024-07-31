@@ -46,12 +46,12 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.40</version>
+                    <version>4.86</version>
                     <relativePath />
                 </parent>
 
                 <properties>
-                    <jenkins.version>2.289.1</jenkins.version>
+                    <jenkins.version>2.440.3</jenkins.version>
                 </properties>
 
                 <dependencies>
@@ -75,12 +75,12 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.40</version>
+                    <version>4.86</version>
                     <relativePath />
                 </parent>
 
                 <properties>
-                    <jenkins.version>2.289.1</jenkins.version>
+                    <jenkins.version>2.440.3</jenkins.version>
                 </properties>
 
                 <dependencies>
@@ -110,12 +110,12 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.40</version>
+                    <version>4.86</version>
                     <relativePath />
                 </parent>
 
                 <properties>
-                    <jenkins.version>2.289.1</jenkins.version>
+                    <jenkins.version>2.440.3</jenkins.version>
                 </properties>
 
                 <dependencies>
@@ -139,12 +139,12 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.40</version>
+                    <version>4.86</version>
                     <relativePath />
                 </parent>
 
                 <properties>
-                    <jenkins.version>2.289.1</jenkins.version>
+                    <jenkins.version>2.440.3</jenkins.version>
                 </properties>
 
                 <dependencies>
@@ -175,12 +175,12 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.40</version>
+                    <version>4.86</version>
                     <relativePath />
                 </parent>
 
                 <properties>
-                    <jenkins.version>2.289.1</jenkins.version>
+                    <jenkins.version>2.440.3</jenkins.version>
                 </properties>
 
                 <dependencies>
@@ -204,12 +204,12 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.40</version>
+                    <version>4.86</version>
                     <relativePath />
                 </parent>
 
                 <properties>
-                    <jenkins.version>2.289.1</jenkins.version>
+                    <jenkins.version>2.440.3</jenkins.version>
                 </properties>
 
                 <dependencies>

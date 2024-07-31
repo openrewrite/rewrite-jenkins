@@ -40,7 +40,7 @@ class IsJenkinsPluginTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.40</version>
+                    <version>4.86</version>
                 </parent>
                 <artifactId>my-plugin</artifactId>
                 <version>0.1</version>
@@ -57,7 +57,7 @@ class IsJenkinsPluginTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.40</version>
+                    <version>4.86</version>
                 </parent>
                 <artifactId>my-plugin</artifactId>
                 <version>0.1</version>

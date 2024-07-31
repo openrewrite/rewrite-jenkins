@@ -36,7 +36,7 @@ class AddTeamToCodeownersTest implements RewriteTest {
           <parent>
               <groupId>org.jenkins-ci.plugins</groupId>
               <artifactId>plugin</artifactId>
-              <version>4.72</version>
+              <version>4.86</version>
           </parent>
           <artifactId>sample</artifactId>
           <version>0.1</version>
@@ -138,7 +138,7 @@ class AddTeamToCodeownersTest implements RewriteTest {
                     <parent>
                         <groupId>org.jenkins-ci.plugins</groupId>
                         <artifactId>plugin</artifactId>
-                        <version>4.72</version>
+                        <version>4.86</version>
                     </parent>
                     <artifactId>my-plugin</artifactId>
                     <version>0.1</version>
@@ -156,7 +156,7 @@ class AddTeamToCodeownersTest implements RewriteTest {
                     <parent>
                         <groupId>org.jenkins-ci.plugins</groupId>
                         <artifactId>plugin</artifactId>
-                        <version>4.72</version>
+                        <version>4.86</version>
                     </parent>
                     <artifactId>different-plugin</artifactId>
                     <version>0.1</version>
@@ -202,7 +202,7 @@ class AddTeamToCodeownersTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.72</version>
+                    <version>4.86</version>
                 </parent>
                 <artifactId>tool-labels-plugin</artifactId>
                 <version>0.1</version>
@@ -230,7 +230,7 @@ class AddTeamToCodeownersTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.72</version>
+                    <version>4.86</version>
                 </parent>
                 <artifactId>tool-labels-plugin</artifactId>
                 <version>0.1</version>
