@@ -49,7 +49,7 @@ class ModernizePluginForJava8Test implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent(),
+            """,
           """
             <project>
                 <parent>
@@ -68,7 +68,7 @@ class ModernizePluginForJava8Test implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent()
+            """
         ));
     }
 
@@ -93,7 +93,7 @@ class ModernizePluginForJava8Test implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent(),
+            """,
           """
             <project>
                 <parent>
@@ -112,7 +112,7 @@ class ModernizePluginForJava8Test implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent()
+            """
         ));
     }
 
@@ -137,7 +137,7 @@ class ModernizePluginForJava8Test implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent()
+            """
         ));
     }
 
@@ -162,7 +162,7 @@ class ModernizePluginForJava8Test implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent(),
+            """,
           """
             <project>
                 <parent>
@@ -181,7 +181,7 @@ class ModernizePluginForJava8Test implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent()
+            """
         ));
     }
 
@@ -206,7 +206,7 @@ class ModernizePluginForJava8Test implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent()
+            """
         ));
     }
 
@@ -232,7 +232,7 @@ class ModernizePluginForJava8Test implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent(),
+            """,
           """
             <project>
                 <parent>
@@ -251,7 +251,7 @@ class ModernizePluginForJava8Test implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent()
+            """
         ));
     }
 
@@ -275,7 +275,7 @@ class ModernizePluginForJava8Test implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent(),
+            """,
           """
             <project>
                 <parent>
@@ -294,7 +294,7 @@ class ModernizePluginForJava8Test implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent()
+            """
         ));
     }
 
@@ -336,7 +336,7 @@ class ModernizePluginForJava8Test implements RewriteTest {
                     </dependency>
                 </dependencies>
             </project>
-            """.stripIndent(),
+            """,
           """
             <project>
                 <parent>
@@ -371,7 +371,7 @@ class ModernizePluginForJava8Test implements RewriteTest {
                     </dependency>
                 </dependencies>
             </project>
-            """.stripIndent()
+            """
         ));
     }
 
@@ -406,7 +406,7 @@ class ModernizePluginForJava8Test implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent(),
+            """,
           """
             <project>
                 <parent>
@@ -444,7 +444,7 @@ class ModernizePluginForJava8Test implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent()
+            """
         ));
     }
 }

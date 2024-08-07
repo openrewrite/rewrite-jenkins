@@ -39,14 +39,14 @@ class JavaxAnnotationsToSpotBugsTest implements RewriteTest {
             public class A {
                 static @Nonnull String CONSTANT = "A";
             }
-            """.stripIndent(),
+            """,
           """
             import edu.umd.cs.findbugs.annotations.NonNull;
                         
             public class A {
                 static @NonNull String CONSTANT = "A";
             }
-            """.stripIndent()
+            """
         ));
     }
 
@@ -62,7 +62,7 @@ class JavaxAnnotationsToSpotBugsTest implements RewriteTest {
                     return null;
                 }
             }
-            """.stripIndent(),
+            """,
           """
             import edu.umd.cs.findbugs.annotations.CheckForNull;
                 
@@ -72,7 +72,7 @@ class JavaxAnnotationsToSpotBugsTest implements RewriteTest {
                     return null;
                 }
             }
-            """.stripIndent()
+            """
         ));
     }
 
@@ -95,7 +95,7 @@ class JavaxAnnotationsToSpotBugsTest implements RewriteTest {
                     return Objects.equals(in, "a") ? "yes" : "no";
                 }
             }
-            """.stripIndent(),
+            """,
           """
             import edu.umd.cs.findbugs.annotations.NonNull;
                             
@@ -112,7 +112,7 @@ class JavaxAnnotationsToSpotBugsTest implements RewriteTest {
                     return Objects.equals(in, "a") ? "yes" : "no";
                 }
             }
-            """.stripIndent()
+            """
         ));
     }
 }

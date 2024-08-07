@@ -69,7 +69,7 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent(),
+            """,
           """
             <project>
                 <parent>
@@ -98,7 +98,7 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent()
+            """
         ));
     }
 
@@ -133,7 +133,7 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent(),
+            """,
           """
             <project>
                 <parent>
@@ -162,7 +162,7 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent()
+            """
         ));
     }
 
@@ -198,7 +198,7 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent(),
+            """,
           """
             <project>
                 <parent>
@@ -239,7 +239,7 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent()
+            """
         ));
     }
 }

@@ -20,6 +20,7 @@ import org.openrewrite.DocumentExample;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.maven.Assertions.pomXml;
 
 class AddPluginsBomTest implements RewriteTest {
@@ -51,7 +52,7 @@ class AddPluginsBomTest implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent()
+            """
         ));
     }
 
@@ -84,7 +85,7 @@ class AddPluginsBomTest implements RewriteTest {
                     </dependency>
                 </dependencies>
             </project>
-            """.stripIndent()
+            """
         ));
     }
 
@@ -118,43 +119,13 @@ class AddPluginsBomTest implements RewriteTest {
                     </dependency>
                 </dependencies>
             </project>
-            """.stripIndent(),
-          """
-            <project>
-                <parent>
-                    <groupId>org.jenkins-ci.plugins</groupId>
-                    <artifactId>plugin</artifactId>
-                    <version>4.86</version>
-                    <relativePath/>
-                </parent>
-                <properties>
-                    <jenkins.version>2.440.3</jenkins.version>
-                </properties>
-                <dependencyManagement>
-                    <dependencies>
-                        <dependency>
-                            <groupId>io.jenkins.tools.bom</groupId>
-                            <artifactId>bom-2.440.x</artifactId>
-                            <version>3221.ve8f7b_fdd149d</version>
-                            <type>pom</type>
-                            <scope>import</scope>
-                        </dependency>
-                    </dependencies>
-                </dependencyManagement>
-                <repositories>
-                    <repository>
-                        <id>repo.jenkins-ci.org</id>
-                        <url>https://repo.jenkins-ci.org/public/</url>
-                    </repository>
-                </repositories>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.jenkins-ci.plugins</groupId>
-                        <artifactId>ant</artifactId>
-                    </dependency>
-                </dependencies>
-            </project>
-            """.stripIndent()
+            """,
+          spec -> spec.after(after -> {
+              ModernizePluginTest.Versions versionsAfter = ModernizePluginTest.Versions.parse(after);
+              assertThat(versionsAfter.bomArtifactId()).isNotEmpty();
+              assertThat(versionsAfter.bomVersion()).isNotEmpty();
+              return after;
+          })
         ));
     }
 
@@ -197,12 +168,14 @@ class AddPluginsBomTest implements RewriteTest {
                     </dependency>
                 </dependencies>
             </project>
-            """.stripIndent()
+            """
         ));
     }
 
     @Test
     void shouldFixOutdatedPluginsBom() {
+        String bomArtifactId = "bom-2.346.x";
+        String bomVersion = "1706.vc166d5f429f8";
         // language=xml
         rewriteRun(pomXml(
           """
@@ -220,8 +193,8 @@ class AddPluginsBomTest implements RewriteTest {
                     <dependencies>
                         <dependency>
                             <groupId>io.jenkins.tools.bom</groupId>
-                            <artifactId>bom-2.346.x</artifactId>
-                            <version>1706.vc166d5f429f8</version>
+                            <artifactId>%s</artifactId>
+                            <version>%s</version>
                             <type>pom</type>
                             <scope>import</scope>
                         </dependency>
@@ -247,127 +220,43 @@ class AddPluginsBomTest implements RewriteTest {
                     </dependency>
                 </dependencies>
             </project>
-            """.stripIndent(),
-          """
-            <project>
-                <parent>
-                    <groupId>org.jenkins-ci.plugins</groupId>
-                    <artifactId>plugin</artifactId>
-                    <version>4.86</version>
-                    <relativePath/>
-                </parent>
-                <properties>
-                    <jenkins.version>2.440.3</jenkins.version>
-                </properties>
-                <dependencyManagement>
-                    <dependencies>
-                        <dependency>
-                            <groupId>io.jenkins.tools.bom</groupId>
-                            <artifactId>bom-2.440.x</artifactId>
-                            <version>3221.ve8f7b_fdd149d</version>
-                            <type>pom</type>
-                            <scope>import</scope>
-                        </dependency>
-                    </dependencies>
-                </dependencyManagement>
-                <repositories>
-                    <repository>
-                        <id>repo.jenkins-ci.org</id>
-                        <url>https://repo.jenkins-ci.org/public/</url>
-                    </repository>
-                </repositories>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.jenkins-ci.plugins</groupId>
-                        <artifactId>ant</artifactId>
-                    </dependency>
-                </dependencies>
-            </project>
-            """.stripIndent()
+            """.formatted(bomArtifactId, bomVersion),
+          spec -> spec.after(after -> {
+              ModernizePluginTest.Versions versionsAfter = ModernizePluginTest.Versions.parse(after);
+              assertThat(versionsAfter.bomArtifactId()).isGreaterThan(bomArtifactId);
+              assertThat(versionsAfter.bomVersion()).isGreaterThan(bomVersion);
+              return after;
+          })
         ));
     }
 
     @Test
     void shouldFixOutdatedPluginsBomPropertiesBelowManagedDependencies() {
+        ModernizePluginTest.Versions versionsBefore = new ModernizePluginTest.Versions(
+          "4.86",
+          "2.440.3",
+          "bom-2.346.x",
+          "1706.vc166d5f429f8"
+        );
         // language=xml
         rewriteRun(pomXml(
-          """
-            <project>
-                <parent>
-                    <groupId>org.jenkins-ci.plugins</groupId>
-                    <artifactId>plugin</artifactId>
-                    <version>4.86</version>
-                    <relativePath/>
-                </parent>
-                <dependencyManagement>
-                    <dependencies>
-                        <dependency>
-                            <groupId>io.jenkins.tools.bom</groupId>
-                            <artifactId>bom-2.346.x</artifactId>
-                            <version>1706.vc166d5f429f8</version>
-                            <type>pom</type>
-                            <scope>import</scope>
-                        </dependency>
-                    </dependencies>
-                </dependencyManagement>
-                <repositories>
-                    <repository>
-                        <id>repo.jenkins-ci.org</id>
-                        <url>https://repo.jenkins-ci.org/public/</url>
-                    </repository>
-                </repositories>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.jenkins-ci.plugins</groupId>
-                        <artifactId>ant</artifactId>
-                    </dependency>
-                </dependencies>
-                <properties>
-                    <jenkins.version>2.440.3</jenkins.version>
-                </properties>
-            </project>
-            """.stripIndent(),
-          """
-            <project>
-                <parent>
-                    <groupId>org.jenkins-ci.plugins</groupId>
-                    <artifactId>plugin</artifactId>
-                    <version>4.86</version>
-                    <relativePath/>
-                </parent>
-                <dependencyManagement>
-                    <dependencies>
-                        <dependency>
-                            <groupId>io.jenkins.tools.bom</groupId>
-                            <artifactId>bom-2.440.x</artifactId>
-                            <version>3221.ve8f7b_fdd149d</version>
-                            <type>pom</type>
-                            <scope>import</scope>
-                        </dependency>
-                    </dependencies>
-                </dependencyManagement>
-                <repositories>
-                    <repository>
-                        <id>repo.jenkins-ci.org</id>
-                        <url>https://repo.jenkins-ci.org/public/</url>
-                    </repository>
-                </repositories>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.jenkins-ci.plugins</groupId>
-                        <artifactId>ant</artifactId>
-                    </dependency>
-                </dependencies>
-                <properties>
-                    <jenkins.version>2.440.3</jenkins.version>
-                </properties>
-            </project>
-            """.stripIndent()
-        ));
+            versionsBefore.asPomXml(),
+            spec -> spec.after(after -> {
+                ModernizePluginTest.Versions versionsAfter = ModernizePluginTest.Versions.parse(after);
+                assertThat(versionsAfter.parentVersion()).isGreaterThanOrEqualTo(versionsBefore.parentVersion());
+                assertThat(versionsAfter.propertyVersion()).isGreaterThanOrEqualTo(versionsBefore.propertyVersion());
+                assertThat(versionsAfter.bomArtifactId()).isGreaterThan(versionsBefore.bomArtifactId());
+                assertThat(versionsAfter.bomVersion()).isGreaterThan(versionsBefore.bomVersion());
+                return versionsAfter.asPomXml();
+            })
+          )
+        );
     }
 
     @Test
     void shouldFixOutdatedPluginsBomEvenIfUnused() {
+        String bomArtifactId = "bom-2.346.x";
+        String bomVersion = "1706.vc166d5f429f8";
         // language=xml
         rewriteRun(pomXml(
           """
@@ -385,8 +274,8 @@ class AddPluginsBomTest implements RewriteTest {
                     <dependencies>
                         <dependency>
                             <groupId>io.jenkins.tools.bom</groupId>
-                            <artifactId>bom-2.346.x</artifactId>
-                            <version>1706.vc166d5f429f8</version>
+                            <artifactId>%s</artifactId>
+                            <version>%s</version>
                             <type>pom</type>
                             <scope>import</scope>
                         </dependency>
@@ -406,44 +295,13 @@ class AddPluginsBomTest implements RewriteTest {
                     </dependency>
                 </dependencies>
             </project>
-            """.stripIndent(),
-          """
-            <project>
-                <parent>
-                    <groupId>org.jenkins-ci.plugins</groupId>
-                    <artifactId>plugin</artifactId>
-                    <version>4.86</version>
-                    <relativePath/>
-                </parent>
-                <properties>
-                    <jenkins.version>2.440.3</jenkins.version>
-                </properties>
-                <dependencyManagement>
-                    <dependencies>
-                        <dependency>
-                            <groupId>io.jenkins.tools.bom</groupId>
-                            <artifactId>bom-2.440.x</artifactId>
-                            <version>3221.ve8f7b_fdd149d</version>
-                            <type>pom</type>
-                            <scope>import</scope>
-                        </dependency>
-                    </dependencies>
-                </dependencyManagement>
-                <repositories>
-                    <repository>
-                        <id>repo.jenkins-ci.org</id>
-                        <url>https://repo.jenkins-ci.org/public/</url>
-                    </repository>
-                </repositories>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.lmax</groupId>
-                        <artifactId>disruptor</artifactId>
-                        <version>3.4.4</version>
-                    </dependency>
-                </dependencies>
-            </project>
-            """.stripIndent()
+            """.formatted(bomArtifactId, bomVersion),
+          spec -> spec.after(after -> {
+              ModernizePluginTest.Versions versionsAfter = ModernizePluginTest.Versions.parse(after);
+              assertThat(versionsAfter.bomArtifactId()).isGreaterThan(bomArtifactId);
+              assertThat(versionsAfter.bomVersion()).isGreaterThan(bomVersion);
+              return after;
+          })
         ));
     }
 
@@ -487,7 +345,7 @@ class AddPluginsBomTest implements RewriteTest {
                     </dependency>
                 </dependencies>
             </project>
-            """.stripIndent()
+            """
         ));
     }
 
@@ -550,7 +408,7 @@ class AddPluginsBomTest implements RewriteTest {
                 </pluginRepository>
               </pluginRepositories>
             </project>
-            """.stripIndent(),
+            """,
           """
             <project>
               <parent>
@@ -605,7 +463,7 @@ class AddPluginsBomTest implements RewriteTest {
                 </pluginRepository>
               </pluginRepositories>
             </project>
-            """.stripIndent()
+            """
 
         ));
     }

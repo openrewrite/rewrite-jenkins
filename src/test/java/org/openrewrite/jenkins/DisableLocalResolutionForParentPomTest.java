@@ -49,7 +49,7 @@ class DisableLocalResolutionForParentPomTest implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent(),
+            """,
           """
             <project>
                 <parent>
@@ -68,7 +68,7 @@ class DisableLocalResolutionForParentPomTest implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent()
+            """
         ));
     }
 
@@ -93,7 +93,7 @@ class DisableLocalResolutionForParentPomTest implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent()
+            """
         ));
     }
 }

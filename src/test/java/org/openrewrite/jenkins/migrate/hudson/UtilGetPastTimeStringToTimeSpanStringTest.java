@@ -17,6 +17,7 @@ package org.openrewrite.jenkins.migrate.hudson;
 
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
+import org.openrewrite.DocumentExample;
 import org.openrewrite.java.JavaParser;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
@@ -24,6 +25,7 @@ import org.openrewrite.test.RewriteTest;
 import static org.openrewrite.java.Assertions.java;
 
 class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
+
     @Language("java")
     // language=java
     private final String hudsonUtil = """
@@ -39,7 +41,7 @@ class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
               return getTimeSpanString(duration);
           }
       }
-      """.stripIndent();
+      """;
 
     @Override
     public void defaults(RecipeSpec spec) {
@@ -47,6 +49,7 @@ class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
         spec.recipeFromResource("/META-INF/rewrite/hudson-migrations.yml", "org.openrewrite.jenkins.migrate.hudson.UtilGetPastTimeStringToGetTimeSpanString");
     }
 
+    @DocumentExample
     @Test
     void shouldReplaceFullyQualifiedMethodCall() {
         // language=java
@@ -59,7 +62,7 @@ class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
                     return hudson.Util.getPastTimeString(timestamp);
                 }
             }
-            """.stripIndent(),
+            """,
           """
             package org.example;
 
@@ -68,7 +71,7 @@ class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
                     return hudson.Util.getTimeSpanString(timestamp);
                 }
             }
-            """.stripIndent()
+            """
         ));
     }
 
@@ -86,7 +89,7 @@ class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
                     return Util.getPastTimeString(timestamp);
                 }
             }
-            """.stripIndent(),
+            """,
           """
             package org.example;
 
@@ -97,7 +100,7 @@ class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
                     return Util.getTimeSpanString(timestamp);
                 }
             }
-            """.stripIndent()
+            """
         ));
     }
 
@@ -115,7 +118,7 @@ class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
                     return getPastTimeString(timestamp);
                 }
             }
-            """.stripIndent(),
+            """,
           """
             package org.example;
 
@@ -126,7 +129,7 @@ class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
                     return getTimeSpanString(timestamp);
                 }
             }
-            """.stripIndent()
+            """
         ));
     }
 }

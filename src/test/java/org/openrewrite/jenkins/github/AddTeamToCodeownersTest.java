@@ -47,7 +47,7 @@ class AddTeamToCodeownersTest implements RewriteTest {
               </repository>
           </repositories>
       </project>
-      """.stripIndent();
+      """;
 
     @Override
     public void defaults(RecipeSpec spec) {
@@ -197,23 +197,23 @@ class AddTeamToCodeownersTest implements RewriteTest {
     void shouldNoOpIfInvalidTeamGenerated() {
         rewriteRun(
           pomXml(
-                """
-            <project>
-                <parent>
-                    <groupId>org.jenkins-ci.plugins</groupId>
-                    <artifactId>plugin</artifactId>
-                    <version>4.86</version>
-                </parent>
-                <artifactId>tool-labels-plugin</artifactId>
-                <version>0.1</version>
-                <repositories>
-                    <repository>
-                        <id>repo.jenkins-ci.org</id>
-                        <url>https://repo.jenkins-ci.org/public/</url>
-                    </repository>
-                </repositories>
-            </project>
-            """),
+            """
+              <project>
+                  <parent>
+                      <groupId>org.jenkins-ci.plugins</groupId>
+                      <artifactId>plugin</artifactId>
+                      <version>4.86</version>
+                  </parent>
+                  <artifactId>tool-labels-plugin</artifactId>
+                  <version>0.1</version>
+                  <repositories>
+                      <repository>
+                          <id>repo.jenkins-ci.org</id>
+                          <url>https://repo.jenkins-ci.org/public/</url>
+                      </repository>
+                  </repositories>
+              </project>
+              """),
           text(
             "* @global-owner1",
             s -> s.path(".github/CODEOWNERS").noTrim()
@@ -225,23 +225,23 @@ class AddTeamToCodeownersTest implements RewriteTest {
     void shouldNoOpIfInvalidTeamGeneratedAndCodeownersFileAbsent() {
         rewriteRun(
           pomXml(
-                """
-            <project>
-                <parent>
-                    <groupId>org.jenkins-ci.plugins</groupId>
-                    <artifactId>plugin</artifactId>
-                    <version>4.86</version>
-                </parent>
-                <artifactId>tool-labels-plugin</artifactId>
-                <version>0.1</version>
-                <repositories>
-                    <repository>
-                        <id>repo.jenkins-ci.org</id>
-                        <url>https://repo.jenkins-ci.org/public/</url>
-                    </repository>
-                </repositories>
-            </project>
-            """)
+            """
+              <project>
+                  <parent>
+                      <groupId>org.jenkins-ci.plugins</groupId>
+                      <artifactId>plugin</artifactId>
+                      <version>4.86</version>
+                  </parent>
+                  <artifactId>tool-labels-plugin</artifactId>
+                  <version>0.1</version>
+                  <repositories>
+                      <repository>
+                          <id>repo.jenkins-ci.org</id>
+                          <url>https://repo.jenkins-ci.org/public/</url>
+                      </repository>
+                  </repositories>
+              </project>
+              """)
         );
     }
 

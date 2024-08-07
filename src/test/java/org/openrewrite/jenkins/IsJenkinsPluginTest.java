@@ -51,7 +51,7 @@ class IsJenkinsPluginTest implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent(),
+            """,
           """
             <!--~~(2.249)~~>--><project>
                 <parent>
@@ -68,6 +68,6 @@ class IsJenkinsPluginTest implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """.stripIndent()));
+            """));
     }
 }

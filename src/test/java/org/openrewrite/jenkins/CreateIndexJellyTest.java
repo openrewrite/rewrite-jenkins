@@ -61,7 +61,7 @@ class CreateIndexJellyTest implements RewriteTest {
                       </repository>
                   </repositories>
               </project>
-              """.stripIndent()
+              """
           ),
           text(
             null,
@@ -70,7 +70,7 @@ class CreateIndexJellyTest implements RewriteTest {
               <div>
               This is my plugin's description
               </div>
-              """.stripIndent(),
+              """,
             s -> s.path("src/main/resources/index.jelly")
           )
         );
@@ -97,7 +97,7 @@ class CreateIndexJellyTest implements RewriteTest {
                       </repository>
                   </repositories>
               </project>
-              """.stripIndent()
+              """
           ),
           text(
             null,
@@ -106,7 +106,7 @@ class CreateIndexJellyTest implements RewriteTest {
               <div>
               my-plugin
               </div>
-              """.stripIndent(),
+              """,
             s -> s.path("src/main/resources/index.jelly")
           )
         );
@@ -132,7 +132,7 @@ class CreateIndexJellyTest implements RewriteTest {
                       </repository>
                   </repositories>
               </project>
-              """.stripIndent()
+              """
           ),
           text(
             null,
@@ -141,7 +141,7 @@ class CreateIndexJellyTest implements RewriteTest {
               <div>
               my-plugin
               </div>
-              """.stripIndent(),
+              """,
             s -> s.path("src/main/resources/index.jelly")
           )
         );
@@ -163,7 +163,7 @@ class CreateIndexJellyTest implements RewriteTest {
                       <module>non-plugin</module>
                   </modules>
               </project>
-              """.stripIndent()),
+              """),
             mavenProject("plugin",
               pomXml("""
                 <project>
@@ -182,7 +182,7 @@ class CreateIndexJellyTest implements RewriteTest {
                         </repository>
                     </repositories>
                 </project>
-                """.stripIndent()),
+                """),
               srcMainResources(
                 text(null,
                   """
@@ -190,7 +190,7 @@ class CreateIndexJellyTest implements RewriteTest {
                     <div>
                     This is my plugin
                     </div>
-                    """.stripIndent(),
+                    """,
                   s -> s.path("index.jelly"))
               )),
             mavenProject("different-plugin",
@@ -211,7 +211,7 @@ class CreateIndexJellyTest implements RewriteTest {
                         </repository>
                     </repositories>
                 </project>
-                """.stripIndent()),
+                """),
               srcMainResources(
                 text(null,
                   """
@@ -219,7 +219,7 @@ class CreateIndexJellyTest implements RewriteTest {
                     <div>
                     This is my second, different plugin
                     </div>
-                    """.stripIndent(),
+                    """,
                   s -> s.path("index.jelly"))
               )),
             mavenProject("non-plugin",
@@ -230,7 +230,7 @@ class CreateIndexJellyTest implements RewriteTest {
                     <version>0.1</version>
                     <description>This is my non-plugin</description>
                 </project>
-                """.stripIndent())))
+                """)))
         );
     }
 }
