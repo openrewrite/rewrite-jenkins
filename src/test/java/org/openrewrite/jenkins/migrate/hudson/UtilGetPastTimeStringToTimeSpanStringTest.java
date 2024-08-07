@@ -39,7 +39,7 @@ class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
               return getTimeSpanString(duration);
           }
       }
-      """.stripIndent();
+      """;
 
     @Override
     public void defaults(RecipeSpec spec) {
@@ -59,7 +59,7 @@ class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
                     return hudson.Util.getPastTimeString(timestamp);
                 }
             }
-            """.stripIndent(),
+            """,
           """
             package org.example;
 
@@ -68,7 +68,7 @@ class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
                     return hudson.Util.getTimeSpanString(timestamp);
                 }
             }
-            """.stripIndent()
+            """
         ));
     }
 
@@ -86,7 +86,7 @@ class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
                     return Util.getPastTimeString(timestamp);
                 }
             }
-            """.stripIndent(),
+            """,
           """
             package org.example;
 
@@ -97,7 +97,7 @@ class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
                     return Util.getTimeSpanString(timestamp);
                 }
             }
-            """.stripIndent()
+            """
         ));
     }
 
@@ -115,7 +115,7 @@ class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
                     return getPastTimeString(timestamp);
                 }
             }
-            """.stripIndent(),
+            """,
           """
             package org.example;
 
@@ -126,7 +126,7 @@ class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
                     return getTimeSpanString(timestamp);
                 }
             }
-            """.stripIndent()
+            """
         ));
     }
 }

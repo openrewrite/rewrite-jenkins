@@ -33,7 +33,7 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
       public class WebClient {
           public HtmlPage getPage(String in) { return null; }
       }
-      """.stripIndent();
+      """;
 
     @Language("java")
     private final String htmlPage2 = """
@@ -41,7 +41,7 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
       public class HtmlPage {
           public HtmlForm getFormByName(String in) { return null; }
       }
-      """.stripIndent();
+      """;
 
     @Language("java")
     private final String htmlForm2 = """
@@ -49,7 +49,7 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
       public class HtmlForm {
           public HtmlInput getInputByName(String in) { return null; }
       }
-      """.stripIndent();
+      """;
 
     @Language("java")
     private final String htmlInput2 = """
@@ -61,7 +61,7 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
           public void setValueAttribute(String newValue) {}
           public void setValue(String newValue) {}
       }
-      """.stripIndent();
+      """;
 
     @Language("java")
     private final String webClient3 = """
@@ -70,7 +70,7 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
       public class WebClient {
           public HtmlPage getPage(String in) { return null; }
       }
-      """.stripIndent();
+      """;
 
     @Language("java")
     private final String htmlPage3 = """
@@ -78,7 +78,7 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
       public class HtmlPage {
           public HtmlForm getFormByName(String in) { return null; }
       }
-      """.stripIndent();
+      """;
 
     @Language("java")
     private final String htmlForm3 = """
@@ -86,7 +86,7 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
       public class HtmlForm {
           public HtmlInput getInputByName(String in) { return null; }
       }
-      """.stripIndent();
+      """;
 
     @Language("java")
     private final String htmlInput3 = """
@@ -98,7 +98,7 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
           public void setValueAttribute(String newValue) {}
           public void setValue(String newValue) {}
       }
-      """.stripIndent();
+      """;
 
     @Override
     public void defaults(RecipeSpec spec) {
@@ -135,7 +135,7 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
                       }
                   }
               }
-              """.stripIndent(),
+              """,
             """
               package org.example;
                                       
@@ -160,7 +160,7 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
                       }
                   }
               }
-              """.stripIndent())
+              """)
         );
     }
 }
