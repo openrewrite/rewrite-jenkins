@@ -23,7 +23,6 @@ import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
 import static org.openrewrite.java.Assertions.java;
-import static org.openrewrite.java.Assertions.srcMainJava;
 
 class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
     @Language("java")
@@ -109,8 +108,7 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
     @Test
     @DocumentExample
     void shouldUpdateHtmlUnit() {
-        rewriteRun(srcMainJava(
-            spec -> spec.path("org/example/HtmlUnitUse.java")),
+        rewriteRun(
           java(
             """
               package org.example;
@@ -119,9 +117,9 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
               import com.gargoylesoftware.htmlunit.html.HtmlForm;
               import com.gargoylesoftware.htmlunit.html.HtmlInput;
               import com.gargoylesoftware.htmlunit.html.HtmlPage;
-                                      
+
               import java.io.IOException;
-                                      
+
               public class HtmlUnitUse {
                   void run() throws IOException {
                       try (WebClient webClient = new WebClient()) {
@@ -139,14 +137,14 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
               """,
             """
               package org.example;
-                                      
+
               import org.htmlunit.WebClient;
               import org.htmlunit.html.HtmlForm;
               import org.htmlunit.html.HtmlInput;
               import org.htmlunit.html.HtmlPage;
-                                      
+
               import java.io.IOException;
-                                      
+
               public class HtmlUnitUse {
                   void run() throws IOException {
                       try (WebClient webClient = new WebClient()) {
@@ -161,7 +159,8 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
                       }
                   }
               }
-              """)
+              """
+          )
         );
     }
 }

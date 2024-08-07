@@ -25,6 +25,7 @@ import org.openrewrite.test.RewriteTest;
 import static org.openrewrite.java.Assertions.java;
 
 class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
+
     @Language("java")
     // language=java
     private final String hudsonUtil = """
