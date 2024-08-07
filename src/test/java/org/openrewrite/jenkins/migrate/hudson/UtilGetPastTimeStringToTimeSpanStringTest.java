@@ -17,6 +17,7 @@ package org.openrewrite.jenkins.migrate.hudson;
 
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
+import org.openrewrite.DocumentExample;
 import org.openrewrite.java.JavaParser;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
@@ -47,6 +48,7 @@ class UtilGetPastTimeStringToTimeSpanStringTest implements RewriteTest {
         spec.recipeFromResource("/META-INF/rewrite/hudson-migrations.yml", "org.openrewrite.jenkins.migrate.hudson.UtilGetPastTimeStringToGetTimeSpanString");
     }
 
+    @DocumentExample
     @Test
     void shouldReplaceFullyQualifiedMethodCall() {
         // language=java

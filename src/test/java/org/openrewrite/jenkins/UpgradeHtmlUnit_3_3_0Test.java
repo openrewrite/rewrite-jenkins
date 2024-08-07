@@ -109,9 +109,10 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
     @Test
     @DocumentExample
     void shouldUpdateHtmlUnit() {
-        rewriteRun(
-          srcMainJava(spec -> spec.path("org/example/HtmlUnitUse.java")),
-          java("""
+        rewriteRun(srcMainJava(
+            spec -> spec.path("org/example/HtmlUnitUse.java")),
+          java(
+            """
               package org.example;
 
               import com.gargoylesoftware.htmlunit.WebClient;
