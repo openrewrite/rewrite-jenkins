@@ -135,7 +135,7 @@ class AddPluginsBomTest implements RewriteTest {
                         <dependency>
                             <groupId>io.jenkins.tools.bom</groupId>
                             <artifactId>bom-2.440.x</artifactId>
-                            <version>3221.ve8f7b_fdd149d</version>
+                            <version>3234.v5ca_5154341ef</version>
                             <type>pom</type>
                             <scope>import</scope>
                         </dependency>
@@ -264,7 +264,7 @@ class AddPluginsBomTest implements RewriteTest {
                         <dependency>
                             <groupId>io.jenkins.tools.bom</groupId>
                             <artifactId>bom-2.440.x</artifactId>
-                            <version>3221.ve8f7b_fdd149d</version>
+                            <version>3234.v5ca_5154341ef</version>
                             <type>pom</type>
                             <scope>import</scope>
                         </dependency>
@@ -340,7 +340,7 @@ class AddPluginsBomTest implements RewriteTest {
                         <dependency>
                             <groupId>io.jenkins.tools.bom</groupId>
                             <artifactId>bom-2.440.x</artifactId>
-                            <version>3221.ve8f7b_fdd149d</version>
+                            <version>3234.v5ca_5154341ef</version>
                             <type>pom</type>
                             <scope>import</scope>
                         </dependency>
@@ -423,7 +423,7 @@ class AddPluginsBomTest implements RewriteTest {
                         <dependency>
                             <groupId>io.jenkins.tools.bom</groupId>
                             <artifactId>bom-2.440.x</artifactId>
-                            <version>3221.ve8f7b_fdd149d</version>
+                            <version>3234.v5ca_5154341ef</version>
                             <type>pom</type>
                             <scope>import</scope>
                         </dependency>
