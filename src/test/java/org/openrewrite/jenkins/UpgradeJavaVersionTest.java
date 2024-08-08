@@ -22,6 +22,7 @@ import org.openrewrite.test.RewriteTest;
 
 import static org.openrewrite.groovy.Assertions.groovy;
 
+@SuppressWarnings("GroovyAssignabilityCheck")
 class UpgradeJavaVersionTest implements RewriteTest {
 
     @Override
@@ -34,8 +35,7 @@ class UpgradeJavaVersionTest implements RewriteTest {
     void openJdk() {
         rewriteRun(
           //language=groovy
-          groovy(
-                """
+          groovy("""
               #!/usr/bin/env groovy
               
               stage("Checkout") {
@@ -64,8 +64,7 @@ class UpgradeJavaVersionTest implements RewriteTest {
         rewriteRun(
           spec -> spec.recipe(new UpgradeJavaVersion(17, "openjdk")),
           //language=groovy
-          groovy(
-                """
+          groovy("""
               node('cicd-build') {
                   stage ("Titan") {
                       titan {
@@ -89,6 +88,36 @@ class UpgradeJavaVersionTest implements RewriteTest {
                           javaVersion = 'openjdk17'
                           minimumCodeCoverage = 86
                           codeCoverageFilePath = "/target/site/jacoco/index.html"
+                      }
+                  }
+              }
+              """,
+            spec -> spec.path("Jenkinsfile"))
+        );
+    }
+
+    @Test
+    void scmCheckout () {
+        rewriteRun(
+          spec -> spec.recipe(new UpgradeJavaVersion(21, "jdk")),
+          //language=groovy
+          groovy("""
+              node('cicd-build') {
+                  stage("Checkout") {
+                      scmCheckout {
+                          deleteWorkspace = 'false'
+                          maven_version = "maven 3.5"
+                      }
+                  }
+              }
+              """,
+            """
+              node('cicd-build') {
+                  stage("Checkout") {
+                      scmCheckout {
+                          deleteWorkspace = 'false'
+                          maven_version = "maven 3.5"
+                          java_version = 'jdk21'
                       }
                   }
               }

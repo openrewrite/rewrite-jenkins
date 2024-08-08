@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.openrewrite.*;
 import org.openrewrite.groovy.GroovyIsoVisitor;
+import org.openrewrite.groovy.GroovyParser;
+import org.openrewrite.groovy.tree.G;
+import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.java.tree.J;
@@ -83,12 +86,44 @@ public class UpgradeJavaVersion extends Recipe {
                     targetDistribution = distribution;
                 }
                 String targetJdkString = targetDistribution + targetVersion;
+                getCursor().putMessageOnFirstEnclosing(J.Lambda.class, "TARGET_JDK_ALERADY_CONFIGURED", true);
                 if (!targetJdkString.equals(currentJdkString)) {
                     char quote = value.getValueSource() == null ? '\'' : value.getValueSource().charAt(0);
                     a = a.withAssignment(value.withValue(targetJdkString)
                             .withValueSource(quote + targetJdkString + quote));
                 }
                 return a;
+            }
+
+
+            @Override
+            public J.Lambda visitLambda(J.Lambda lambda, ExecutionContext ctx) {
+                J.Lambda l = super.visitLambda(lambda, ctx);
+                if (!(getCursor().getParentTreeCursor().getValue() instanceof J.MethodInvocation)) {
+                    return l;
+                }
+                J.MethodInvocation m = getCursor().getParentTreeCursor().getValue();
+                if (!m.getSimpleName().equals("scmCheckout")) {
+                    return l;
+                }
+
+                if (!(l.getBody() instanceof J.Block) || getCursor().pollMessage("TARGET_JDK_ALERADY_CONFIGURED") != null) {
+                    return l;
+                }
+                J.Assignment as = GroovyParser.builder().build()
+                        .parse("java_version = '" + distribution + version + "'")
+                        .findFirst()
+                        .map(G.CompilationUnit.class::cast)
+                        .map(cu -> cu.getStatements().get(0))
+                        .map(J.Assignment.class::cast)
+                        .orElse(null);
+                if (as == null) {
+                    return l;
+                }
+                J.Block body = (J.Block) l.getBody();
+                as = autoFormat(as, ctx, new Cursor(getCursor(), body));
+                l = l.withBody(body.withStatements(ListUtils.concat(body.getStatements(), as)));
+                return l;
             }
         });
     }
