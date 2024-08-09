@@ -35,7 +35,8 @@ class UpgradeJavaVersionTest implements RewriteTest {
     void openJdk() {
         rewriteRun(
           //language=groovy
-          groovy("""
+          groovy(
+                """
               #!/usr/bin/env groovy
               
               stage("Checkout") {
@@ -64,7 +65,8 @@ class UpgradeJavaVersionTest implements RewriteTest {
         rewriteRun(
           spec -> spec.recipe(new UpgradeJavaVersion(17, "openjdk")),
           //language=groovy
-          groovy("""
+          groovy(
+                """
               node('cicd-build') {
                   stage ("Titan") {
                       titan {
@@ -101,7 +103,8 @@ class UpgradeJavaVersionTest implements RewriteTest {
         rewriteRun(
           spec -> spec.recipe(new UpgradeJavaVersion(21, "jdk")),
           //language=groovy
-          groovy("""
+          groovy(
+                """
               node('cicd-build') {
                   stage("Checkout") {
                       scmCheckout {
