@@ -16,8 +16,8 @@
 package org.openrewrite.jenkins;
 
 import lombok.Value;
+import org.jspecify.annotations.Nullable;
 import org.openrewrite.*;
-import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.maven.MavenIsoVisitor;
 import org.openrewrite.text.PlainText;
 import org.openrewrite.text.PlainTextParser;

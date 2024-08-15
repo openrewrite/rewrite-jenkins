@@ -15,9 +15,9 @@
  */
 package org.openrewrite.jenkins;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.openrewrite.SourceFile;
-import org.openrewrite.internal.lang.NonNull;
-import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.maven.tree.MavenResolutionResult;
 
 import java.util.function.Predicate;
