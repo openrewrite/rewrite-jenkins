@@ -15,7 +15,7 @@
  */
 package org.openrewrite.jenkins.github;
 
-import org.openrewrite.internal.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
