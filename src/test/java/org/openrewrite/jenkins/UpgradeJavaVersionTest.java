@@ -104,16 +104,16 @@ class UpgradeJavaVersionTest implements RewriteTest {
           spec -> spec.recipe(new UpgradeJavaVersion(21, "jdk")),
           //language=groovy
           groovy(
-                """
-              node('cicd-build') {
-                  stage("Checkout") {
-                      scmCheckout {
-                          deleteWorkspace = 'false'
-                          maven_version = "maven 3.5"
-                      }
+            """
+          node('cicd-build') {
+              stage("Checkout") {
+                  scmCheckout {
+                      deleteWorkspace = 'false'
+                      maven_version = "maven 3.5"
                   }
               }
-              """,
+          }
+          """,
             """
               node('cicd-build') {
                   stage("Checkout") {
@@ -121,6 +121,36 @@ class UpgradeJavaVersionTest implements RewriteTest {
                           deleteWorkspace = 'false'
                           maven_version = "maven 3.5"
                           java_version = 'jdk21'
+                      }
+                  }
+              }
+              """,
+            spec -> spec.path("Jenkinsfile"))
+        );
+    }
+
+    @Test
+    void nullDistributionInScmCheckout() {
+        rewriteRun(
+          //language=groovy
+          groovy(
+            """
+          node('cicd-build') {
+              stage("Checkout") {
+                  scmCheckout {
+                      deleteWorkspace = 'false'
+                      maven_version = "maven 3.5"
+                  }
+              }
+          }
+          """,
+            """
+              node('cicd-build') {
+                  stage("Checkout") {
+                      scmCheckout {
+                          deleteWorkspace = 'false'
+                          maven_version = "maven 3.5"
+                          java_version = '17'
                       }
                   }
               }

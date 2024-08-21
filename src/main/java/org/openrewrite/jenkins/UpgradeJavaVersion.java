@@ -111,7 +111,7 @@ public class UpgradeJavaVersion extends Recipe {
                     return l;
                 }
                 J.Assignment as = GroovyParser.builder().build()
-                        .parse("java_version = '" + distribution + version + "'")
+                        .parse("java_version = '" + (distribution == null ? "" : distribution) + version + "'")
                         .findFirst()
                         .map(G.CompilationUnit.class::cast)
                         .map(cu -> cu.getStatements().get(0))
