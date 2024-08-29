@@ -17,6 +17,8 @@ package org.openrewrite.jenkins;
 
 import org.junit.jupiter.api.Test;
 import org.openrewrite.DocumentExample;
+import org.openrewrite.Tree;
+import org.openrewrite.java.marker.JavaProject;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
@@ -36,7 +38,7 @@ class UpgradeJavaVersionTest implements RewriteTest {
         rewriteRun(
           //language=groovy
           groovy(
-                """
+            """
               #!/usr/bin/env groovy
               
               stage("Checkout") {
@@ -46,7 +48,7 @@ class UpgradeJavaVersionTest implements RewriteTest {
                   }
               }
               """,
-             """
+            """
               #!/usr/bin/env groovy
               
               stage("Checkout") {
@@ -66,7 +68,7 @@ class UpgradeJavaVersionTest implements RewriteTest {
           spec -> spec.recipe(new UpgradeJavaVersion(17, "openjdk")),
           //language=groovy
           groovy(
-                """
+            """
               node('cicd-build') {
                   stage ("Titan") {
                       titan {
@@ -80,7 +82,7 @@ class UpgradeJavaVersionTest implements RewriteTest {
                   }
               }
               """,
-              """
+            """
               node('cicd-build') {
                   stage ("Titan") {
                       titan {
@@ -99,21 +101,21 @@ class UpgradeJavaVersionTest implements RewriteTest {
     }
 
     @Test
-    void scmCheckout () {
+    void scmCheckout() {
         rewriteRun(
           spec -> spec.recipe(new UpgradeJavaVersion(21, "jdk")),
           //language=groovy
           groovy(
             """
-          node('cicd-build') {
-              stage("Checkout") {
-                  scmCheckout {
-                      deleteWorkspace = 'false'
-                      maven_version = "maven 3.5"
+              node('cicd-build') {
+                  stage("Checkout") {
+                      scmCheckout {
+                          deleteWorkspace = 'false'
+                          maven_version = "maven 3.5"
+                      }
                   }
               }
-          }
-          """,
+              """,
             """
               node('cicd-build') {
                   stage("Checkout") {
@@ -125,7 +127,9 @@ class UpgradeJavaVersionTest implements RewriteTest {
                   }
               }
               """,
-            spec -> spec.path("Jenkinsfile"))
+            spec -> spec.path("Jenkinsfile")
+              // Normally a Jenkinsfile itself would not have the marker, but this is convenient for testing
+              .markers(new JavaProject(Tree.randomId(), "foo", null)))
         );
     }
 
@@ -135,15 +139,15 @@ class UpgradeJavaVersionTest implements RewriteTest {
           //language=groovy
           groovy(
             """
-          node('cicd-build') {
-              stage("Checkout") {
-                  scmCheckout {
-                      deleteWorkspace = 'false'
-                      maven_version = "maven 3.5"
+              node('cicd-build') {
+                  stage("Checkout") {
+                      scmCheckout {
+                          deleteWorkspace = 'false'
+                          maven_version = "maven 3.5"
+                      }
                   }
               }
-          }
-          """,
+              """,
             """
               node('cicd-build') {
                   stage("Checkout") {
@@ -155,7 +159,9 @@ class UpgradeJavaVersionTest implements RewriteTest {
                   }
               }
               """,
-            spec -> spec.path("Jenkinsfile"))
+            spec -> spec.path("Jenkinsfile")
+              // Normally a Jenkinsfile itself would not have the marker, but this is convenient for testing
+              .markers(new JavaProject(Tree.randomId(), "foo", null)))
         );
     }
 }

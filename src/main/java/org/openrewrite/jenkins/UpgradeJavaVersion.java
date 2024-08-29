@@ -24,12 +24,15 @@ import org.openrewrite.groovy.GroovyParser;
 import org.openrewrite.groovy.tree.G;
 import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.StringUtils;
+import org.openrewrite.java.marker.JavaProject;
 import org.openrewrite.java.tree.J;
 import org.openrewrite.marker.Markup;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 @Value
 @EqualsAndHashCode(callSuper = false)
-public class UpgradeJavaVersion extends Recipe {
+public class UpgradeJavaVersion extends ScanningRecipe<AtomicBoolean> {
 
     @Option(displayName = "Java version",
             description = "The Java version to upgrade to.",
@@ -44,7 +47,7 @@ public class UpgradeJavaVersion extends Recipe {
 
     @Override
     public String getDisplayName() {
-        return "Upgrade Jenkins Java version";
+        return "Upgrade jenkins java version";
     }
 
     @Override
@@ -54,7 +57,25 @@ public class UpgradeJavaVersion extends Recipe {
     }
 
     @Override
-    public TreeVisitor<?, ExecutionContext> getVisitor() {
+    public AtomicBoolean getInitialValue(ExecutionContext ctx) {
+        return new AtomicBoolean();
+    }
+
+    @Override
+    public TreeVisitor<?, ExecutionContext> getScanner(AtomicBoolean foundJavaProject) {
+        return Preconditions.check(!foundJavaProject.get(), new TreeVisitor<Tree, ExecutionContext>() {
+            @Override
+            public Tree visit(@SuppressWarnings("NullableProblems") Tree tree, ExecutionContext executionContext) {
+                if (tree.getMarkers().findFirst(JavaProject.class).isPresent()) {
+                    foundJavaProject.set(true);
+                }
+                return tree;
+            }
+        });
+    }
+
+    @Override
+    public TreeVisitor<?, ExecutionContext> getVisitor(AtomicBoolean foundJavaProject) {
         return Preconditions.check(new FindSourceFiles("**/Jenkinsfile"), new GroovyIsoVisitor<ExecutionContext>() {
             @Override
             public J.Assignment visitAssignment(J.Assignment assignment, ExecutionContext ctx) {
@@ -107,7 +128,7 @@ public class UpgradeJavaVersion extends Recipe {
                     return l;
                 }
 
-                if (!(l.getBody() instanceof J.Block) || getCursor().pollMessage("TARGET_JDK_ALERADY_CONFIGURED") != null) {
+                if (!(l.getBody() instanceof J.Block) || getCursor().pollMessage("TARGET_JDK_ALERADY_CONFIGURED") != null || !foundJavaProject.get()) {
                     return l;
                 }
                 J.Assignment as = GroovyParser.builder().build()
