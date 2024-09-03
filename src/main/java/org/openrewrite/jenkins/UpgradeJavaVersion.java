@@ -65,7 +65,7 @@ public class UpgradeJavaVersion extends ScanningRecipe<AtomicBoolean> {
     public TreeVisitor<?, ExecutionContext> getScanner(AtomicBoolean foundJavaProject) {
         return Preconditions.check(!foundJavaProject.get(), new TreeVisitor<Tree, ExecutionContext>() {
             @Override
-            public Tree visit(@SuppressWarnings("NullableProblems") Tree tree, ExecutionContext executionContext) {
+            public Tree visit(@SuppressWarnings("NullableProblems") Tree tree, ExecutionContext ctx) {
                 if (tree.getMarkers().findFirst(JavaProject.class).isPresent()) {
                     foundJavaProject.set(true);
                 }
