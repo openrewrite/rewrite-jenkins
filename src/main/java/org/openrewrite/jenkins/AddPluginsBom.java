@@ -131,11 +131,11 @@ public class AddPluginsBom extends Recipe {
                         } else if (change == null) {
                             change = bom;
                         } else {
-                            doAfterVisit(new RemoveContentVisitor<>(bom, true));
+                            doAfterVisit(new RemoveContentVisitor<>(bom, true, true));
                         }
                     }
                     if (exact != null && change != null) {
-                        doAfterVisit(new RemoveContentVisitor<>(change, true));
+                        doAfterVisit(new RemoveContentVisitor<>(change, true, true));
                     } else if (change != null) {
                         String artifactId = change.getChildValue("artifactId")
                                 .orElseThrow(() -> new IllegalStateException("No artifactId found on bom"));
