@@ -112,7 +112,7 @@ class ModernizePluginTest implements RewriteTest {
     record Versions(String parentVersion, String propertyVersion, String bomArtifactId, String bomVersion) {
         static Versions parse(String pomXml) {
             return new Versions(
-              firstGroupFromFirstRegexMatch("        <version>(4\\.[^<]+)", pomXml),
+              firstGroupFromFirstRegexMatch("        <version>(5\\.[^<]+)", pomXml),
               firstGroupFromFirstRegexMatch("<jenkins.version>([^<]+)", pomXml),
               firstGroupFromFirstRegexMatch("<artifactId>(bom-[^<]+)", pomXml),
               firstGroupFromFirstRegexMatch("                <version>([^<]+)", pomXml)
@@ -120,7 +120,7 @@ class ModernizePluginTest implements RewriteTest {
         }
 
         private static String firstGroupFromFirstRegexMatch(String regex, String pomXml) {
-            return Pattern.compile(regex).matcher(pomXml).results().findFirst().orElseThrow().group(1);
+            return Pattern.compile(regex).matcher(pomXml).results().findFirst().orElseThrow(() -> new IllegalStateException(pomXml)).group(1);
         }
 
         @Language("XML") String asPomXml() {
