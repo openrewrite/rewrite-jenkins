@@ -40,7 +40,7 @@ public class UpgradeVersionProperty extends Recipe {
             example = "jenkins.version")
     String key;
 
-    @Option(displayName = "Minimum Version",
+    @Option(displayName = "Minimum version",
             description = "Value to apply to the matching property if < this.",
             example = "2.375.1")
     String minimumVersion;
@@ -83,7 +83,7 @@ public class UpgradeVersionProperty extends Recipe {
                     return t;
                 }
                 // Change the baseline
-                if (t.getName().equals("jenkins.baseline")) {
+                if ("jenkins.baseline".equals(t.getName())) {
                     String minimumBaseline = minimumVersion.substring(0, minimumVersion.lastIndexOf('.'));
                     doAfterVisit(new ChangeTagValueVisitor<>(t, minimumBaseline));
                     doAfterVisit(new AddPluginsBom().getVisitor());
