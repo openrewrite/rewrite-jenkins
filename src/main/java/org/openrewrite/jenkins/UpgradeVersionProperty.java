@@ -40,7 +40,7 @@ public class UpgradeVersionProperty extends Recipe {
             example = "jenkins.version")
     String key;
 
-    @Option(displayName = "Minimum Version",
+    @Option(displayName = "Minimum version",
             description = "Value to apply to the matching property if < this.",
             example = "2.375.1")
     String minimumVersion;
@@ -66,6 +66,9 @@ public class UpgradeVersionProperty extends Recipe {
                 if (value == null) {
                     return document;
                 }
+                if (value.contains("${jenkins.baseline}")) {
+                    value = getResolutionResult().getPom().getProperties().get("jenkins.baseline");
+                }
                 Optional<String> upgrade = versionComparator.upgrade(value, Collections.singleton(minimumVersion));
                 if (!upgrade.isPresent()) {
                     return document;
@@ -79,10 +82,24 @@ public class UpgradeVersionProperty extends Recipe {
                 if (!isPropertyTag()) {
                     return t;
                 }
+                // Change the baseline
+                if ("jenkins.baseline".equals(t.getName())) {
+                    String minimumBaseline = minimumVersion.substring(0, minimumVersion.lastIndexOf('.'));
+                    doAfterVisit(new ChangeTagValueVisitor<>(t, minimumBaseline));
+                    doAfterVisit(new AddPluginsBom().getVisitor());
+                    return t;
+                }
                 if (!t.getName().equals(key)) {
                     return t;
                 }
-                doAfterVisit(new ChangeTagValueVisitor<>(t, minimumVersion));
+                if (!t.getValue().isPresent()) {
+                    return t;
+                }
+                String newValue = minimumVersion;
+                if (t.getValue().get().contains("${jenkins.baseline}")) {
+                    newValue = "${jenkins.baseline}." + minimumVersion.substring(minimumVersion.lastIndexOf('.') + 1);
+                }
+                doAfterVisit(new ChangeTagValueVisitor<>(t, newValue));
                 doAfterVisit(new AddPluginsBom().getVisitor());
                 return t;
             }
