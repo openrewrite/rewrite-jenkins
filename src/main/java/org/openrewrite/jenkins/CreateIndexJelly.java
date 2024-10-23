@@ -90,7 +90,7 @@ public class CreateIndexJelly extends ScanningRecipe<CreateIndexJelly.Scanned> {
             }
         };
     }
-    
+
     @Value
     private static class DescribedPlugin {
         String artifactId;
@@ -110,7 +110,7 @@ public class CreateIndexJelly extends ScanningRecipe<CreateIndexJelly.Scanned> {
         Set<String> indexJellies = new HashSet<>();
         Set<DescribedPlugin> plugins = new HashSet<>();
     }
-    
+
     private static class TagExtractor extends MavenIsoVisitor<ExecutionContext> {
         private String artifactId = "";
         private String description = "";
