@@ -84,10 +84,18 @@ public class UpgradeVersionProperty extends Recipe {
                 }
                 // Change the baseline
                 if ("jenkins.baseline".equals(t.getName())) {
-                    String minimumBaseline = minimumVersion.substring(0, minimumVersion.lastIndexOf('.'));
-                    doAfterVisit(new ChangeTagValueVisitor<>(t, minimumBaseline));
-                    doAfterVisit(new AddPluginsBom().getVisitor());
-                    return t;
+                    if (minimumVersion.matches("\\d+\\.\\d+")) {
+                        doAfterVisit(new ChangeTagValueVisitor<>(t, minimumVersion));
+                        doAfterVisit(new AddPluginsBom().getVisitor());
+                        return t;
+                    }
+                    else {
+                        String minimumBaseline = minimumVersion.substring(0, minimumVersion.lastIndexOf('.'));
+                        doAfterVisit(new ChangeTagValueVisitor<>(t, minimumBaseline));
+                        doAfterVisit(new AddPluginsBom().getVisitor());
+                        return t;
+                    }
+
                 }
                 if (!t.getName().equals(key)) {
                     return t;
@@ -97,7 +105,12 @@ public class UpgradeVersionProperty extends Recipe {
                 }
                 String newValue = minimumVersion;
                 if (t.getValue().get().contains("${jenkins.baseline}")) {
-                    newValue = "${jenkins.baseline}." + minimumVersion.substring(minimumVersion.lastIndexOf('.') + 1);
+                    if (minimumVersion.matches("\\d+\\.\\d+")) {
+                        newValue = "${jenkins.baseline}";
+                    }
+                    else {
+                        newValue = "${jenkins.baseline}." + minimumVersion.substring(minimumVersion.lastIndexOf('.') + 1);
+                    }
                 }
                 doAfterVisit(new ChangeTagValueVisitor<>(t, newValue));
                 doAfterVisit(new AddPluginsBom().getVisitor());
