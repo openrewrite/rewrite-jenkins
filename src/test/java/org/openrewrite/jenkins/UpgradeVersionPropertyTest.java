@@ -222,6 +222,56 @@ class UpgradeVersionPropertyTest implements RewriteTest {
     }
 
     @Test
+    void shouldUpgradeWithBaselineFromLTSToWeekly() {
+        rewriteRun(spec -> spec.recipe(new UpgradeVersionProperty("jenkins.version", "2.479")),
+          pomXml(
+          """
+            <project>
+                <parent>
+                    <groupId>org.jenkins-ci.plugins</groupId>
+                    <artifactId>plugin</artifactId>
+                    <version>4.86</version>
+                    <relativePath/>
+                </parent>
+                <artifactId>example-plugin</artifactId>
+                <version>0.8-SNAPSHOT</version>
+                <properties>
+                    <jenkins.baseline>2.303</jenkins.baseline>
+                    <jenkins.version>${jenkins.baseline}.3</jenkins.version>
+                </properties>
+                <repositories>
+                    <repository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>http://repo.jenkins-ci.org/public/</url>
+                    </repository>
+                </repositories>
+            </project>
+            """,
+          """
+            <project>
+                <parent>
+                    <groupId>org.jenkins-ci.plugins</groupId>
+                    <artifactId>plugin</artifactId>
+                    <version>4.86</version>
+                    <relativePath/>
+                </parent>
+                <artifactId>example-plugin</artifactId>
+                <version>0.8-SNAPSHOT</version>
+                <properties>
+                    <jenkins.baseline>2.479</jenkins.baseline>
+                    <jenkins.version>${jenkins.baseline}</jenkins.version>
+                </properties>
+                <repositories>
+                    <repository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>http://repo.jenkins-ci.org/public/</url>
+                    </repository>
+                </repositories>
+            </project>
+            """));
+    }
+
+    @Test
     void shouldNotDowngrade() {
         rewriteRun(pomXml(
           """
