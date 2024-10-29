@@ -59,8 +59,8 @@ public class AddJellyXmlDeclaration extends Recipe {
              * Visits the text and adds the XML declaration if necessary.
              *
              * @param text the PlainText object representing the file content
-             * @param executionContext the execution context
-             * @return the modified PlainText object
+             * @param ctx the execution context
+            public PlainText visitText(PlainText text, ExecutionContext ctx) {
              */
             @Override
             public PlainText visitText(PlainText text, ExecutionContext executionContext) {

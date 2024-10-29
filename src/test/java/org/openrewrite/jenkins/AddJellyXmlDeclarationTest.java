@@ -15,13 +15,13 @@
  */
 package org.openrewrite.jenkins;
 
-import static org.openrewrite.test.SourceSpecs.text;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.junit.jupiter.api.Test;
+import static org.openrewrite.test.SourceSpecs.text;
+
+class AddJellyXmlDeclarationTest implements RewriteTest {
 import org.junit.jupiter.api.io.TempDir;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
