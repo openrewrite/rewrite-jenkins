@@ -49,8 +49,9 @@ public class AddJellyXmlDeclarationTest implements RewriteTest {
     @Test
     void addJellyXmlDeclaration() {
         rewriteRun(
+          spec -> spec.expectedCyclesThatMakeChanges(1),
           text(
-            null,
+            "<root></root>",
             "<?jelly escape-by-default='true'?>\n<root></root>",
             spec -> spec.path("example.jelly")
           )
