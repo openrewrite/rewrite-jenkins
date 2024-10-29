@@ -19,13 +19,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.openrewrite.test.SourceSpecs.text;
-
-class AddJellyXmlDeclarationTest implements RewriteTest {
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 import org.openrewrite.text.PlainTextParser;
+
+import static org.openrewrite.test.SourceSpecs.text;
 
 /**
  * Test class for the AddJellyXmlDeclaration recipe.
