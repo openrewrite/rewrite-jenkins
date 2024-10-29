@@ -93,8 +93,13 @@ public class AddJellyXmlDeclarationTest implements RewriteTest {
               spec -> spec.expectedCyclesThatMakeChanges(1),
               text(Files.readString(inputFile), Files.readString(expectedFile)));
         } finally {
-            Files.deleteIfExists(inputFile);
-            Files.deleteIfExists(expectedFile);
+            try {
+                Files.deleteIfExists(inputFile);
+                Files.deleteIfExists(expectedFile);
+            } catch (IOException e) {
+                // Log warning but don't fail the test
+                System.err.println("Warning: Failed to clean up test files: " + e.getMessage());
+            }
         }
     }
 
@@ -120,7 +125,12 @@ public class AddJellyXmlDeclarationTest implements RewriteTest {
               spec -> spec.expectedCyclesThatMakeChanges(0),
               text(Files.readString(inputFile)));
         } finally {
-            Files.deleteIfExists(inputFile);
+            try {
+                Files.deleteIfExists(inputFile);
+            } catch (IOException e) {
+                // Log warning but don't fail the test
+                System.err.println("Warning: Failed to clean up test files: " + e.getMessage());
+            }
         }
     }
 }
