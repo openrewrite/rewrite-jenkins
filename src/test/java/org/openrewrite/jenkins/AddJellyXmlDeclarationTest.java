@@ -21,6 +21,7 @@ import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.openrewrite.DocumentExample;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 import org.openrewrite.text.PlainTextParser;
@@ -33,7 +34,9 @@ import static org.openrewrite.test.SourceSpecs.text;
 public class AddJellyXmlDeclarationTest implements RewriteTest {
 
     /**
-     * Sets the default recipe for the test.
+     * Configures default test settings by:
+     * - Setting up the AddJellyXmlDeclaration recipe
+     * - Configuring the PlainTextParser for processing Jelly files
      *
      * @param spec the RecipeSpec object used to configure the test
      */
@@ -46,13 +49,14 @@ public class AddJellyXmlDeclarationTest implements RewriteTest {
     /**
      * Test to verify that the XML declaration is added to a simple Jelly file.
      */
+    @DocumentExample("<!-- Add an XML declaration to a simple Jelly file -->\n<root></root>\n<?jelly escape-by-default='true'?>\n<root></root>")
     @Test
     void addJellyXmlDeclaration() {
         rewriteRun(
           spec -> spec.expectedCyclesThatMakeChanges(1),
           text(
-            "<root></root>",
-            "<?jelly escape-by-default='true'?>\n<root></root>",
+            "<j:jelly xmlns:j=\\\"jelly:core\\\">\n  <h1>Simple Example</h1>\n</j:jelly>",
+            "<?jelly escape-by-default='true'?>\n<j:jelly xmlns:j=\\\"jelly:core\\\">\n  <h1>Simple Example</h1>\n</j:jelly>",
             spec -> spec.path("example.jelly")
           )
         );
@@ -102,18 +106,21 @@ public class AddJellyXmlDeclarationTest implements RewriteTest {
      */
     @Test
     void doNotAddXmlDeclarationIfAlreadyPresent(@TempDir Path tempDir) throws IOException {
-        Path inputFile = tempDir.resolve("example.jelly");
-        Files.writeString(inputFile, """
+        String input = """
               <?jelly escape-by-default='true'?>
               <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define">
                   <st:contentType value="text/html"/>
                   <h1>Hello, World!</h1>
               </j:jelly>
-          """);
-
-        rewriteRun(
-          spec -> spec.recipe(new AddJellyXmlDeclaration())
-            .expectedCyclesThatMakeChanges(0),
-          text(Files.readString(inputFile)));
+          """;
+        Path inputFile = tempDir.resolve("example.jelly");
+        try {
+            Files.writeString(inputFile, input);
+            rewriteRun(
+              spec -> spec.expectedCyclesThatMakeChanges(0),
+              text(Files.readString(inputFile)));
+        } finally {
+            Files.deleteIfExists(inputFile);
+        }
     }
 }
