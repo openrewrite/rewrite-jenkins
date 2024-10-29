@@ -85,7 +85,6 @@ public class AddJellyXmlDeclarationTest implements RewriteTest {
         rewriteRun(
           spec -> spec.recipe(new AddJellyXmlDeclaration())
             .expectedCyclesThatMakeChanges(1)
-            .cycles(1),
           text(Files.readString(inputFile), Files.readString(expectedFile)));
     }
 
