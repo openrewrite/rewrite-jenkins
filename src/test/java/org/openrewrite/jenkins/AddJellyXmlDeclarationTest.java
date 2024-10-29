@@ -66,27 +66,32 @@ public class AddJellyXmlDeclarationTest implements RewriteTest {
      */
     @Test
     void addXmlDeclarationToJellyFile(@TempDir Path tempDir) throws IOException {
-        Path inputFile = tempDir.resolve("example.jelly");
-        Files.writeString(inputFile, """
+        String input = """
               <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define">
                   <st:contentType value="text/html"/>
                   <h1>Hello, World!</h1>
               </j:jelly>
-          """);
-
-        Path expectedFile = tempDir.resolve("expected.jelly");
-        Files.writeString(expectedFile, """
+          """;
+        String expected = """
               <?jelly escape-by-default='true'?>
               <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define">
                   <st:contentType value="text/html"/>
                   <h1>Hello, World!</h1>
               </j:jelly>
-          """);
+          """;
+        Path inputFile = tempDir.resolve("example.jelly");
+        Path expectedFile = tempDir.resolve("expected.jelly");
+        try {
+            Files.writeString(inputFile, input);
+            Files.writeString(expectedFile, expected);
 
-        rewriteRun(
-          spec -> spec.recipe(new AddJellyXmlDeclaration())
-            .expectedCyclesThatMakeChanges(1),
-          text(Files.readString(inputFile), Files.readString(expectedFile)));
+            rewriteRun(
+              spec -> spec.expectedCyclesThatMakeChanges(1),
+              text(Files.readString(inputFile), Files.readString(expectedFile)));
+        } finally {
+            Files.deleteIfExists(inputFile);
+            Files.deleteIfExists(expectedFile);
+        }
     }
 
     /**
