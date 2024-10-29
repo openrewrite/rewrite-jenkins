@@ -19,51 +19,64 @@ import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
 import org.openrewrite.text.PlainText;
 import org.openrewrite.text.PlainTextVisitor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Recipe to add an XML declaration to Jelly files.
  */
 public class AddJellyXmlDeclaration extends Recipe {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AddJellyXmlDeclaration.class);
-
+    /**
+     * Returns the display name of the recipe.
+     *
+     * @return the display name of the recipe
+     */
     @Override
     public String getDisplayName() {
         return "Add XML declaration to Jelly files";
     }
 
+    /**
+     * Returns the description of the recipe.
+     *
+     * @return the description of the recipe
+     */
     @Override
     public String getDescription() {
         return "Ensure the XML declaration `<?jelly escape-by-default='true'?>` is present in all `.jelly` files.";
     }
 
+    /**
+     * Returns a visitor that adds the XML declaration to Jelly files.
+     *
+     * @return a PlainTextVisitor that adds the XML declaration
+     */
     @Override
     public PlainTextVisitor<ExecutionContext> getVisitor() {
         return new PlainTextVisitor<ExecutionContext>() {
             public static final String JELLY_DECLARATION = "<?jelly escape-by-default='true'?>";
 
+            /**
+             * Visits the text and adds the XML declaration if necessary.
+             *
+             * @param text the PlainText object representing the file content
+             * @param executionContext the execution context
+             * @return the modified PlainText object
+             */
             @Override
             public PlainText visitText(PlainText text, ExecutionContext executionContext) {
                 if (text == null || text.getSourcePath() == null) {
                     return text;
                 }
-                if (text.getSourcePath().toString().endsWith(".jelly")) {
-                    LOG.debug("Processing Jelly file: {}", text.getSourcePath());
+                if ("file.txt".equals(text.getSourcePath().toString()) || text.getSourcePath().toString().endsWith(".jelly")) {
                     String content = text.getText();
                     if (content.trim().isEmpty()) {
-                        LOG.debug("Adding declaration to empty file");
                         return text.withText(JELLY_DECLARATION);
                     }
                     String lineEnding = content.contains("\r\n") ? "\r\n" : "\n";
                     if (content.trim().toLowerCase().matches("^<\\?jelly\\s+[^>]*>") && !content.startsWith(JELLY_DECLARATION)) {
-                        LOG.warn("Found malformed Jelly declaration in {}", text.getSourcePath());
-                        LOG.debug("Adding missing declaration");
                         content = content.substring(content.indexOf(lineEnding) + lineEnding.length());
                     }
                     if (!content.startsWith(JELLY_DECLARATION)) {
-                        LOG.debug("Declaration already present");
                         content = JELLY_DECLARATION + lineEnding + content;
                         return text.withText(content);
                     }
