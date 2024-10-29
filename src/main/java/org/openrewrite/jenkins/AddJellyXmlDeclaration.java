@@ -24,6 +24,7 @@ import org.openrewrite.text.PlainTextVisitor;
  * Recipe to add an XML declaration to Jelly files.
  */
 public class AddJellyXmlDeclaration extends Recipe {
+    private static final String JELLY_DECLARATION = "<?jelly escape-by-default='true'?>";
 
     /**
      * Returns the display name of the recipe.
@@ -53,7 +54,6 @@ public class AddJellyXmlDeclaration extends Recipe {
     @Override
     public PlainTextVisitor<ExecutionContext> getVisitor() {
         return new PlainTextVisitor<ExecutionContext>() {
-            public static final String JELLY_DECLARATION = "<?jelly escape-by-default='true'?>";
 
             /**
              * Visits the text and adds the XML declaration if necessary.
