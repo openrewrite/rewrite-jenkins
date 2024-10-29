@@ -40,6 +40,7 @@ public class AddJellyXmlDeclarationTest implements RewriteTest {
     @Override
     public void defaults(RecipeSpec spec) {
         spec.recipe(new AddJellyXmlDeclaration());
+        spec.parser(PlainTextParser.builder());
     }
 
     /**
@@ -83,7 +84,6 @@ public class AddJellyXmlDeclarationTest implements RewriteTest {
 
         rewriteRun(
           spec -> spec.recipe(new AddJellyXmlDeclaration())
-            .parser(PlainTextParser.builder())
             .expectedCyclesThatMakeChanges(1)
             .cycles(1),
           text(Files.readString(inputFile), Files.readString(expectedFile)));
@@ -108,7 +108,6 @@ public class AddJellyXmlDeclarationTest implements RewriteTest {
 
         rewriteRun(
           spec -> spec.recipe(new AddJellyXmlDeclaration())
-            .parser(PlainTextParser.builder())
             .expectedCyclesThatMakeChanges(1)
             .cycles(0),
           text(Files.readString(inputFile)));
