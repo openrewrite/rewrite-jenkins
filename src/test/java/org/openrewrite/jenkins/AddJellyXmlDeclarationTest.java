@@ -49,14 +49,33 @@ public class AddJellyXmlDeclarationTest implements RewriteTest {
     /**
      * Test to verify that the XML declaration is added to a simple Jelly file.
      */
-    @DocumentExample("<!-- Add an XML declaration to a simple Jelly file -->\n<root></root>\n<?jelly escape-by-default='true'?>\n<root></root>")
+    @DocumentExample(
+      "Input:\n" +
+        "<j:jelly xmlns:j=\"jelly:core\">\n" +
+        "  <h1>Simple Example</h1>\n" +
+        "</j:jelly>\n\n" +
+        "Output:\n" +
+        "<?jelly escape-by-default='true'?>\n" +
+        "<j:jelly xmlns:j=\"jelly:core\">\n" +
+        "  <h1>Simple Example</h1>\n" +
+        "</j:jelly>"
+    )
     @Test
     void addJellyXmlDeclaration() {
         rewriteRun(
           spec -> spec.expectedCyclesThatMakeChanges(1),
           text(
-            "<j:jelly xmlns:j=\\\"jelly:core\\\">\n  <h1>Simple Example</h1>\n</j:jelly>",
-            "<?jelly escape-by-default='true'?>\n<j:jelly xmlns:j=\\\"jelly:core\\\">\n  <h1>Simple Example</h1>\n</j:jelly>",
+            """
+              <j:jelly xmlns:j="jelly:core">
+                <h1>Simple Example</h1>
+              </j:jelly>
+              """,
+            """
+              <?jelly escape-by-default='true'?>
+              <j:jelly xmlns:j="jelly:core">
+                <h1>Simple Example</h1>
+              </j:jelly>
+              """,
             spec -> spec.path("example.jelly")
           )
         );
