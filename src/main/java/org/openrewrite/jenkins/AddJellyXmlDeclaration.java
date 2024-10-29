@@ -60,7 +60,6 @@ public class AddJellyXmlDeclaration extends Recipe {
              *
              * @param text the PlainText object representing the file content
              * @param executionContext the execution context
-            public PlainText visitText(PlainText text, ExecutionContext ctx) {
              */
             @Override
             public PlainText visitText(PlainText text, ExecutionContext executionContext) {
