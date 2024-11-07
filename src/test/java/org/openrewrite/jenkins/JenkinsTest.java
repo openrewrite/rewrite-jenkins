@@ -15,6 +15,7 @@
  */
 package org.openrewrite.jenkins;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -36,6 +37,14 @@ class JenkinsTest {
         String actual = Jenkins.bomNameForJenkinsVersion(jenkinsVersion);
 
         assertThat(actual).isEqualTo(bomVersion);
+    }
+
+    @Test
+    void shouldGenerateBomNameWithBaseline() {
+        String actual = Jenkins.bomNameForJenkinsVersion("${jenkins.baseline}.3");
+        assertThat(actual).isEqualTo("bom-${jenkins.baseline}.x");
+        actual = Jenkins.bomNameForJenkinsVersion("${jenkins.baseline}.1");
+        assertThat(actual).isEqualTo("bom-${jenkins.baseline}.x");
     }
 
     static Stream<Arguments> versionToBom() {
