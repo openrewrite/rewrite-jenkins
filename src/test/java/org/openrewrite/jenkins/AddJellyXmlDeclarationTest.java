@@ -20,7 +20,6 @@ import org.junit.jupiter.api.io.TempDir;
 import org.openrewrite.DocumentExample;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
-import org.openrewrite.text.PlainTextParser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,7 +30,7 @@ import static org.openrewrite.test.SourceSpecs.text;
 /**
  * Test class for the AddJellyXmlDeclaration recipe.
  */
-public class AddJellyXmlDeclarationTest implements RewriteTest {
+class AddJellyXmlDeclarationTest implements RewriteTest {
 
     /**
      * Configures default test settings by:
@@ -43,27 +42,17 @@ public class AddJellyXmlDeclarationTest implements RewriteTest {
     @Override
     public void defaults(RecipeSpec spec) {
         spec.recipe(new AddJellyXmlDeclaration());
-        spec.parser(PlainTextParser.builder());
     }
 
     /**
      * Test to verify that the XML declaration is added to a simple Jelly file.
      */
-    @DocumentExample(
-      "Input:\n" +
-        "<j:jelly xmlns:j=\"jelly:core\">\n" +
-        "  <h1>Simple Example</h1>\n" +
-        "</j:jelly>\n\n" +
-        "Output:\n" +
-        "<?jelly escape-by-default='true'?>\n" +
-        "<j:jelly xmlns:j=\"jelly:core\">\n" +
-        "  <h1>Simple Example</h1>\n" +
-        "</j:jelly>"
-    )
+    @DocumentExample
     @Test
     void addJellyXmlDeclaration() {
         rewriteRun(
           spec -> spec.expectedCyclesThatMakeChanges(1),
+          //language=xml
           text(
             """
               <j:jelly xmlns:j="jelly:core">
@@ -89,18 +78,20 @@ public class AddJellyXmlDeclarationTest implements RewriteTest {
      */
     @Test
     void addXmlDeclarationToJellyFile(@TempDir Path tempDir) throws IOException {
+        //language=xml
         String input = """
-              <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define">
-                  <st:contentType value="text/html"/>
-                  <h1>Hello, World!</h1>
-              </j:jelly>
+          <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define">
+              <st:contentType value="text/html"/>
+              <h1>Hello, World!</h1>
+          </j:jelly>
           """;
+        //language=xml
         String expected = """
-              <?jelly escape-by-default='true'?>
-              <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define">
-                  <st:contentType value="text/html"/>
-                  <h1>Hello, World!</h1>
-              </j:jelly>
+          <?jelly escape-by-default='true'?>
+          <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define">
+              <st:contentType value="text/html"/>
+              <h1>Hello, World!</h1>
+          </j:jelly>
           """;
         Path inputFile = tempDir.resolve("example.jelly");
         Path expectedFile = tempDir.resolve("expected.jelly");
@@ -130,12 +121,13 @@ public class AddJellyXmlDeclarationTest implements RewriteTest {
      */
     @Test
     void doNotAddXmlDeclarationIfAlreadyPresent(@TempDir Path tempDir) throws IOException {
+        //language=xml
         String input = """
-              <?jelly escape-by-default='true'?>
-              <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define">
-                  <st:contentType value="text/html"/>
-                  <h1>Hello, World!</h1>
-              </j:jelly>
+          <?jelly escape-by-default='true'?>
+          <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define">
+              <st:contentType value="text/html"/>
+              <h1>Hello, World!</h1>
+          </j:jelly>
           """;
         Path inputFile = tempDir.resolve("example.jelly");
         try {
