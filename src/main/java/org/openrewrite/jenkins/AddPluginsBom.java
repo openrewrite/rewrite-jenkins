@@ -158,6 +158,9 @@ public class AddPluginsBom extends Recipe {
                 if (isManagedDependencyTag()) {
                     String groupId = tag.getChildValue("groupId").orElse("");
                     String artifactId = tag.getChildValue("artifactId").orElse("");
+                    if (artifactId.equals("bom-${jenkins.baseline}.x")) {
+                        artifactId = "bom-" + getResolutionResult().getPom().getProperties().get("jenkins.baseline") + ".x";
+                    }
                     if (PLUGINS_BOM_GROUP_ID.equals(groupId) && !artifactId.isEmpty()) {
                         List<Xml.Tag> pluginBoms = getCursor().getNearestMessage(PLUGIN_BOMS_KEY, new LinkedList<>());
                         pluginBoms.add(t);
