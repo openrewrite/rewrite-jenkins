@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 the original author or authors.
+ * Copyright 2024 the original author or authors.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,16 +63,13 @@ public class AddJellyXmlDeclaration extends Recipe {
              */
             @Override
             public PlainText visitText(PlainText text, ExecutionContext ctx) {
-                if (text == null || text.getSourcePath() == null) {
-                    return text;
-                }
-                if ("file.txt".equals(text.getSourcePath().toString()) || text.getSourcePath().toString().endsWith(".jelly")) {
-                    String content = text.getText();
-                    if (content.trim().isEmpty()) {
+                if (text.getSourcePath().toString().endsWith(".jelly")) {
+                    String content = text.getText().trim();
+                    if (content.isEmpty()) {
                         return text.withText(JELLY_DECLARATION);
                     }
                     String lineEnding = content.contains("\r\n") ? "\r\n" : "\n";
-                    if (content.trim().toLowerCase().matches("^<\\?jelly\\s+[^>]*>") && !content.startsWith(JELLY_DECLARATION)) {
+                    if (content.toLowerCase().matches("^<\\?jelly\\s+[^>]*>") && !content.startsWith(JELLY_DECLARATION)) {
                         content = content.substring(content.indexOf(lineEnding) + lineEnding.length());
                     }
                     if (!content.startsWith(JELLY_DECLARATION)) {
