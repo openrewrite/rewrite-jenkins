@@ -42,6 +42,7 @@ class AddPluginsBomTest implements RewriteTest {
                     <version>4.86</version>
                     <relativePath/>
                 </parent>
+                <artifactId>foo</artifactId>
                 <properties>
                     <jenkins.version>2.440.3</jenkins.version>
                 </properties>
@@ -68,6 +69,7 @@ class AddPluginsBomTest implements RewriteTest {
                     <version>4.86</version>
                     <relativePath/>
                 </parent>
+                <artifactId>foo</artifactId>
                 <properties>
                     <jenkins.version>2.440.3</jenkins.version>
                 </properties>
@@ -102,6 +104,7 @@ class AddPluginsBomTest implements RewriteTest {
                     <version>4.86</version>
                     <relativePath/>
                 </parent>
+                <artifactId>foo</artifactId>
                 <properties>
                     <jenkins.version>2.440.3</jenkins.version>
                 </properties>
@@ -141,6 +144,7 @@ class AddPluginsBomTest implements RewriteTest {
                     <version>4.86</version>
                     <relativePath/>
                 </parent>
+                <artifactId>foo</artifactId>
                 <properties>
                     <jenkins.version>2.440.3</jenkins.version>
                 </properties>
@@ -186,6 +190,7 @@ class AddPluginsBomTest implements RewriteTest {
                     <version>4.86</version>
                     <relativePath/>
                 </parent>
+                <artifactId>foo</artifactId>
                 <properties>
                     <jenkins.version>2.440.3</jenkins.version>
                 </properties>
@@ -267,6 +272,7 @@ class AddPluginsBomTest implements RewriteTest {
                     <version>4.86</version>
                     <relativePath/>
                 </parent>
+                <artifactId>foo</artifactId>
                 <properties>
                     <jenkins.version>2.440.3</jenkins.version>
                 </properties>
@@ -317,6 +323,7 @@ class AddPluginsBomTest implements RewriteTest {
                     <version>4.86</version>
                     <relativePath/>
                 </parent>
+                <artifactId>foo</artifactId>
                 <properties>
                     <jenkins.version>2.440.3</jenkins.version>
                 </properties>
