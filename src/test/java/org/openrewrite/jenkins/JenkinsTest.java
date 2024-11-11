@@ -34,17 +34,13 @@ class JenkinsTest {
     @ParameterizedTest
     @MethodSource("versionToBom")
     void shouldGenerateBomNameFromJenkinsVersion(String jenkinsVersion, String bomVersion) {
-        String actual = Jenkins.bomNameForJenkinsVersion(jenkinsVersion);
-
-        assertThat(actual).isEqualTo(bomVersion);
+        assertThat(Jenkins.bomNameForJenkinsVersion(jenkinsVersion)).isEqualTo(bomVersion);
     }
 
     @Test
     void shouldGenerateBomNameWithBaseline() {
-        String actual = Jenkins.bomNameForJenkinsVersion("${jenkins.baseline}.3");
-        assertThat(actual).isEqualTo("bom-${jenkins.baseline}.x");
-        actual = Jenkins.bomNameForJenkinsVersion("${jenkins.baseline}.1");
-        assertThat(actual).isEqualTo("bom-${jenkins.baseline}.x");
+        assertThat(Jenkins.bomNameForJenkinsVersion("${jenkins.baseline}.3")).isEqualTo("bom-${jenkins.baseline}.x");
+        assertThat(Jenkins.bomNameForJenkinsVersion("${jenkins.baseline}.1")).isEqualTo("bom-${jenkins.baseline}.x");
     }
 
     static Stream<Arguments> versionToBom() {
