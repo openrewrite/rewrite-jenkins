@@ -25,7 +25,7 @@ import static org.openrewrite.maven.Assertions.pomXml;
 class UpgradeVersionPropertyTest implements RewriteTest {
     @Override
     public void defaults(RecipeSpec spec) {
-        spec.recipe(new UpgradeVersionProperty("jenkins.version", "2.364.1"));
+        spec.recipe(new UpgradeVersionProperty("jenkins.version", "2.452.4"));
     }
 
     @DocumentExample
@@ -37,7 +37,7 @@ class UpgradeVersionPropertyTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.40</version>
+                    <version>4.86</version>
                     <relativePath/>
                 </parent>
                 <artifactId>example-plugin</artifactId>
@@ -58,13 +58,208 @@ class UpgradeVersionPropertyTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.40</version>
+                    <version>4.86</version>
                     <relativePath/>
                 </parent>
                 <artifactId>example-plugin</artifactId>
                 <version>0.8-SNAPSHOT</version>
                 <properties>
-                    <jenkins.version>2.364.1</jenkins.version>
+                    <jenkins.version>2.452.4</jenkins.version>
+                </properties>
+                <repositories>
+                    <repository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>http://repo.jenkins-ci.org/public/</url>
+                    </repository>
+                </repositories>
+            </project>
+            """));
+    }
+
+    @Test
+    void shouldUpgradeWeeklyToLTS() {
+        rewriteRun(pomXml(
+          """
+            <project>
+                <parent>
+                    <groupId>org.jenkins-ci.plugins</groupId>
+                    <artifactId>plugin</artifactId>
+                    <version>4.86</version>
+                    <relativePath/>
+                </parent>
+                <artifactId>example-plugin</artifactId>
+                <version>0.8-SNAPSHOT</version>
+                <properties>
+                    <jenkins.version>2.303</jenkins.version>
+                </properties>
+                <repositories>
+                    <repository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>http://repo.jenkins-ci.org/public/</url>
+                    </repository>
+                </repositories>
+            </project>
+            """,
+          """
+            <project>
+                <parent>
+                    <groupId>org.jenkins-ci.plugins</groupId>
+                    <artifactId>plugin</artifactId>
+                    <version>4.86</version>
+                    <relativePath/>
+                </parent>
+                <artifactId>example-plugin</artifactId>
+                <version>0.8-SNAPSHOT</version>
+                <properties>
+                    <jenkins.version>2.452.4</jenkins.version>
+                </properties>
+                <repositories>
+                    <repository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>http://repo.jenkins-ci.org/public/</url>
+                    </repository>
+                </repositories>
+            </project>
+            """));
+    }
+
+    @Test
+    void shouldUpgradeWithBaseline() {
+        rewriteRun(pomXml(
+          """
+            <project>
+                <parent>
+                    <groupId>org.jenkins-ci.plugins</groupId>
+                    <artifactId>plugin</artifactId>
+                    <version>4.86</version>
+                    <relativePath/>
+                </parent>
+                <artifactId>example-plugin</artifactId>
+                <version>0.8-SNAPSHOT</version>
+                <properties>
+                    <jenkins.baseline>2.303</jenkins.baseline>
+                    <jenkins.version>${jenkins.baseline}.1</jenkins.version>
+                </properties>
+                <repositories>
+                    <repository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>http://repo.jenkins-ci.org/public/</url>
+                    </repository>
+                </repositories>
+            </project>
+            """,
+          """
+            <project>
+                <parent>
+                    <groupId>org.jenkins-ci.plugins</groupId>
+                    <artifactId>plugin</artifactId>
+                    <version>4.86</version>
+                    <relativePath/>
+                </parent>
+                <artifactId>example-plugin</artifactId>
+                <version>0.8-SNAPSHOT</version>
+                <properties>
+                    <jenkins.baseline>2.452</jenkins.baseline>
+                    <jenkins.version>${jenkins.baseline}.4</jenkins.version>
+                </properties>
+                <repositories>
+                    <repository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>http://repo.jenkins-ci.org/public/</url>
+                    </repository>
+                </repositories>
+            </project>
+            """));
+    }
+
+    @Test
+    void shouldUpgradeWithBaselineFromWeekly() {
+        rewriteRun(pomXml(
+          """
+            <project>
+                <parent>
+                    <groupId>org.jenkins-ci.plugins</groupId>
+                    <artifactId>plugin</artifactId>
+                    <version>4.86</version>
+                    <relativePath/>
+                </parent>
+                <artifactId>example-plugin</artifactId>
+                <version>0.8-SNAPSHOT</version>
+                <properties>
+                    <jenkins.baseline>2.303</jenkins.baseline>
+                    <jenkins.version>${jenkins.baseline}</jenkins.version>
+                </properties>
+                <repositories>
+                    <repository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>http://repo.jenkins-ci.org/public/</url>
+                    </repository>
+                </repositories>
+            </project>
+            """,
+          """
+            <project>
+                <parent>
+                    <groupId>org.jenkins-ci.plugins</groupId>
+                    <artifactId>plugin</artifactId>
+                    <version>4.86</version>
+                    <relativePath/>
+                </parent>
+                <artifactId>example-plugin</artifactId>
+                <version>0.8-SNAPSHOT</version>
+                <properties>
+                    <jenkins.baseline>2.452</jenkins.baseline>
+                    <jenkins.version>${jenkins.baseline}.4</jenkins.version>
+                </properties>
+                <repositories>
+                    <repository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>http://repo.jenkins-ci.org/public/</url>
+                    </repository>
+                </repositories>
+            </project>
+            """));
+    }
+
+    @Test
+    void shouldUpgradeWithBaselineFromLTSToWeekly() {
+        rewriteRun(spec -> spec.recipe(new UpgradeVersionProperty("jenkins.version", "2.479")),
+          pomXml(
+          """
+            <project>
+                <parent>
+                    <groupId>org.jenkins-ci.plugins</groupId>
+                    <artifactId>plugin</artifactId>
+                    <version>4.86</version>
+                    <relativePath/>
+                </parent>
+                <artifactId>example-plugin</artifactId>
+                <version>0.8-SNAPSHOT</version>
+                <properties>
+                    <jenkins.baseline>2.303</jenkins.baseline>
+                    <jenkins.version>${jenkins.baseline}.3</jenkins.version>
+                </properties>
+                <repositories>
+                    <repository>
+                        <id>repo.jenkins-ci.org</id>
+                        <url>http://repo.jenkins-ci.org/public/</url>
+                    </repository>
+                </repositories>
+            </project>
+            """,
+          """
+            <project>
+                <parent>
+                    <groupId>org.jenkins-ci.plugins</groupId>
+                    <artifactId>plugin</artifactId>
+                    <version>4.86</version>
+                    <relativePath/>
+                </parent>
+                <artifactId>example-plugin</artifactId>
+                <version>0.8-SNAPSHOT</version>
+                <properties>
+                    <jenkins.baseline>2.479</jenkins.baseline>
+                    <jenkins.version>${jenkins.baseline}</jenkins.version>
                 </properties>
                 <repositories>
                     <repository>
@@ -84,13 +279,13 @@ class UpgradeVersionPropertyTest implements RewriteTest {
                 <parent>
                     <groupId>org.jenkins-ci.plugins</groupId>
                     <artifactId>plugin</artifactId>
-                    <version>4.40</version>
+                    <version>4.86</version>
                     <relativePath/>
                 </parent>
                 <artifactId>example-plugin</artifactId>
                 <version>0.8-SNAPSHOT</version>
                 <properties>
-                    <jenkins.version>2.387.1</jenkins.version>
+                    <jenkins.version>2.462.3</jenkins.version>
                 </properties>
                 <repositories>
                     <repository>

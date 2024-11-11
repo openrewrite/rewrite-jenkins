@@ -13,9 +13,11 @@ dependencies {
 
     implementation(platform("org.openrewrite:rewrite-bom:$rewriteVersion"))
 
+    implementation("org.openrewrite:rewrite-groovy")
     implementation("org.openrewrite:rewrite-java")
     implementation("org.openrewrite:rewrite-maven")
     implementation("org.openrewrite:rewrite-yaml")
+    implementation("org.openrewrite.recipe:rewrite-java-dependencies:$rewriteVersion")
     runtimeOnly("org.openrewrite:rewrite-java-11")
 
     testImplementation("org.ow2.asm:asm:latest.release")
@@ -23,6 +25,8 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:latest.release"))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
+    testImplementation(platform("org.mockito:mockito-bom:latest.release"))
+    testImplementation("org.mockito:mockito-junit-jupiter")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 
     testImplementation("org.openrewrite:rewrite-test")

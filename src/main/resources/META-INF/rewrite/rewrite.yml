@@ -17,7 +17,7 @@
 type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.jenkins.ModernizePlugin
 displayName: Modernize a Jenkins plugin to the latest recommended versions
-description: >
+description: >-
   This recipe is intended to change over time to reflect the most recent tooling and
   [recommended Jenkins baseline](https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/).
 recipeList:
@@ -26,9 +26,12 @@ recipeList:
       oldArtifactId: plugin
       newVersion: latest.release
       allowVersionDowngrades: false
+  - org.openrewrite.java.RemoveAnnotation:
+      # https://github.com/jenkinsci/plugin-pom/releases/tag/plugin-4.52 removed Animal Sniffer
+      annotationPattern: "@org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement"
   - org.openrewrite.jenkins.UpgradeHtmlUnit_3_3_0
       # https://github.com/jenkinsci/plugin-pom/releases/tag/plugin-4.66 bumped htmlunit to 3.3.0
-  - org.openrewrite.maven.ChangeDependencyGroupIdAndArtifactId:
+  - org.openrewrite.java.dependencies.ChangeDependency:
       # https://github.com/jenkinsci/plugin-pom/releases/tag/plugin-4.68 bumped mockito-bom to 5.4.0,
       # which dropped mockito-inline
       oldGroupId: org.mockito
@@ -39,8 +42,17 @@ recipeList:
       overrideManagedVersion: false
   - org.openrewrite.jenkins.UpgradeVersionProperty:
       key: jenkins.version
-      minimumVersion: 2.387.3
+      minimumVersion: 2.440.3
+  - org.openrewrite.java.dependencies.RemoveDependency:
+      # Provided by core as of 2.349
+      groupId: org.jenkins-ci
+      artifactId: symbol-annotation
   - org.openrewrite.jenkins.AddPluginsBom
+  - org.openrewrite.java.ChangePackage:
+      # 2.401.2 started providing Guice 6.x, which supports the `jakarta.inject` namespace
+      oldPackageName: javax.inject
+      newPackageName: jakarta.inject
+      recursive: true
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.jenkins.ModernizeJenkinsfile
@@ -51,10 +63,15 @@ recipeList:
       relativeFileName: Jenkinsfile
       overwriteExisting: true
       fileContents: >
-        buildPlugin(useContainerAgent: true, configurations: [
-          [ platform: 'linux', jdk: '11' ],
-          [ platform: 'windows', jdk: '11' ],
-          [ platform: 'linux', jdk: '17' ],
+        /*
+         See the documentation for more options:
+         https://github.com/jenkins-infra/pipeline-library/
+        */
+        buildPlugin(
+          useContainerAgent: true, // Set to `false` if you need to use Docker for containerized tests
+          configurations: [
+            [platform: 'linux', jdk: 21],
+            [platform: 'windows', jdk: 17],
         ])
 ---
 type: specs.openrewrite.org/v1beta/recipe

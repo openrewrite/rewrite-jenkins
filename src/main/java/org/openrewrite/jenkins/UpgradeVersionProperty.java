@@ -17,11 +17,7 @@ package org.openrewrite.jenkins;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import org.openrewrite.ExecutionContext;
-import org.openrewrite.Option;
-import org.openrewrite.Preconditions;
-import org.openrewrite.Recipe;
-import org.openrewrite.TreeVisitor;
+import org.openrewrite.*;
 import org.openrewrite.marker.SearchResult;
 import org.openrewrite.maven.MavenVisitor;
 import org.openrewrite.semver.Semver;
@@ -37,14 +33,14 @@ import java.util.Optional;
  * Updates the version property unless it is already greater than minimumVersion
  */
 @Value
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class UpgradeVersionProperty extends Recipe {
     @Option(displayName = "Key",
             description = "The name of the property key to change.",
             example = "jenkins.version")
     String key;
 
-    @Option(displayName = "Minimum Version",
+    @Option(displayName = "Minimum version",
             description = "Value to apply to the matching property if < this.",
             example = "2.375.1")
     String minimumVersion;
@@ -65,10 +61,13 @@ public class UpgradeVersionProperty extends Recipe {
         assert versionComparator != null;
         return Preconditions.check(new MavenVisitor<ExecutionContext>() {
             @Override
-            public Xml visitDocument(Xml.Document document, ExecutionContext executionContext) {
+            public Xml visitDocument(Xml.Document document, ExecutionContext ctx) {
                 String value = getResolutionResult().getPom().getProperties().get(key);
                 if (value == null) {
                     return document;
+                }
+                if (value.contains("${jenkins.baseline}")) {
+                    value = getResolutionResult().getPom().getProperties().get("jenkins.baseline");
                 }
                 Optional<String> upgrade = versionComparator.upgrade(value, Collections.singleton(minimumVersion));
                 if (!upgrade.isPresent()) {
@@ -83,10 +82,38 @@ public class UpgradeVersionProperty extends Recipe {
                 if (!isPropertyTag()) {
                     return t;
                 }
+                // Change the baseline
+                if ("jenkins.baseline".equals(t.getName())) {
+                    if (minimumVersion.matches("\\d+\\.\\d+")) {
+                        doAfterVisit(new ChangeTagValueVisitor<>(t, minimumVersion));
+                        doAfterVisit(new AddPluginsBom().getVisitor());
+                        return t;
+                    }
+                    else {
+                        String minimumBaseline = minimumVersion.substring(0, minimumVersion.lastIndexOf('.'));
+                        doAfterVisit(new ChangeTagValueVisitor<>(t, minimumBaseline));
+                        doAfterVisit(new AddPluginsBom().getVisitor());
+                        return t;
+                    }
+
+                }
                 if (!t.getName().equals(key)) {
                     return t;
                 }
-                doAfterVisit(new ChangeTagValueVisitor<>(t, minimumVersion));
+                if (!t.getValue().isPresent()) {
+                    return t;
+                }
+                String newValue = minimumVersion;
+                if (t.getValue().get().contains("${jenkins.baseline}")) {
+                    if (minimumVersion.matches("\\d+\\.\\d+")) {
+                        newValue = "${jenkins.baseline}";
+                    }
+                    else {
+                        newValue = "${jenkins.baseline}." + minimumVersion.substring(minimumVersion.lastIndexOf('.') + 1);
+                    }
+                }
+                doAfterVisit(new ChangeTagValueVisitor<>(t, newValue));
+                doAfterVisit(new AddPluginsBom().getVisitor());
                 return t;
             }
         });

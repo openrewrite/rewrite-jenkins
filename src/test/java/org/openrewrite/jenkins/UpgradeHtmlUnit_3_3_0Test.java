@@ -23,7 +23,6 @@ import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
 import static org.openrewrite.java.Assertions.java;
-import static org.openrewrite.java.Assertions.srcMainJava;
 
 class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
     @Language("java")
@@ -33,7 +32,7 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
       public class WebClient {
           public HtmlPage getPage(String in) { return null; }
       }
-      """.stripIndent();
+      """;
 
     @Language("java")
     private final String htmlPage2 = """
@@ -41,7 +40,7 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
       public class HtmlPage {
           public HtmlForm getFormByName(String in) { return null; }
       }
-      """.stripIndent();
+      """;
 
     @Language("java")
     private final String htmlForm2 = """
@@ -49,7 +48,7 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
       public class HtmlForm {
           public HtmlInput getInputByName(String in) { return null; }
       }
-      """.stripIndent();
+      """;
 
     @Language("java")
     private final String htmlInput2 = """
@@ -61,7 +60,7 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
           public void setValueAttribute(String newValue) {}
           public void setValue(String newValue) {}
       }
-      """.stripIndent();
+      """;
 
     @Language("java")
     private final String webClient3 = """
@@ -70,7 +69,7 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
       public class WebClient {
           public HtmlPage getPage(String in) { return null; }
       }
-      """.stripIndent();
+      """;
 
     @Language("java")
     private final String htmlPage3 = """
@@ -78,7 +77,7 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
       public class HtmlPage {
           public HtmlForm getFormByName(String in) { return null; }
       }
-      """.stripIndent();
+      """;
 
     @Language("java")
     private final String htmlForm3 = """
@@ -86,7 +85,7 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
       public class HtmlForm {
           public HtmlInput getInputByName(String in) { return null; }
       }
-      """.stripIndent();
+      """;
 
     @Language("java")
     private final String htmlInput3 = """
@@ -98,7 +97,7 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
           public void setValueAttribute(String newValue) {}
           public void setValue(String newValue) {}
       }
-      """.stripIndent();
+      """;
 
     @Override
     public void defaults(RecipeSpec spec) {
@@ -110,17 +109,17 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
     @DocumentExample
     void shouldUpdateHtmlUnit() {
         rewriteRun(
-          srcMainJava(spec -> spec.path("org/example/HtmlUnitUse.java")),
-          java("""
+          java(
+            """
               package org.example;
 
               import com.gargoylesoftware.htmlunit.WebClient;
               import com.gargoylesoftware.htmlunit.html.HtmlForm;
               import com.gargoylesoftware.htmlunit.html.HtmlInput;
               import com.gargoylesoftware.htmlunit.html.HtmlPage;
-                                      
+
               import java.io.IOException;
-                                      
+
               public class HtmlUnitUse {
                   void run() throws IOException {
                       try (WebClient webClient = new WebClient()) {
@@ -135,17 +134,17 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
                       }
                   }
               }
-              """.stripIndent(),
+              """,
             """
               package org.example;
-                                      
+
               import org.htmlunit.WebClient;
               import org.htmlunit.html.HtmlForm;
               import org.htmlunit.html.HtmlInput;
               import org.htmlunit.html.HtmlPage;
-                                      
+
               import java.io.IOException;
-                                      
+
               public class HtmlUnitUse {
                   void run() throws IOException {
                       try (WebClient webClient = new WebClient()) {
@@ -160,7 +159,8 @@ class UpgradeHtmlUnit_3_3_0Test implements RewriteTest {
                       }
                   }
               }
-              """.stripIndent())
+              """
+          )
         );
     }
 }

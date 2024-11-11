@@ -16,7 +16,13 @@
 package org.openrewrite.jenkins.github;
 
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,9 +35,38 @@ class ArtifactIdTeamNameGeneratorTest {
       "stashNotifier,@jenkinsci/stashnotifier-plugin-developers",
       "aws-java-sdk-parent,@jenkinsci/aws-java-sdk-plugin-developers",
       "warnings-ng-parent,@jenkinsci/warnings-ng-plugin-developers",
+      "build-user-vars-plugin,@jenkinsci/build-user-vars-plugin-developers",
+      "project-stats-plugin,@jenkinsci/project-stats-plugin-developers",
+      "plugin-usage-plugin,@jenkinsci/plugin-usage-plugin-developers",
+      "build-keeper-plugin,@jenkinsci/build-keeper-plugin-developers",
     })
     void shouldGenerateExpectedTeamName(String artifactId, String expected) {
         String actual = generator.generate(new TeamNameInput(artifactId));
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "/updatecenter-artifactIds.txt")
+    void shouldGenerateValidTeamName(String artifactId) {
+        String actual = generator.generate(new TeamNameInput(artifactId));
+        if (!actual.isEmpty()) {
+            boolean exists = exists(actual);
+            assertThat(exists).as("artifactId %s's team name is %s", artifactId, actual).isTrue();
+        }
+    }
+
+    private static boolean exists(String team) {
+        try (InputStream is = ArtifactIdTeamNameGeneratorTest.class.getResourceAsStream("/plugin-developers-teams.txt")) {
+            assertThat(is).isNotNull();
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+                return br.lines()
+                  .filter(s -> !s.isBlank())
+                  .map(String::trim)
+                  .map(s -> "@jenkinsci/" + s)
+                  .anyMatch(s -> s.equals(team));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

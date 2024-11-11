@@ -17,7 +17,7 @@
 type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.jenkins.UpgradeHtmlUnit_3_3_0
 displayName: Migrate to HtmlUnit 3.x
-description: >
+description: >-
   Automates the HtmlUnit [migration guide](https://htmlunit.sourceforge.io/migration.html) from 2.x to 3.x.
   This change was brought in by [parent 4.66](https://github.com/jenkinsci/plugin-pom/releases/tag/plugin-4.66).
 recipeList:

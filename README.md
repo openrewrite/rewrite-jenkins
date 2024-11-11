@@ -4,7 +4,7 @@
 [![ci](https://github.com/openrewrite/rewrite-jenkins/actions/workflows/ci.yml/badge.svg)](https://github.com/openrewrite/rewrite-jenkins/actions/workflows/ci.yml)
 [![Apache 2.0](https://img.shields.io/github/license/openrewrite/rewrite-jenkins.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Maven Central](https://img.shields.io/maven-central/v/org.openrewrite.recipe/rewrite-jenkins.svg)](https://mvnrepository.com/artifact/org.openrewrite.recipe/rewrite-jenkins)
-[![Revved up by Gradle Enterprise](https://img.shields.io/badge/Revved%20up%20by-Gradle%20Enterprise-06A0CE?logo=Gradle&labelColor=02303A)](https://ge.openrewrite.org/scans)
+[![Revved up by Develocity](https://img.shields.io/badge/Revved%20up%20by-Develocity-06A0CE?logo=Gradle&labelColor=02303A)](https://ge.openrewrite.org/scans)
 [![Contributing Guide](https://img.shields.io/badge/Contributing-Guide-informational)](https://github.com/openrewrite/.github/blob/main/CONTRIBUTING.md)
 
 ## What is this?
@@ -19,6 +19,19 @@ By regularly marching plugins forward, we can drop these dependencies when unnec
 Additionally, depending on newer versions of Jenkins allows our builds to pick up deprecations.
 These deprecations can often be migrated with new OpenRewrite recipes.
 Proactively handling deprecations in the plugins we depend on allows us to avoid runtime issues if and when the deprecated code is removed.
+
+## Quick start
+
+[Running Rewrite on a Maven project without modifying the build][mvn-cli] is very helpful for getting started.
+To run the `org.openrewrite.jenkins.github.AddTeamToCodeowners` recipe:
+
+```shell
+$ mvn -U org.openrewrite.maven:rewrite-maven-plugin:run \
+      -Drewrite.recipeArtifactCoordinates=org.openrewrite.recipe:rewrite-jenkins:RELEASE \
+      -Drewrite.activeRecipes=org.openrewrite.jenkins.github.AddTeamToCodeowners
+```
+
+[mvn-cli]: https://docs.openrewrite.org/running-recipes/running-rewrite-on-a-maven-project-without-modifying-the-build
 
 ## How to use?
 

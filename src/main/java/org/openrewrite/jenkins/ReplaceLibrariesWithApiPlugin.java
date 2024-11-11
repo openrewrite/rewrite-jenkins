@@ -40,7 +40,7 @@ import java.util.Set;
  * Jenkins has as custom classloader that shares libraries through api plugins.
  */
 @Value
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class ReplaceLibrariesWithApiPlugin extends Recipe {
     private static final XPathMatcher DEPENDENCIES_MATCHER = new XPathMatcher("/project/dependencies");
 
@@ -60,7 +60,8 @@ public class ReplaceLibrariesWithApiPlugin extends Recipe {
     String pluginVersion;
 
     @Option(displayName = "Replaced Libraries",
-            description = "The set of library coordinates replaced by this API Plugin.")
+            description = "The set of library coordinates replaced by this API Plugin.",
+            example = "groupId: org.apache.commons\nartifactId: commons-text")
     Set<Library> replaces;
 
     /**
@@ -104,7 +105,7 @@ public class ReplaceLibrariesWithApiPlugin extends Recipe {
     public TreeVisitor<?, ExecutionContext> getVisitor() {
         return new MavenVisitor<ExecutionContext>() {
             @Override
-            public Xml visitTag(Tag tag, ExecutionContext executionContext) {
+            public Xml visitTag(Tag tag, ExecutionContext ctx) {
                 if (isDependencyTag()) {
                     ResolvedDependency dependency = findDependency(tag);
                     if (dependency != null && !isApiPlugin(dependency)) {
@@ -159,7 +160,7 @@ public class ReplaceLibrariesWithApiPlugin extends Recipe {
                         }
                     }
                 }
-                return super.visitTag(tag, executionContext);
+                return super.visitTag(tag, ctx);
             }
 
             private boolean isApiPlugin(ResolvedDependency dependency) {
