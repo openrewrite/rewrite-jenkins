@@ -110,7 +110,6 @@ public class AddSecurityScanWorkflow extends ScanningRecipe<AtomicBoolean> {
             return Collections.emptyList();
         }
         YamlParser parser = new YamlParser();
-        @Language("yml")
         String workflow = defaultWorkflow();
         return parser.parse(workflow)
                 .map(brandNewFile -> (Yaml.Documents) brandNewFile.withSourcePath(Paths.get(FILE_PATH)))
