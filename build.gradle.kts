@@ -18,6 +18,7 @@ dependencies {
     implementation("org.openrewrite:rewrite-maven")
     implementation("org.openrewrite:rewrite-yaml")
     implementation("org.openrewrite.recipe:rewrite-java-dependencies:$rewriteVersion")
+    implementation("org.openrewrite.recipe:rewrite-testing-frameworks:$rewriteVersion")
     runtimeOnly("org.openrewrite:rewrite-java-11")
 
     testImplementation("org.ow2.asm:asm:latest.release")
