@@ -18,7 +18,6 @@ dependencies {
     implementation("org.openrewrite:rewrite-maven")
     implementation("org.openrewrite:rewrite-yaml")
     implementation("org.openrewrite.recipe:rewrite-java-dependencies:$rewriteVersion")
-    implementation("org.openrewrite.recipe:rewrite-testing-frameworks:$rewriteVersion")
     runtimeOnly("org.openrewrite:rewrite-java-11")
 
     testImplementation("org.ow2.asm:asm:latest.release")
@@ -36,5 +35,6 @@ dependencies {
 
     testRuntimeOnly("com.github.spotbugs:spotbugs-annotations:4.7.0")
     testRuntimeOnly("com.google.code.findbugs:jsr305:3.0.2")
+    testRuntimeOnly("net.sourceforge.htmlunit:htmlunit:2.+")
     testRuntimeOnly("org.slf4j:slf4j-simple:1.7.36")
 }
