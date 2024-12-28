@@ -95,7 +95,7 @@ public class AddTeamToCodeowners extends ScanningRecipe<AddTeamToCodeowners.Scan
         return Preconditions.check(acc.hasValidTeamName(), new PlainTextVisitor<ExecutionContext>() {
             @Override
             public PlainText visitText(PlainText plainText, ExecutionContext ctx) {
-                if (!FILE_PATH.equals(plainText.getSourcePath().toString())) {
+                if (!Paths.get(FILE_PATH).equals(plainText.getSourcePath())) {
                     return plainText;
                 }
                 String text = plainText.getText();
