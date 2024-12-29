@@ -19,13 +19,13 @@ type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.jenkins.ModernizePlugin
 displayName: Modernize a Jenkins plugin to the latest recommended versions
 description: >-
-  This recipe is intended to change over time to reflect the most recent tooling and
+  This recipe is intended to change over time to reflect the recommended tooling and
   [recommended Jenkins baseline](https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/).
 recipeList:
   - org.openrewrite.maven.ChangeParentPom:
       oldGroupId: org.jenkins-ci.plugins
       oldArtifactId: plugin
-      newVersion: latest.release
+      newVersion: 4.X
       allowVersionDowngrades: false
   - org.openrewrite.java.RemoveAnnotation:
       # https://github.com/jenkinsci/plugin-pom/releases/tag/plugin-4.52 removed Animal Sniffer
@@ -33,17 +33,17 @@ recipeList:
   - org.openrewrite.java.testing.htmlunit.UpgradeHtmlUnit_3
       # https://github.com/jenkinsci/plugin-pom/releases/tag/plugin-4.66 bumped htmlunit to 3.3.0
   - org.openrewrite.java.dependencies.ChangeDependency:
-      # https://github.com/jenkinsci/plugin-pom/releases/tag/plugin-4.68 bumped mockito-bom to 5.4.0,
+      # https://github.com/jenkinsci/plugin-pom/releases/tag/plugin-4.68 bumped mockito-bom to 5.13.0,
       # which dropped mockito-inline
       oldGroupId: org.mockito
       oldArtifactId: mockito-inline
       newGroupId: org.mockito
       newArtifactId: mockito-core
-      newVersion: 5.0.0
+      newVersion: 5.13.0
       overrideManagedVersion: false
   - org.openrewrite.jenkins.UpgradeVersionProperty:
       key: jenkins.version
-      minimumVersion: 2.440.3
+      minimumVersion: 2.452.4
   - org.openrewrite.java.dependencies.RemoveDependency:
       # Provided by core as of 2.349
       groupId: org.jenkins-ci
@@ -69,6 +69,7 @@ recipeList:
          https://github.com/jenkins-infra/pipeline-library/
         */
         buildPlugin(
+          forkCount: '1C', // Run a JVM per core in tests
           useContainerAgent: true, // Set to `false` if you need to use Docker for containerized tests
           configurations: [
             [platform: 'linux', jdk: 21],
@@ -83,7 +84,7 @@ recipeList:
   - org.openrewrite.jenkins.ReplaceLibrariesWithApiPlugin:
       pluginGroupId: io.jenkins.plugins
       pluginArtifactId: commons-lang3-api
-      pluginVersion: 3.12.0-36.vd97de6465d5b_
+      pluginVersion: 3.17.0-84.vb_b_938040b_078
       replaces:
         - groupId: org.apache.commons
           artifactId: commons-lang3
