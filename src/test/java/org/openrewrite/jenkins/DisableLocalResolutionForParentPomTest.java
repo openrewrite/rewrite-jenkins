@@ -59,7 +59,7 @@ class DisableLocalResolutionForParentPomTest implements RewriteTest {
                       <groupId>org.jenkins-ci.plugins</groupId>
                       <artifactId>plugin</artifactId>
                       <version>4.86</version>
-                      <relativePath/>
+                      <relativePath />
                   </parent>
                   <artifactId>foo</artifactId>
                   <properties>

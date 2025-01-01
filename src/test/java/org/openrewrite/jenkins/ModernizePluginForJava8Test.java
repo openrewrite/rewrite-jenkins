@@ -313,7 +313,7 @@ class ModernizePluginForJava8Test implements RewriteTest {
                       <groupId>org.jenkins-ci.plugins</groupId>
                       <artifactId>plugin</artifactId>
                       <version>4.51</version>
-                      <relativePath/>
+                      <relativePath />
                   </parent>
                   <artifactId>foo</artifactId>
                   <properties>
@@ -379,7 +379,7 @@ class ModernizePluginForJava8Test implements RewriteTest {
                       <groupId>org.jenkins-ci.plugins</groupId>
                       <artifactId>plugin</artifactId>
                       <version>4.51</version>
-                      <relativePath/>
+                      <relativePath />
                   </parent>
                   <artifactId>foo</artifactId>
                   <properties>
@@ -453,7 +453,7 @@ class ModernizePluginForJava8Test implements RewriteTest {
                       <groupId>org.jenkins-ci.plugins</groupId>
                       <artifactId>plugin</artifactId>
                       <version>4.51</version>
-                      <relativePath/>
+                      <relativePath />
                   </parent>
                   <artifactId>example-plugin</artifactId>
                   <version>0.8-SNAPSHOT</version>
