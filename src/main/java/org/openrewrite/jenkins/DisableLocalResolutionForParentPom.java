@@ -49,7 +49,7 @@ public class DisableLocalResolutionForParentPom extends Recipe {
             @Override
             public Xml visitTag(Tag tag, ExecutionContext ctx) {
                 if (isParentTag()) {
-                    Tag relativePathTag = Tag.build("<relativePath/>");
+                    Tag relativePathTag = Tag.build("<relativePath />");
                     return AddOrUpdateChild.addOrUpdateChild(tag, relativePathTag, getCursor().getParentOrThrow());
                 }
                 return super.visitTag(tag, ctx);
