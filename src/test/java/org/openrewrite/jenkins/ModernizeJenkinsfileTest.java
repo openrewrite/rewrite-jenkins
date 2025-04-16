@@ -55,9 +55,11 @@ class ModernizeJenkinsfileTest implements RewriteTest {
                       </repository>
                   </repositories>
               </project>
-              """),
+              """
+          ),
           //language=groovy
-          groovy(null, """
+          groovy(null,
+                """
             /*
              See the documentation for more options:
              https://github.com/jenkins-infra/pipeline-library/
@@ -69,7 +71,8 @@ class ModernizeJenkinsfileTest implements RewriteTest {
                 [platform: 'linux', jdk: 21],
                 [platform: 'windows', jdk: 17],
             ])
-            """, spec -> spec.path("Jenkinsfile")));
+            """,
+                spec -> spec.path("Jenkinsfile")));
     }
 
     @Test
@@ -101,7 +104,8 @@ class ModernizeJenkinsfileTest implements RewriteTest {
               """
           ),
           //language=groovy
-          groovy("buildPlugin()", """
+          groovy("buildPlugin()",
+                """
             /*
              See the documentation for more options:
              https://github.com/jenkins-infra/pipeline-library/
@@ -113,6 +117,7 @@ class ModernizeJenkinsfileTest implements RewriteTest {
                 [platform: 'linux', jdk: 21],
                 [platform: 'windows', jdk: 17],
             ])
-            """, spec -> spec.noTrim().path("Jenkinsfile")));
+            """,
+                spec -> spec.noTrim().path("Jenkinsfile")));
     }
 }

@@ -213,7 +213,8 @@ class AddTeamToCodeownersTest implements RewriteTest {
                       </repository>
                   </repositories>
               </project>
-              """),
+              """
+          ),
           text(
             "* @global-owner1",
             s -> s.path(".github/CODEOWNERS").noTrim()
@@ -241,7 +242,8 @@ class AddTeamToCodeownersTest implements RewriteTest {
                       </repository>
                   </repositories>
               </project>
-              """)
+              """
+          )
         );
     }
 

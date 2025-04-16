@@ -268,7 +268,8 @@ class UpgradeVersionPropertyTest implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """));
+            """
+          ));
     }
 
     @Test
