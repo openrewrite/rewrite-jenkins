@@ -1,0 +1,547 @@
+# Copyright 2025 the original author or authors.
+# <p>
+# Licensed under the Moderne Source Available License (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# <p>
+# https://docs.moderne.io/licensing/moderne-source-available-license
+# <p>
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+---
+type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.java.testing.htmlunit.UpgradeHtmlUnit_3
+examples:
+- description: ''
+  sources:
+  - before: |
+      import com.gargoylesoftware.htmlunit.WebClient;
+      import com.gargoylesoftware.htmlunit.html.HtmlForm;
+      import com.gargoylesoftware.htmlunit.html.HtmlInput;
+      import com.gargoylesoftware.htmlunit.html.HtmlPage;
+
+      import java.io.IOException;
+
+      public class HtmlUnitUse {
+          void run() throws IOException {
+              try (WebClient webClient = new WebClient()) {
+                  HtmlPage page = webClient.getPage("https://htmlunit.sourceforge.io/");
+                  HtmlForm form = page.getFormByName("config");
+                  HtmlInput a = form.getInputByName("a");
+                  String value = a.getValueAttribute();
+                  assert "".equals(value);
+                  a.setAttribute("value", "up2");
+                  a.setAttribute("value2", "leave");
+                  a.setValueAttribute("updated");
+              }
+          }
+      }
+    after: |
+      import org.htmlunit.WebClient;
+      import org.htmlunit.html.HtmlForm;
+      import org.htmlunit.html.HtmlInput;
+      import org.htmlunit.html.HtmlPage;
+
+      import java.io.IOException;
+
+      public class HtmlUnitUse {
+          void run() throws IOException {
+              try (WebClient webClient = new WebClient()) {
+                  HtmlPage page = webClient.getPage("https://htmlunit.sourceforge.io/");
+                  HtmlForm form = page.getFormByName("config");
+                  HtmlInput a = form.getInputByName("a");
+                  String value = a.getValue();
+                  assert "".equals(value);
+                  a.setAttribute("value", "up2");
+                  a.setAttribute("value2", "leave");
+                  a.setValue("updated");
+              }
+          }
+      }
+    language: java
+---
+type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.jenkins.AddPluginsBom
+examples:
+- description: ''
+  sources:
+  - before: |
+      <project>
+          <parent>
+              <groupId>org.jenkins-ci.plugins</groupId>
+              <artifactId>plugin</artifactId>
+              <version>4.86</version>
+              <relativePath/>
+          </parent>
+          <artifactId>foo</artifactId>
+          <properties>
+              <jenkins.version>2.440.3</jenkins.version>
+          </properties>
+          <repositories>
+              <repository>
+                  <id>repo.jenkins-ci.org</id>
+                  <url>https://repo.jenkins-ci.org/public/</url>
+              </repository>
+          </repositories>
+          <dependencies>
+              <dependency>
+                  <groupId>org.jenkins-ci.plugins</groupId>
+                  <artifactId>ant</artifactId>
+                  <version>1.9</version>
+              </dependency>
+          </dependencies>
+      </project>
+    path: pom.xml
+    language: xml
+---
+type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.jenkins.CreateIndexJelly
+examples:
+- description: ''
+  sources:
+  - before: |
+      <project>
+          <parent>
+              <groupId>org.jenkins-ci.plugins</groupId>
+              <artifactId>plugin</artifactId>
+              <version>4.86</version>
+          </parent>
+          <artifactId>my-plugin</artifactId>
+          <description>This is my plugin's description</description>
+          <version>0.1</version>
+          <repositories>
+              <repository>
+                  <id>repo.jenkins-ci.org</id>
+                  <url>https://repo.jenkins-ci.org/public/</url>
+              </repository>
+          </repositories>
+      </project>
+    path: pom.xml
+    language: xml
+---
+type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.jenkins.DisableLocalResolutionForParentPom
+examples:
+- description: ''
+  sources:
+  - before: |
+      <project>
+          <parent>
+              <groupId>org.jenkins-ci.plugins</groupId>
+              <artifactId>plugin</artifactId>
+              <version>4.86</version>
+          </parent>
+          <artifactId>foo</artifactId>
+          <properties>
+              <jenkins.version>2.303.3</jenkins.version>
+          </properties>
+          <repositories>
+              <repository>
+                  <id>repo.jenkins-ci.org</id>
+                  <url>https://repo.jenkins-ci.org/public/</url>
+              </repository>
+          </repositories>
+      </project>
+    after: |
+      <project>
+          <parent>
+              <groupId>org.jenkins-ci.plugins</groupId>
+              <artifactId>plugin</artifactId>
+              <version>4.86</version>
+              <relativePath />
+          </parent>
+          <artifactId>foo</artifactId>
+          <properties>
+              <jenkins.version>2.303.3</jenkins.version>
+          </properties>
+          <repositories>
+              <repository>
+                  <id>repo.jenkins-ci.org</id>
+                  <url>https://repo.jenkins-ci.org/public/</url>
+              </repository>
+          </repositories>
+      </project>
+    path: pom.xml
+    language: xml
+---
+type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.jenkins.IsJenkinsPlugin
+examples:
+- description: ''
+  parameters:
+  - '*'
+  sources:
+  - before: |
+      <project>
+          <parent>
+              <groupId>org.jenkins-ci.plugins</groupId>
+              <artifactId>plugin</artifactId>
+              <version>4.86</version>
+          </parent>
+          <artifactId>my-plugin</artifactId>
+          <version>0.1</version>
+          <repositories>
+              <repository>
+                  <id>repo.jenkins-ci.org</id>
+                  <url>https://repo.jenkins-ci.org/public/</url>
+              </repository>
+          </repositories>
+      </project>
+    after: |
+      <!--~~(2.249)~~>--><project>
+          <parent>
+              <groupId>org.jenkins-ci.plugins</groupId>
+              <artifactId>plugin</artifactId>
+              <version>4.86</version>
+          </parent>
+          <artifactId>my-plugin</artifactId>
+          <version>0.1</version>
+          <repositories>
+              <repository>
+                  <id>repo.jenkins-ci.org</id>
+                  <url>https://repo.jenkins-ci.org/public/</url>
+              </repository>
+          </repositories>
+      </project>
+    path: pom.xml
+    language: xml
+---
+type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.jenkins.JavaxAnnotationsToSpotbugs
+examples:
+- description: ''
+  sources:
+  - before: |
+      import javax.annotation.CheckForNull;
+      import javax.annotation.Nonnull;
+      import java.util.Objects;
+
+      public class A {
+          @CheckForNull
+          public String key() {
+              return null;
+          }
+
+          public @Nonnull String myMethod(String in) {
+              return Objects.equals(in, "a") ? "yes" : "no";
+          }
+      }
+    after: |
+      import edu.umd.cs.findbugs.annotations.NonNull;
+
+      import edu.umd.cs.findbugs.annotations.CheckForNull;
+      import java.util.Objects;
+
+      public class A {
+          @CheckForNull
+          public String key() {
+              return null;
+          }
+
+          public @NonNull String myMethod(String in) {
+              return Objects.equals(in, "a") ? "yes" : "no";
+          }
+      }
+    language: java
+---
+type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.jenkins.ModernizeJenkinsfile
+examples:
+- description: ''
+  sources:
+  - before: |
+      <project>
+          <parent>
+              <groupId>org.jenkins-ci.plugins</groupId>
+              <artifactId>plugin</artifactId>
+              <version>4.86</version>
+              <relativePath/>
+          </parent>
+          <artifactId>example-plugin</artifactId>
+          <version>0.8-SNAPSHOT</version>
+          <properties>
+              <jenkins.version>2.303.1</jenkins.version>
+          </properties>
+          <repositories>
+              <repository>
+                  <id>repo.jenkins-ci.org</id>
+                  <url>http://repo.jenkins-ci.org/public/</url>
+              </repository>
+          </repositories>
+      </project>
+    path: pom.xml
+    language: xml
+  - before: buildPlugin()
+    after: |
+      /*
+       See the documentation for more options:
+       https://github.com/jenkins-infra/pipeline-library/
+      */
+      buildPlugin(
+        forkCount: '1C', // run this number of tests in parallel for faster feedback.  If the number terminates with a 'C', the value will be multiplied by the number of available CPU cores
+        useContainerAgent: true, // Set to `false` if you need to use Docker for containerized tests
+        configurations: [
+          [platform: 'linux', jdk: 21],
+          [platform: 'windows', jdk: 17],
+      ])
+    language: groovy
+---
+type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.jenkins.ModernizePluginForJava8
+examples:
+- description: ''
+  sources:
+  - before: |
+      <project>
+          <parent>
+              <groupId>org.jenkins-ci.plugins</groupId>
+              <artifactId>plugin</artifactId>
+              <version>4.42</version>
+          </parent>
+          <artifactId>example-plugin</artifactId>
+          <version>0.8-SNAPSHOT</version>
+          <properties>
+              <jenkins.version>2.303.3</jenkins.version>
+              <java.level>8</java.level>
+          </properties>
+          <dependencies>
+              <dependency>
+                  <groupId>org.jenkins-ci.plugins</groupId>
+                  <artifactId>junit</artifactId>
+                  <version>1.12</version>
+              </dependency>
+          </dependencies>
+          <repositories>
+              <repository>
+                  <id>repo.jenkins-ci.org</id>
+                  <url>http://repo.jenkins-ci.org/public/</url>
+              </repository>
+          </repositories>
+      </project>
+    after: |
+      <project>
+          <parent>
+              <groupId>org.jenkins-ci.plugins</groupId>
+              <artifactId>plugin</artifactId>
+              <version>4.51</version>
+              <relativePath />
+          </parent>
+          <artifactId>example-plugin</artifactId>
+          <version>0.8-SNAPSHOT</version>
+          <properties>
+              <jenkins.version>2.346.3</jenkins.version>
+          </properties>
+          <dependencyManagement>
+              <dependencies>
+                  <dependency>
+                      <groupId>io.jenkins.tools.bom</groupId>
+                      <artifactId>bom-2.346.x</artifactId>
+                      <version>1763.v092b_8980a_f5e</version>
+                      <type>pom</type>
+                      <scope>import</scope>
+                  </dependency>
+              </dependencies>
+          </dependencyManagement>
+          <dependencies>
+              <dependency>
+                  <groupId>org.jenkins-ci.plugins</groupId>
+                  <artifactId>junit</artifactId>
+              </dependency>
+          </dependencies>
+          <repositories>
+              <repository>
+                  <id>repo.jenkins-ci.org</id>
+                  <url>https://repo.jenkins-ci.org/public/</url>
+              </repository>
+          </repositories>
+      </project>
+    path: pom.xml
+    language: xml
+---
+type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.jenkins.ReplaceLibrariesWithApiPlugin
+examples:
+- description: ''
+  parameters:
+  - io.jenkins.plugins
+  - commons-text-api
+  - 1.9-5.v7ea_44fe6061c
+  - Set.of(new ReplaceLibrariesWithApiPlugin.Library("org.apache.commons", "commons-text"))
+  sources:
+  - before: |
+      <project>
+          <parent>
+              <groupId>org.jenkins-ci.plugins</groupId>
+              <artifactId>plugin</artifactId>
+              <version>4.86</version>
+              <relativePath />
+          </parent>
+          <artifactId>foo</artifactId>
+
+          <properties>
+              <jenkins.version>2.440.3</jenkins.version>
+          </properties>
+
+          <dependencies>
+              <dependency>
+                  <groupId>org.apache.turbine</groupId>
+                  <artifactId>turbine</artifactId>
+                  <version>5.1</version>
+              </dependency>
+          </dependencies>
+
+          <repositories>
+              <repository>
+                  <id>repo.jenkins-ci.org</id>
+                  <url>https://repo.jenkins-ci.org/public/</url>
+              </repository>
+          </repositories>
+      </project>
+    after: |
+      <project>
+          <parent>
+              <groupId>org.jenkins-ci.plugins</groupId>
+              <artifactId>plugin</artifactId>
+              <version>4.86</version>
+              <relativePath />
+          </parent>
+          <artifactId>foo</artifactId>
+
+          <properties>
+              <jenkins.version>2.440.3</jenkins.version>
+          </properties>
+
+          <dependencies>
+              <dependency>
+                  <groupId>io.jenkins.plugins</groupId>
+                  <artifactId>commons-text-api</artifactId>
+                  <version>1.9-5.v7ea_44fe6061c</version>
+              </dependency>
+              <dependency>
+                  <groupId>org.apache.turbine</groupId>
+                  <artifactId>turbine</artifactId>
+                  <version>5.1</version>
+                  <exclusions>
+                      <exclusion>
+                          <!-- brought in by io.jenkins.plugins:commons-text-api -->
+                          <groupId>org.apache.commons</groupId>
+                          <artifactId>commons-text</artifactId>
+                      </exclusion>
+                  </exclusions>
+              </dependency>
+          </dependencies>
+
+          <repositories>
+              <repository>
+                  <id>repo.jenkins-ci.org</id>
+                  <url>https://repo.jenkins-ci.org/public/</url>
+              </repository>
+          </repositories>
+      </project>
+    path: pom.xml
+    language: xml
+---
+type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.jenkins.UpgradeJavaVersion
+examples:
+- description: ''
+  parameters:
+  - '17'
+  - 'null'
+  sources:
+  - before: |
+      #!/usr/bin/env groovy
+
+      stage("Checkout") {
+          scmCheckout {
+              java_version = "openjdk11"
+              deleteWorkspace = 'false'
+          }
+      }
+    after: |
+      #!/usr/bin/env groovy
+
+      stage("Checkout") {
+          scmCheckout {
+              java_version = "openjdk17"
+              deleteWorkspace = 'false'
+          }
+      }
+    language: groovy
+---
+type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.jenkins.UpgradeVersionProperty
+examples:
+- description: ''
+  parameters:
+  - jenkins.version
+  - 2.452.4
+  sources:
+  - before: |
+      <project>
+          <parent>
+              <groupId>org.jenkins-ci.plugins</groupId>
+              <artifactId>plugin</artifactId>
+              <version>4.86</version>
+              <relativePath/>
+          </parent>
+          <artifactId>example-plugin</artifactId>
+          <version>0.8-SNAPSHOT</version>
+          <properties>
+              <jenkins.version>2.303.1</jenkins.version>
+          </properties>
+          <repositories>
+              <repository>
+                  <id>repo.jenkins-ci.org</id>
+                  <url>http://repo.jenkins-ci.org/public/</url>
+              </repository>
+          </repositories>
+      </project>
+    after: |
+      <project>
+          <parent>
+              <groupId>org.jenkins-ci.plugins</groupId>
+              <artifactId>plugin</artifactId>
+              <version>4.86</version>
+              <relativePath/>
+          </parent>
+          <artifactId>example-plugin</artifactId>
+          <version>0.8-SNAPSHOT</version>
+          <properties>
+              <jenkins.version>2.452.4</jenkins.version>
+          </properties>
+          <repositories>
+              <repository>
+                  <id>repo.jenkins-ci.org</id>
+                  <url>http://repo.jenkins-ci.org/public/</url>
+              </repository>
+          </repositories>
+      </project>
+    path: pom.xml
+    language: xml
+---
+type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.jenkins.migrate.hudson.UtilGetPastTimeStringToGetTimeSpanString
+examples:
+- description: ''
+  sources:
+  - before: |
+      package org.example;
+
+      class MyConsumer {
+          String format(long timestamp) {
+              return hudson.Util.getPastTimeString(timestamp);
+          }
+      }
+    after: |
+      package org.example;
+
+      class MyConsumer {
+          String format(long timestamp) {
+              return hudson.Util.getTimeSpanString(timestamp);
+          }
+      }
+    language: java
