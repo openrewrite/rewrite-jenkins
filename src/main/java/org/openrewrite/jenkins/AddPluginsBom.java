@@ -96,9 +96,8 @@ public class AddPluginsBom extends Recipe {
                         doAfterVisit(new RemoveRedundantDependencyVersions(
                                 groupId,
                                 dependency.getArtifactId(),
-                                false,
-                                null
-                        ).getVisitor());
+                                (RemoveRedundantDependencyVersions.Comparator) null,
+                                null).getVisitor());
                     }
                 }
                 Xml.Document d = super.visitDocument(document, ctx);
