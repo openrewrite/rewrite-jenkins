@@ -16,6 +16,8 @@
 package org.openrewrite.jenkins;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,7 +26,14 @@ class BomLookupTest {
 
     @Test
     void shouldLookupByGroupIdAndArtifactId() {
+        // Check two explicitly known artifacts
         assertThat(bomLookup.inBom("io.jenkins.plugins", "theme-manager")).isTrue();
         assertThat(bomLookup.inBom("org.jenkins-ci.plugins", "artifactory")).isFalse();
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "/jenkins-plugins-bom-lookup.txt", delimiter = ':')
+    void shouldLookupByGroupIdAndArtifactId(String groupId, String artifactId) {
+        assertThat(bomLookup.inBom(groupId, artifactId)).isTrue();
     }
 }
