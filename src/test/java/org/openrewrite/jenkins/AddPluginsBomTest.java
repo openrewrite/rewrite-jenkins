@@ -27,8 +27,7 @@ class AddPluginsBomTest implements RewriteTest {
 
     @Override
     public void defaults(RecipeSpec spec) {
-        spec.recipe(new AddPluginsBom()
-        );
+        spec.recipe(new AddPluginsBom());
     }
 
     @Test
@@ -550,6 +549,7 @@ class AddPluginsBomTest implements RewriteTest {
                   <dependency>
                     <groupId>org.jenkins-ci.plugins.workflow</groupId>
                     <artifactId>workflow-api</artifactId>
+                    <version>2.6</version>
                     <scope>test</scope>
                   </dependency>
                 </dependencies>
