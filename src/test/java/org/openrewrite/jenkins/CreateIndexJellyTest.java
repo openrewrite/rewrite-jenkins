@@ -34,12 +34,6 @@ class CreateIndexJellyTest implements RewriteTest {
     }
 
     @Test
-    void shouldNoOpIfIndexJellyAlreadyExists() {
-        rewriteRun(other("peanut butter and...", spec ->
-          spec.path("src/main/resources/index.jelly")));
-    }
-
-    @Test
     @DocumentExample
     void shouldCreateIndexJellyFromPomDescription() {
         rewriteRun(
@@ -74,6 +68,12 @@ class CreateIndexJellyTest implements RewriteTest {
             s -> s.path("src/main/resources/index.jelly")
           )
         );
+    }
+
+    @Test
+    void shouldNoOpIfIndexJellyAlreadyExists() {
+        rewriteRun(other("peanut butter and...", spec ->
+          spec.path("src/main/resources/index.jelly")));
     }
 
     @Test

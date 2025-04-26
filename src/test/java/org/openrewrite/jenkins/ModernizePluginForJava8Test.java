@@ -29,6 +29,82 @@ class ModernizePluginForJava8Test implements RewriteTest {
     }
 
     @Test
+    @DocumentExample
+    void shouldDoTheWorks() {
+        rewriteRun(
+          //language=xml
+          pomXml(
+            """
+              <project>
+                  <parent>
+                      <groupId>org.jenkins-ci.plugins</groupId>
+                      <artifactId>plugin</artifactId>
+                      <version>4.42</version>
+                  </parent>
+                  <artifactId>example-plugin</artifactId>
+                  <version>0.8-SNAPSHOT</version>
+                  <properties>
+                      <jenkins.version>2.303.3</jenkins.version>
+                      <java.level>8</java.level>
+                  </properties>
+                  <dependencies>
+                      <dependency>
+                          <groupId>org.jenkins-ci.plugins</groupId>
+                          <artifactId>junit</artifactId>
+                          <version>1.12</version>
+                      </dependency>
+                  </dependencies>
+                  <repositories>
+                      <repository>
+                          <id>repo.jenkins-ci.org</id>
+                          <url>http://repo.jenkins-ci.org/public/</url>
+                      </repository>
+                  </repositories>
+              </project>
+              """,
+            """
+              <project>
+                  <parent>
+                      <groupId>org.jenkins-ci.plugins</groupId>
+                      <artifactId>plugin</artifactId>
+                      <version>4.51</version>
+                      <relativePath />
+                  </parent>
+                  <artifactId>example-plugin</artifactId>
+                  <version>0.8-SNAPSHOT</version>
+                  <properties>
+                      <jenkins.version>2.346.3</jenkins.version>
+                  </properties>
+                  <dependencyManagement>
+                      <dependencies>
+                          <dependency>
+                              <groupId>io.jenkins.tools.bom</groupId>
+                              <artifactId>bom-2.346.x</artifactId>
+                              <version>1763.v092b_8980a_f5e</version>
+                              <type>pom</type>
+                              <scope>import</scope>
+                          </dependency>
+                      </dependencies>
+                  </dependencyManagement>
+                  <dependencies>
+                      <dependency>
+                          <groupId>org.jenkins-ci.plugins</groupId>
+                          <artifactId>junit</artifactId>
+                      </dependency>
+                  </dependencies>
+                  <repositories>
+                      <repository>
+                          <id>repo.jenkins-ci.org</id>
+                          <url>https://repo.jenkins-ci.org/public/</url>
+                      </repository>
+                  </repositories>
+              </project>
+              """
+          )
+        );
+    }
+
+    @Test
     void shouldUseHttpsForRepositories() {
         rewriteRun(
           //language=xml
@@ -407,82 +483,6 @@ class ModernizePluginForJava8Test implements RewriteTest {
                           <version>3.3.11</version>
                       </dependency>
                   </dependencies>
-              </project>
-              """
-          )
-        );
-    }
-
-    @Test
-    @DocumentExample
-    void shouldDoTheWorks() {
-        rewriteRun(
-          //language=xml
-          pomXml(
-            """
-              <project>
-                  <parent>
-                      <groupId>org.jenkins-ci.plugins</groupId>
-                      <artifactId>plugin</artifactId>
-                      <version>4.42</version>
-                  </parent>
-                  <artifactId>example-plugin</artifactId>
-                  <version>0.8-SNAPSHOT</version>
-                  <properties>
-                      <jenkins.version>2.303.3</jenkins.version>
-                      <java.level>8</java.level>
-                  </properties>
-                  <dependencies>
-                      <dependency>
-                          <groupId>org.jenkins-ci.plugins</groupId>
-                          <artifactId>junit</artifactId>
-                          <version>1.12</version>
-                      </dependency>
-                  </dependencies>
-                  <repositories>
-                      <repository>
-                          <id>repo.jenkins-ci.org</id>
-                          <url>http://repo.jenkins-ci.org/public/</url>
-                      </repository>
-                  </repositories>
-              </project>
-              """,
-            """
-              <project>
-                  <parent>
-                      <groupId>org.jenkins-ci.plugins</groupId>
-                      <artifactId>plugin</artifactId>
-                      <version>4.51</version>
-                      <relativePath />
-                  </parent>
-                  <artifactId>example-plugin</artifactId>
-                  <version>0.8-SNAPSHOT</version>
-                  <properties>
-                      <jenkins.version>2.346.3</jenkins.version>
-                  </properties>
-                  <dependencyManagement>
-                      <dependencies>
-                          <dependency>
-                              <groupId>io.jenkins.tools.bom</groupId>
-                              <artifactId>bom-2.346.x</artifactId>
-                              <version>1763.v092b_8980a_f5e</version>
-                              <type>pom</type>
-                              <scope>import</scope>
-                          </dependency>
-                      </dependencies>
-                  </dependencyManagement>
-                  <dependencies>
-                      <dependency>
-                          <groupId>org.jenkins-ci.plugins</groupId>
-                          <artifactId>junit</artifactId>
-                      </dependency>
-                  </dependencies>
-                  <repositories>
-                      <repository>
-                          <id>repo.jenkins-ci.org</id>
-                          <url>https://repo.jenkins-ci.org/public/</url>
-                      </repository>
-                  </repositories>
               </project>
               """
           )

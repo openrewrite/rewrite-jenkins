@@ -31,6 +31,46 @@ class JavaxAnnotationsToSpotBugsTest implements RewriteTest {
     }
 
     @Test
+    @DocumentExample
+    void shouldNotOrderImports() {
+        rewriteRun(java(
+          """
+            import javax.annotation.CheckForNull;
+            import javax.annotation.Nonnull;
+            import java.util.Objects;
+                            
+            public class A {
+                @CheckForNull
+                public String key() {
+                    return null;
+                }
+                            
+                public @Nonnull String myMethod(String in) {
+                    return Objects.equals(in, "a") ? "yes" : "no";
+                }
+            }
+            """,
+          """
+            import edu.umd.cs.findbugs.annotations.NonNull;
+                            
+            import edu.umd.cs.findbugs.annotations.CheckForNull;
+            import java.util.Objects;
+                            
+            public class A {
+                @CheckForNull
+                public String key() {
+                    return null;
+                }
+                            
+                public @NonNull String myMethod(String in) {
+                    return Objects.equals(in, "a") ? "yes" : "no";
+                }
+            }
+            """
+        ));
+    }
+
+    @Test
     void shouldChangeClassName() {
         rewriteRun(java(
           """
@@ -70,46 +110,6 @@ class JavaxAnnotationsToSpotBugsTest implements RewriteTest {
                 @CheckForNull
                 public String key() {
                     return null;
-                }
-            }
-            """
-        ));
-    }
-
-    @Test
-    @DocumentExample
-    void shouldNotOrderImports() {
-        rewriteRun(java(
-          """
-            import javax.annotation.CheckForNull;
-            import javax.annotation.Nonnull;
-            import java.util.Objects;
-                            
-            public class A {
-                @CheckForNull
-                public String key() {
-                    return null;
-                }
-                            
-                public @Nonnull String myMethod(String in) {
-                    return Objects.equals(in, "a") ? "yes" : "no";
-                }
-            }
-            """,
-          """
-            import edu.umd.cs.findbugs.annotations.NonNull;
-                            
-            import edu.umd.cs.findbugs.annotations.CheckForNull;
-            import java.util.Objects;
-                            
-            public class A {
-                @CheckForNull
-                public String key() {
-                    return null;
-                }
-                            
-                public @NonNull String myMethod(String in) {
-                    return Objects.equals(in, "a") ? "yes" : "no";
                 }
             }
             """

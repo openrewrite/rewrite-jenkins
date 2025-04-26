@@ -31,6 +31,49 @@ class AddPluginsBomTest implements RewriteTest {
     }
 
     @Test
+    @DocumentExample
+    void shouldAddBomIfManagedDependencies() {
+        // language=xml
+        rewriteRun(
+          pomXml(
+            """
+              <project>
+                  <parent>
+                      <groupId>org.jenkins-ci.plugins</groupId>
+                      <artifactId>plugin</artifactId>
+                      <version>4.86</version>
+                      <relativePath/>
+                  </parent>
+                  <artifactId>foo</artifactId>
+                  <properties>
+                      <jenkins.version>2.440.3</jenkins.version>
+                  </properties>
+                  <repositories>
+                      <repository>
+                          <id>repo.jenkins-ci.org</id>
+                          <url>https://repo.jenkins-ci.org/public/</url>
+                      </repository>
+                  </repositories>
+                  <dependencies>
+                      <dependency>
+                          <groupId>org.jenkins-ci.plugins</groupId>
+                          <artifactId>ant</artifactId>
+                          <version>1.9</version>
+                      </dependency>
+                  </dependencies>
+              </project>
+              """,
+            spec -> spec.after(after -> {
+                ModernizePluginTest.Versions versionsAfter = ModernizePluginTest.Versions.parse(after);
+                assertThat(versionsAfter.bomArtifactId()).isNotEmpty();
+                assertThat(versionsAfter.bomVersion()).isNotEmpty();
+                return after;
+            })
+          )
+        );
+    }
+
+    @Test
     void shouldNotAddBomIfNoDependencies() {
         // language=xml
         rewriteRun(
@@ -91,49 +134,6 @@ class AddPluginsBomTest implements RewriteTest {
                   </dependencies>
               </project>
               """
-          )
-        );
-    }
-
-    @Test
-    @DocumentExample
-    void shouldAddBomIfManagedDependencies() {
-        // language=xml
-        rewriteRun(
-          pomXml(
-            """
-              <project>
-                  <parent>
-                      <groupId>org.jenkins-ci.plugins</groupId>
-                      <artifactId>plugin</artifactId>
-                      <version>4.86</version>
-                      <relativePath/>
-                  </parent>
-                  <artifactId>foo</artifactId>
-                  <properties>
-                      <jenkins.version>2.440.3</jenkins.version>
-                  </properties>
-                  <repositories>
-                      <repository>
-                          <id>repo.jenkins-ci.org</id>
-                          <url>https://repo.jenkins-ci.org/public/</url>
-                      </repository>
-                  </repositories>
-                  <dependencies>
-                      <dependency>
-                          <groupId>org.jenkins-ci.plugins</groupId>
-                          <artifactId>ant</artifactId>
-                          <version>1.9</version>
-                      </dependency>
-                  </dependencies>
-              </project>
-              """,
-            spec -> spec.after(after -> {
-                ModernizePluginTest.Versions versionsAfter = ModernizePluginTest.Versions.parse(after);
-                assertThat(versionsAfter.bomArtifactId()).isNotEmpty();
-                assertThat(versionsAfter.bomVersion()).isNotEmpty();
-                return after;
-            })
           )
         );
     }

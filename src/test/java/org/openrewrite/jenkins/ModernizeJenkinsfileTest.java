@@ -31,51 +31,6 @@ class ModernizeJenkinsfileTest implements RewriteTest {
     }
 
     @Test
-    void shouldCreateJenkinsfile() {
-        rewriteRun(
-          //language=xml
-          pomXml(
-            """
-              <project>
-                  <parent>
-                      <groupId>org.jenkins-ci.plugins</groupId>
-                      <artifactId>plugin</artifactId>
-                      <version>4.86</version>
-                      <relativePath/>
-                  </parent>
-                  <artifactId>example-plugin</artifactId>
-                  <version>0.8-SNAPSHOT</version>
-                  <properties>
-                      <jenkins.version>2.303.1</jenkins.version>
-                  </properties>
-                  <repositories>
-                      <repository>
-                          <id>repo.jenkins-ci.org</id>
-                          <url>http://repo.jenkins-ci.org/public/</url>
-                      </repository>
-                  </repositories>
-              </project>
-              """
-          ),
-          //language=groovy
-          groovy(null,
-                """
-            /*
-             See the documentation for more options:
-             https://github.com/jenkins-infra/pipeline-library/
-            */
-            buildPlugin(
-              forkCount: '1C', // run this number of tests in parallel for faster feedback.  If the number terminates with a 'C', the value will be multiplied by the number of available CPU cores
-              useContainerAgent: true, // Set to `false` if you need to use Docker for containerized tests
-              configurations: [
-                [platform: 'linux', jdk: 21],
-                [platform: 'windows', jdk: 17],
-            ])
-            """,
-                spec -> spec.path("Jenkinsfile")));
-    }
-
-    @Test
     @DocumentExample
     void shouldUpdateJenkinsfile() {
         rewriteRun(
@@ -119,5 +74,50 @@ class ModernizeJenkinsfileTest implements RewriteTest {
             ])
             """,
                 spec -> spec.noTrim().path("Jenkinsfile")));
+    }
+
+    @Test
+    void shouldCreateJenkinsfile() {
+        rewriteRun(
+          //language=xml
+          pomXml(
+            """
+              <project>
+                  <parent>
+                      <groupId>org.jenkins-ci.plugins</groupId>
+                      <artifactId>plugin</artifactId>
+                      <version>4.86</version>
+                      <relativePath/>
+                  </parent>
+                  <artifactId>example-plugin</artifactId>
+                  <version>0.8-SNAPSHOT</version>
+                  <properties>
+                      <jenkins.version>2.303.1</jenkins.version>
+                  </properties>
+                  <repositories>
+                      <repository>
+                          <id>repo.jenkins-ci.org</id>
+                          <url>http://repo.jenkins-ci.org/public/</url>
+                      </repository>
+                  </repositories>
+              </project>
+              """
+          ),
+          //language=groovy
+          groovy(null,
+                """
+            /*
+             See the documentation for more options:
+             https://github.com/jenkins-infra/pipeline-library/
+            */
+            buildPlugin(
+              forkCount: '1C', // run this number of tests in parallel for faster feedback.  If the number terminates with a 'C', the value will be multiplied by the number of available CPU cores
+              useContainerAgent: true, // Set to `false` if you need to use Docker for containerized tests
+              configurations: [
+                [platform: 'linux', jdk: 21],
+                [platform: 'windows', jdk: 17],
+            ])
+            """,
+                spec -> spec.path("Jenkinsfile")));
     }
 }

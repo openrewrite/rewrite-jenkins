@@ -36,6 +36,88 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
     }
 
     @Test
+    @DocumentExample
+    void shouldExcludeTransitivesFromBundledLibrary() {
+        rewriteRun(
+          //language=xml
+          pomXml(
+            """
+              <project>
+                  <parent>
+                      <groupId>org.jenkins-ci.plugins</groupId>
+                      <artifactId>plugin</artifactId>
+                      <version>4.86</version>
+                      <relativePath />
+                  </parent>
+                  <artifactId>foo</artifactId>
+
+                  <properties>
+                      <jenkins.version>2.440.3</jenkins.version>
+                  </properties>
+
+                  <dependencies>
+                      <dependency>
+                          <groupId>org.apache.turbine</groupId>
+                          <artifactId>turbine</artifactId>
+                          <version>5.1</version>
+                      </dependency>
+                  </dependencies>
+
+                  <repositories>
+                      <repository>
+                          <id>repo.jenkins-ci.org</id>
+                          <url>https://repo.jenkins-ci.org/public/</url>
+                      </repository>
+                  </repositories>
+              </project>
+              """,
+            """
+              <project>
+                  <parent>
+                      <groupId>org.jenkins-ci.plugins</groupId>
+                      <artifactId>plugin</artifactId>
+                      <version>4.86</version>
+                      <relativePath />
+                  </parent>
+                  <artifactId>foo</artifactId>
+
+                  <properties>
+                      <jenkins.version>2.440.3</jenkins.version>
+                  </properties>
+
+                  <dependencies>
+                      <dependency>
+                          <groupId>io.jenkins.plugins</groupId>
+                          <artifactId>commons-text-api</artifactId>
+                          <version>1.9-5.v7ea_44fe6061c</version>
+                      </dependency>
+                      <dependency>
+                          <groupId>org.apache.turbine</groupId>
+                          <artifactId>turbine</artifactId>
+                          <version>5.1</version>
+                          <exclusions>
+                              <exclusion>
+                                  <!-- brought in by io.jenkins.plugins:commons-text-api -->
+                                  <groupId>org.apache.commons</groupId>
+                                  <artifactId>commons-text</artifactId>
+                              </exclusion>
+                          </exclusions>
+                      </dependency>
+                  </dependencies>
+
+                  <repositories>
+                      <repository>
+                          <id>repo.jenkins-ci.org</id>
+                          <url>https://repo.jenkins-ci.org/public/</url>
+                      </repository>
+                  </repositories>
+              </project>
+              """
+          )
+        );
+    }
+
+    @Test
     void shouldWorkFromYamlDefinition() {
         rewriteRun(spec -> spec.recipeFromResource(
             "/replace-libraries-with-api-plugin.yml",
@@ -161,88 +243,6 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                           <groupId>io.jenkins.plugins</groupId>
                           <artifactId>commons-text-api</artifactId>
                           <version>1.9-5.v7ea_44fe6061c</version>
-                      </dependency>
-                  </dependencies>
-
-                  <repositories>
-                      <repository>
-                          <id>repo.jenkins-ci.org</id>
-                          <url>https://repo.jenkins-ci.org/public/</url>
-                      </repository>
-                  </repositories>
-              </project>
-              """
-          )
-        );
-    }
-
-    @Test
-    @DocumentExample
-    void shouldExcludeTransitivesFromBundledLibrary() {
-        rewriteRun(
-          //language=xml
-          pomXml(
-            """
-              <project>
-                  <parent>
-                      <groupId>org.jenkins-ci.plugins</groupId>
-                      <artifactId>plugin</artifactId>
-                      <version>4.86</version>
-                      <relativePath />
-                  </parent>
-                  <artifactId>foo</artifactId>
-
-                  <properties>
-                      <jenkins.version>2.440.3</jenkins.version>
-                  </properties>
-
-                  <dependencies>
-                      <dependency>
-                          <groupId>org.apache.turbine</groupId>
-                          <artifactId>turbine</artifactId>
-                          <version>5.1</version>
-                      </dependency>
-                  </dependencies>
-
-                  <repositories>
-                      <repository>
-                          <id>repo.jenkins-ci.org</id>
-                          <url>https://repo.jenkins-ci.org/public/</url>
-                      </repository>
-                  </repositories>
-              </project>
-              """,
-            """
-              <project>
-                  <parent>
-                      <groupId>org.jenkins-ci.plugins</groupId>
-                      <artifactId>plugin</artifactId>
-                      <version>4.86</version>
-                      <relativePath />
-                  </parent>
-                  <artifactId>foo</artifactId>
-
-                  <properties>
-                      <jenkins.version>2.440.3</jenkins.version>
-                  </properties>
-
-                  <dependencies>
-                      <dependency>
-                          <groupId>io.jenkins.plugins</groupId>
-                          <artifactId>commons-text-api</artifactId>
-                          <version>1.9-5.v7ea_44fe6061c</version>
-                      </dependency>
-                      <dependency>
-                          <groupId>org.apache.turbine</groupId>
-                          <artifactId>turbine</artifactId>
-                          <version>5.1</version>
-                          <exclusions>
-                              <exclusion>
-                                  <!-- brought in by io.jenkins.plugins:commons-text-api -->
-                                  <groupId>org.apache.commons</groupId>
-                                  <artifactId>commons-text</artifactId>
-                              </exclusion>
-                          </exclusions>
                       </dependency>
                   </dependencies>
 
