@@ -32,6 +32,10 @@ recipeList:
       newGroupId: org.htmlunit
       newArtifactId: htmlunit
       newVersion: 3.x
+  - org.openrewrite.java.dependencies.ChangeDependency:
+      oldGroupId: org.seleniumhq.selenium
+      oldArtifactId: htmlunit-driver
+      newArtifactId: htmlunit3-driver
   - org.openrewrite.java.ChangePackage:
       oldPackageName: com.gargoylesoftware.htmlunit
       newPackageName: org.htmlunit
