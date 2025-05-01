@@ -55,6 +55,9 @@ See the full documentation at [docs.openrewrite.org](https://docs.openrewrite.or
 
 We appreciate all types of contributions. See the [contributing guide](https://github.com/openrewrite/.github/blob/main/CONTRIBUTING.md) for detailed instructions on how to get started.
 
+### Licensing
+
+For more information about licensing, please visit our [licensing page](https://docs.openrewrite.org/licensing/openrewrite-licensing).
 
 [jenkins]: https://jenkins.io
 [choosing-version]: https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/
