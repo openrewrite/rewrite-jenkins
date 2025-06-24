@@ -21,7 +21,12 @@ import org.openrewrite.java.JavaParser;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.java.Assertions.java;
+import static org.openrewrite.maven.Assertions.pomXml;
 
 class UpgradeHtmlUnit3Test implements RewriteTest {
 
@@ -84,6 +89,64 @@ class UpgradeHtmlUnit3Test implements RewriteTest {
                   }
               }
               """
+          )
+        );
+    }
+
+    @Test
+    void shouldUpgradeHtmlUnitDriver() {
+        rewriteRun(
+          pomXml(
+            //language=xml
+            """
+              <project>
+                <groupId>something</groupId>
+                <artifactId>example-driver</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <dependencyManagement>
+                  <dependencies>
+                    <dependency>
+                      <groupId>org.seleniumhq.selenium</groupId>
+                      <artifactId>htmlunit-driver</artifactId>
+                      <version>3.64.0</version>
+                    </dependency>
+                  </dependencies>
+                </dependencyManagement>
+                <dependencies>
+                  <dependency>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>htmlunit-driver</artifactId>
+                  </dependency>
+                </dependencies>
+              </project>
+              """,
+            spec -> spec.after(pom -> {
+                Matcher version = Pattern.compile("4\\.\\d+\\.\\d+").matcher(pom);
+                assertThat(version.find()).describedAs("Expected 4.x in %s", pom).isTrue();
+                //language=xml
+                return """
+                  <project>
+                    <groupId>something</groupId>
+                    <artifactId>example-driver</artifactId>
+                    <version>1.0-SNAPSHOT</version>
+                    <dependencyManagement>
+                      <dependencies>
+                        <dependency>
+                          <groupId>org.seleniumhq.selenium</groupId>
+                          <artifactId>htmlunit3-driver</artifactId>
+                          <version>%s</version>
+                        </dependency>
+                      </dependencies>
+                    </dependencyManagement>
+                    <dependencies>
+                      <dependency>
+                        <groupId>org.seleniumhq.selenium</groupId>
+                        <artifactId>htmlunit3-driver</artifactId>
+                      </dependency>
+                    </dependencies>
+                  </project>
+                  """.formatted(version.group(0));
+            })
           )
         );
     }
