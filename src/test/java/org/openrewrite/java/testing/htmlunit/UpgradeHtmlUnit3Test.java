@@ -21,7 +21,9 @@ import org.openrewrite.java.JavaParser;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.java.Assertions.java;
+import static org.openrewrite.maven.Assertions.pomXml;
 
 class UpgradeHtmlUnit3Test implements RewriteTest {
 
@@ -84,6 +86,43 @@ class UpgradeHtmlUnit3Test implements RewriteTest {
                   }
               }
               """
+          )
+        );
+    }
+
+    @Test
+    void shouldUpgradeHtmlUnitDriver() {
+        rewriteRun(
+          pomXml(
+            //language=xml
+            """
+              <project>
+                <groupId>something</groupId>
+                <artifactId>example-driver</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <dependencyManagement>
+                  <dependencies>
+                    <dependency>
+                      <groupId>org.seleniumhq.selenium</groupId>
+                      <artifactId>htmlunit-driver</artifactId>
+                      <version>3.64.0</version>
+                    </dependency>
+                  </dependencies>
+                </dependencyManagement>
+                <dependencies>
+                  <dependency>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>htmlunit-driver</artifactId>
+                  </dependency>
+                </dependencies>
+              </project>
+              """,
+            spec -> spec.after(actual ->
+              assertThat(actual)
+                .containsPattern("<artifactId>htmlunit3-driver</artifactId>")
+                .containsPattern("<version>4.\\d+.\\d+</version>")
+                .actual()
+            )
           )
         );
     }
