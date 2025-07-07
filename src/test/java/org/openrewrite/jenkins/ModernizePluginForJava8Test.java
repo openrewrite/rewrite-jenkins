@@ -28,8 +28,8 @@ class ModernizePluginForJava8Test implements RewriteTest {
         spec.recipeFromResource("/META-INF/rewrite/java-8.yml", "org.openrewrite.jenkins.ModernizePluginForJava8");
     }
 
-    @Test
     @DocumentExample
+    @Test
     void shouldDoTheWorks() {
         rewriteRun(
           //language=xml

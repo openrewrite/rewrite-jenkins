@@ -31,8 +31,8 @@ class JenkinsTest {
      * This is biased toward recency.
      * If we don't recognize the version as a LTS we assume it is very recent and wants the weekly bom.
      */
-    @ParameterizedTest
     @MethodSource("versionToBom")
+    @ParameterizedTest
     void shouldGenerateBomNameFromJenkinsVersion(String jenkinsVersion, String bomVersion) {
         assertThat(Jenkins.bomNameForJenkinsVersion(jenkinsVersion)).isEqualTo(bomVersion);
     }

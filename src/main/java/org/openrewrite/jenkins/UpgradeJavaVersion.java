@@ -30,8 +30,8 @@ import org.openrewrite.marker.Markup;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@Value
 @EqualsAndHashCode(callSuper = false)
+@Value
 public class UpgradeJavaVersion extends ScanningRecipe<AtomicBoolean> {
 
     @Option(displayName = "Java version",

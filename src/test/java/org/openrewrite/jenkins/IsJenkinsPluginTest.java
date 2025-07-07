@@ -31,8 +31,8 @@ class IsJenkinsPluginTest implements RewriteTest {
         spec.recipe(new IsJenkinsPlugin("*"));
     }
 
-    @Test
     @DocumentExample
+    @Test
     void shouldKnowIfJenkinsPlugin() {
         rewriteRun(pomXml(
           """

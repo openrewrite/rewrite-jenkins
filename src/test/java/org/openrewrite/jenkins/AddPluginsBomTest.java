@@ -30,8 +30,8 @@ class AddPluginsBomTest implements RewriteTest {
         spec.recipe(new AddPluginsBom());
     }
 
-    @Test
     @DocumentExample
+    @Test
     void shouldAddBomIfManagedDependencies() {
         // language=xml
         rewriteRun(

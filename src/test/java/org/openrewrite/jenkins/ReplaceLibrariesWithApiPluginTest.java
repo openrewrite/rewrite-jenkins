@@ -35,8 +35,8 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
         ));
     }
 
-    @Test
     @DocumentExample
+    @Test
     void shouldExcludeTransitivesFromBundledLibrary() {
         rewriteRun(
           //language=xml
