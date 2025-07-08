@@ -18,7 +18,7 @@
 type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.jenkins.CreateJenkinsfile
 displayName: Create Jenkinsfile
-description: "Creates a simple base Jenkinsfile in Groovy for a Declarative Pipeline - located in the root of the project"
+description: Creates a simple base Jenkinsfile in Groovy for a Declarative Pipeline - located in the root of the project.
 recipeList:
   - org.openrewrite.text.CreateTextFile:
       fileContents: |-
