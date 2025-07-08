@@ -20,7 +20,7 @@ import org.openrewrite.DocumentExample;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
-import static org.openrewrite.test.SourceSpecs.text;
+import static org.openrewrite.groovy.Assertions.groovy;
 
 class CreateJenkinsfileTest implements RewriteTest {
     @Override
@@ -33,7 +33,7 @@ class CreateJenkinsfileTest implements RewriteTest {
     void createNewFile() {
         rewriteRun(
           //language=groovy
-          text(
+          groovy(
             null,
             """
               pipeline {
@@ -67,7 +67,7 @@ class CreateJenkinsfileTest implements RewriteTest {
     void doNotOverwriteExisting() {
         rewriteRun(
           //language=groovy
-          text(
+          groovy(
             """
               pipeline {
                   agent any
