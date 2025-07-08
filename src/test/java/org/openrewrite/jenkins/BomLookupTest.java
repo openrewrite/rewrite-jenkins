@@ -31,8 +31,8 @@ class BomLookupTest {
         assertThat(bomLookup.inBom("org.jenkins-ci.plugins", "artifactory")).isFalse();
     }
 
-    @ParameterizedTest
     @CsvFileSource(resources = "/jenkins-plugins-bom-lookup.txt", delimiter = ':')
+    @ParameterizedTest
     void shouldLookupByGroupIdAndArtifactId(String groupId, String artifactId) {
         assertThat(bomLookup.inBom(groupId, artifactId)).isTrue();
     }

@@ -54,8 +54,8 @@ class AddTeamToCodeownersTest implements RewriteTest {
         spec.recipe(new AddTeamToCodeowners());
     }
 
-    @Test
     @DocumentExample
+    @Test
     void shouldAddFileIfMissing() {
         rewriteRun(
           pomXml(POM),

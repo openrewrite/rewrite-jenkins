@@ -34,8 +34,8 @@ class UpgradeHtmlUnit3Test implements RewriteTest {
           .recipeFromResource("/META-INF/rewrite/htmlunit.yml", "org.openrewrite.java.testing.htmlunit.UpgradeHtmlUnit_3");
     }
 
-    @Test
     @DocumentExample
+    @Test
     void shouldUpdateHtmlUnit() {
         rewriteRun(
           //language=java

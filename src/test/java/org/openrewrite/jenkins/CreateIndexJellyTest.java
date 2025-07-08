@@ -33,8 +33,8 @@ class CreateIndexJellyTest implements RewriteTest {
         spec.recipe(new CreateIndexJelly());
     }
 
-    @Test
     @DocumentExample
+    @Test
     void shouldCreateIndexJellyFromPomDescription() {
         rewriteRun(
           pomXml(

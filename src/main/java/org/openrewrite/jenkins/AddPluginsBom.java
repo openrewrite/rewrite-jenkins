@@ -36,8 +36,8 @@ import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 
-@Value
 @EqualsAndHashCode(callSuper = false)
+@Value
 public class AddPluginsBom extends Recipe {
     private static final BomLookup LOOKUP = new BomLookup();
     private static final String PLUGINS_BOM_GROUP_ID = "io.jenkins.tools.bom";

@@ -32,8 +32,8 @@ class InMemoryTeamNameValidatorTest {
         assertThat(actual).isTrue();
     }
 
-    @ParameterizedTest
     @NullAndEmptySource
+    @ParameterizedTest
     @ValueSource(strings = {
       "@jenkinsci/-plugin-developers",             // we didn't get anything for the artifactId
     })

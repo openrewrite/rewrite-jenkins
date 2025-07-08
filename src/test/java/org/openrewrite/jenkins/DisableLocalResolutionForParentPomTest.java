@@ -28,8 +28,8 @@ class DisableLocalResolutionForParentPomTest implements RewriteTest {
         spec.recipe(new DisableLocalResolutionForParentPom());
     }
 
-    @Test
     @DocumentExample
+    @Test
     void shouldAddRelativePathIfMissing() {
         rewriteRun(
           //language=xml

@@ -28,8 +28,8 @@ import org.openrewrite.xml.tree.Xml;
  * Determines if this project is a Jenkins plugin by checking if the POM
  * has a managed version of jenkins-core.
  */
-@Value
 @EqualsAndHashCode(callSuper = false)
+@Value
 public class IsJenkinsPlugin extends Recipe {
     @Option(displayName = "Jenkins version",
             description = "The value of the `<jenkins.version>` property.",

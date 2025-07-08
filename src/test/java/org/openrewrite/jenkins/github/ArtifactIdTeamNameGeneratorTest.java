@@ -29,7 +29,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ArtifactIdTeamNameGeneratorTest {
     private final ArtifactIdTeamNameGenerator generator = new ArtifactIdTeamNameGenerator();
 
-    @ParameterizedTest
     @CsvSource({
       "commons-text-api,@jenkinsci/commons-text-api-plugin-developers",
       "stashNotifier,@jenkinsci/stashnotifier-plugin-developers",
@@ -40,13 +39,14 @@ class ArtifactIdTeamNameGeneratorTest {
       "plugin-usage-plugin,@jenkinsci/plugin-usage-plugin-developers",
       "build-keeper-plugin,@jenkinsci/build-keeper-plugin-developers",
     })
+    @ParameterizedTest
     void shouldGenerateExpectedTeamName(String artifactId, String expected) {
         String actual = generator.generate(new TeamNameInput(artifactId));
         assertThat(actual).isEqualTo(expected);
     }
 
-    @ParameterizedTest
     @CsvFileSource(resources = "/updatecenter-artifactIds.txt")
+    @ParameterizedTest
     void shouldGenerateValidTeamName(String artifactId) {
         String actual = generator.generate(new TeamNameInput(artifactId));
         if (!actual.isEmpty()) {

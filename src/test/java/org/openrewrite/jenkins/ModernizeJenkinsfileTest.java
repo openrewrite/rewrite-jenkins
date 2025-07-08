@@ -30,8 +30,8 @@ class ModernizeJenkinsfileTest implements RewriteTest {
         spec.recipeFromResource("/META-INF/rewrite/rewrite.yml", "org.openrewrite.jenkins.ModernizeJenkinsfile");
     }
 
-    @Test
     @DocumentExample
+    @Test
     void shouldUpdateJenkinsfile() {
         rewriteRun(
           //language=xml
