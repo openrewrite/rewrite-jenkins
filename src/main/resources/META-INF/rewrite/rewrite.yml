@@ -16,6 +16,38 @@
 
 ---
 type: specs.openrewrite.org/v1beta/recipe
+name: org.openrewrite.jenkins.CreateJenkinsfile
+displayName: Create Jenkinsfile
+description: Creates a simple base Jenkinsfile in Groovy for a Declarative Pipeline - located in the root of the project.
+recipeList:
+  - org.openrewrite.text.CreateTextFile:
+      fileContents: |-
+        pipeline {
+            agent any
+
+            stages {
+                stage('Build') {
+                    steps {
+                        echo 'Building..'
+                    }
+                }
+                stage('Test') {
+                    steps {
+                        echo 'Testing..'
+                    }
+                }
+                stage('Deploy') {
+                    steps {
+                        echo 'Deploying....'
+                    }
+                }
+            }
+        }
+      relativeFileName: Jenkinsfile
+      overwriteExisting: false
+  - org.openrewrite.jenkins.JenkinsfileAsGroovy
+---
+type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.jenkins.ModernizePlugin
 displayName: Modernize a Jenkins plugin to the latest recommended versions
 description: >-
