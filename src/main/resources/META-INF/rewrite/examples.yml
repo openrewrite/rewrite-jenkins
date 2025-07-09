@@ -123,6 +123,35 @@ examples:
     language: xml
 ---
 type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.jenkins.CreateJenkinsfile
+examples:
+- description: ''
+  sources:
+  - after: |
+      pipeline {
+          agent any
+
+          stages {
+              stage('Build') {
+                  steps {
+                      echo 'Building..'
+                  }
+              }
+              stage('Test') {
+                  steps {
+                      echo 'Testing..'
+                  }
+              }
+              stage('Deploy') {
+                  steps {
+                      echo 'Deploying....'
+                  }
+              }
+          }
+      }
+    language: groovy
+---
+type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.jenkins.DisableLocalResolutionForParentPom
 examples:
 - description: ''
