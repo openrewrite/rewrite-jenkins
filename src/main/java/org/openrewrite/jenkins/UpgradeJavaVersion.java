@@ -143,8 +143,7 @@ public class UpgradeJavaVersion extends ScanningRecipe<AtomicBoolean> {
                 }
                 J.Block body = (J.Block) l.getBody();
                 as = autoFormat(as, ctx, new Cursor(getCursor(), body));
-                l = l.withBody(body.withStatements(ListUtils.concat(body.getStatements(), as)));
-                return l;
+                return l.withBody(body.withStatements(ListUtils.concat(body.getStatements(), as)));
             }
         });
     }
