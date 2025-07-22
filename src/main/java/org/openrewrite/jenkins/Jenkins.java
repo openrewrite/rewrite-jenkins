@@ -51,11 +51,9 @@ class Jenkins {
             if (version.startsWith("${jenkins.baseline}")) {
                 return "bom-${jenkins.baseline}.x";
             }
-            else {
-                int lastIndex = version.lastIndexOf(".");
-                String prefix = version.substring(0, lastIndex);
-                return "bom-" + prefix + ".x";
-            }
+            int lastIndex = version.lastIndexOf(".");
+            String prefix = version.substring(0, lastIndex);
+            return "bom-" + prefix + ".x";
         }
         return "bom-weekly";
     }

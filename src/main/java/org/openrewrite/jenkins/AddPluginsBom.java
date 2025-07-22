@@ -118,7 +118,8 @@ public class AddPluginsBom extends Recipe {
                             null,
                             null
                     ).getVisitor().visitNonNull(d, ctx, getCursor().getParentOrThrow());
-                } else if (bomFound) {
+                }
+                if (bomFound) {
                     Xml.Tag exact = null;
                     Xml.Tag change = null;
                     List<Xml.Tag> pluginBoms = getCursor().getMessage(PLUGIN_BOMS_KEY, emptyList());

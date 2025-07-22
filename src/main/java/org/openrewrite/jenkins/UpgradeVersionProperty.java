@@ -89,12 +89,10 @@ public class UpgradeVersionProperty extends Recipe {
                         doAfterVisit(new AddPluginsBom().getVisitor());
                         return t;
                     }
-                    else {
-                        String minimumBaseline = minimumVersion.substring(0, minimumVersion.lastIndexOf('.'));
-                        doAfterVisit(new ChangeTagValueVisitor<>(t, minimumBaseline));
-                        doAfterVisit(new AddPluginsBom().getVisitor());
-                        return t;
-                    }
+                    String minimumBaseline = minimumVersion.substring(0, minimumVersion.lastIndexOf('.'));
+                    doAfterVisit(new ChangeTagValueVisitor<>(t, minimumBaseline));
+                    doAfterVisit(new AddPluginsBom().getVisitor());
+                    return t;
 
                 }
                 if (!t.getName().equals(key)) {
