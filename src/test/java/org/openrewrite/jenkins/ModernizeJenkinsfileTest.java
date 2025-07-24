@@ -104,7 +104,7 @@ class ModernizeJenkinsfileTest implements RewriteTest {
               """
           ),
           //language=groovy
-          groovy(null,
+          groovy(doesNotExist(),
                 """
             /*
              See the documentation for more options:

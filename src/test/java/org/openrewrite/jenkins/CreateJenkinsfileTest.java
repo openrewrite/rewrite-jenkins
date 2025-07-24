@@ -34,7 +34,7 @@ class CreateJenkinsfileTest implements RewriteTest {
         rewriteRun(
           //language=groovy
           groovy(
-            null,
+            doesNotExist(),
             """
               pipeline {
                   agent any
