@@ -26,7 +26,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * A registry of versions that are supplied by the bom.
@@ -54,7 +55,7 @@ class BomLookup {
         try (InputStream is = BomLookup.class.getResourceAsStream("/jenkins-plugins-bom-lookup.txt")) {
             Objects.requireNonNull(is);
             try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
-                List<String> groupArtifacts = br.lines().collect(Collectors.toList());
+                List<String> groupArtifacts = br.lines().collect(toList());
                 for (String groupArtifact : groupArtifacts) {
                     if (groupArtifact == null) {
                         continue;

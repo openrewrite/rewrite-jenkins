@@ -26,8 +26,9 @@ import org.openrewrite.xml.ChangeTagValueVisitor;
 import org.openrewrite.xml.tree.Xml;
 import org.openrewrite.xml.tree.Xml.Tag;
 
-import java.util.Collections;
 import java.util.Optional;
+
+import static java.util.Collections.singleton;
 
 /**
  * Updates the version property unless it is already greater than minimumVersion
@@ -69,7 +70,7 @@ public class UpgradeVersionProperty extends Recipe {
                 if (value.contains("${jenkins.baseline}")) {
                     value = getResolutionResult().getPom().getProperties().get("jenkins.baseline");
                 }
-                Optional<String> upgrade = versionComparator.upgrade(value, Collections.singleton(minimumVersion));
+                Optional<String> upgrade = versionComparator.upgrade(value, singleton(minimumVersion));
                 if (!upgrade.isPresent()) {
                     return document;
                 }

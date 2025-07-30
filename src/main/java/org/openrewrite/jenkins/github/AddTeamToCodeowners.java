@@ -30,12 +30,16 @@ import org.openrewrite.xml.tree.Xml;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
+import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
 
 @EqualsAndHashCode(callSuper = false)
 @Value
@@ -81,13 +85,13 @@ public class AddTeamToCodeowners extends ScanningRecipe<AddTeamToCodeowners.Scan
     @Override
     public Collection<? extends SourceFile> generate(Scanned acc, ExecutionContext ctx) {
         if (acc.foundFile || !acc.hasValidTeamName()) {
-            return Collections.emptyList();
+            return emptyList();
         }
         PlainTextParser parser = new PlainTextParser();
         String line = "* " + acc.teamName() + "\n";
         return parser.parse(line)
                 .map(brandNewFile -> (PlainText) brandNewFile.withSourcePath(Paths.get(FILE_PATH)))
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     @Override
