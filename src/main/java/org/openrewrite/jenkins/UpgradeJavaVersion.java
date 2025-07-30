@@ -124,7 +124,7 @@ public class UpgradeJavaVersion extends ScanningRecipe<AtomicBoolean> {
                     return l;
                 }
                 J.MethodInvocation m = getCursor().getParentTreeCursor().getValue();
-                if (!m.getSimpleName().equals("scmCheckout")) {
+                if (!"scmCheckout".equals(m.getSimpleName())) {
                     return l;
                 }
 
