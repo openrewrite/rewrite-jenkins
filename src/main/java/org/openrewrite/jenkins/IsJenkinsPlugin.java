@@ -43,7 +43,7 @@ public class IsJenkinsPlugin extends Recipe {
 
     @Override
     public String getDescription() {
-        return "Checks if the project is a Jenkins plugin by the presence of a managed version of jenkins-core";
+        return "Checks if the project is a Jenkins plugin by the presence of a managed version of `jenkins-core`.";
     }
 
     @Override
