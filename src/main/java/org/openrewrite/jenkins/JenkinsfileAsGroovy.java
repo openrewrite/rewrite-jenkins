@@ -15,13 +15,26 @@
  */
 package org.openrewrite.jenkins;
 
+import lombok.EqualsAndHashCode;
+import lombok.Value;
 import org.jspecify.annotations.Nullable;
 import org.openrewrite.*;
 import org.openrewrite.groovy.GroovyParser;
 import org.openrewrite.text.PlainText;
 import org.openrewrite.text.PlainTextVisitor;
 
+import java.util.Optional;
+
+@EqualsAndHashCode(callSuper = false)
+@Value
 public class JenkinsfileAsGroovy extends Recipe {
+
+    @Option(displayName = "File pattern",
+            description = "A glob pattern to match Jenkinsfile paths. Defaults to `**/Jenkinsfile*`.",
+            example = "**/Jenkinsfile*",
+            required = false)
+    @Nullable
+    String filePattern;
 
     @Override
     public String getDisplayName() {
@@ -35,7 +48,8 @@ public class JenkinsfileAsGroovy extends Recipe {
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {
-        return Preconditions.check(new FindSourceFiles("**/Jenkinsfile*"), new PlainTextVisitor<ExecutionContext>() {
+        String paths = Optional.ofNullable(filePattern).orElse("**/Jenkinsfile*");
+        return Preconditions.check(new FindSourceFiles(paths), new PlainTextVisitor<ExecutionContext>() {
             @Override
             public @Nullable Tree visit(@Nullable Tree tree, ExecutionContext ctx) {
                 if (tree instanceof PlainText) {
