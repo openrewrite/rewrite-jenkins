@@ -15,7 +15,7 @@
 type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.java.testing.htmlunit.UpgradeHtmlUnit_3
 examples:
-- description: ''
+- description: '`UpgradeHtmlUnit3Test#shouldUpdateHtmlUnit`'
   sources:
   - before: |
       import com.gargoylesoftware.htmlunit.WebClient;
@@ -66,7 +66,7 @@ examples:
 type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.jenkins.AddPluginsBom
 examples:
-- description: ''
+- description: '`AddPluginsBomTest#shouldAddBomIfManagedDependencies`'
   sources:
   - before: |
       <project>
@@ -100,7 +100,7 @@ examples:
 type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.jenkins.CreateIndexJelly
 examples:
-- description: ''
+- description: '`CreateIndexJellyTest#shouldCreateIndexJellyFromPomDescription`'
   sources:
   - before: |
       <project>
@@ -125,7 +125,7 @@ examples:
 type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.jenkins.CreateJenkinsfile
 examples:
-- description: ''
+- description: '`CreateJenkinsfileTest#createNewFile`'
   sources:
   - after: |
       pipeline {
@@ -149,12 +149,13 @@ examples:
               }
           }
       }
+    path: Jenkinsfile
     language: groovy
 ---
 type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.jenkins.DisableLocalResolutionForParentPom
 examples:
-- description: ''
+- description: '`DisableLocalResolutionForParentPomTest#shouldAddRelativePathIfMissing`'
   sources:
   - before: |
       <project>
@@ -199,7 +200,7 @@ examples:
 type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.jenkins.IsJenkinsPlugin
 examples:
-- description: ''
+- description: '`IsJenkinsPluginTest#shouldKnowIfJenkinsPlugin`'
   parameters:
   - '*'
   sources:
@@ -241,7 +242,7 @@ examples:
 type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.jenkins.JavaxAnnotationsToSpotbugs
 examples:
-- description: ''
+- description: '`JavaxAnnotationsToSpotBugsTest#shouldNotOrderImports`'
   sources:
   - before: |
       import javax.annotation.CheckForNull;
@@ -279,7 +280,7 @@ examples:
 type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.jenkins.ModernizeJenkinsfile
 examples:
-- description: ''
+- description: '`ModernizeJenkinsfileTest#shouldUpdateJenkinsfile`'
   sources:
   - before: buildPlugin()
     after: |
@@ -294,6 +295,7 @@ examples:
           [platform: 'linux', jdk: 21],
           [platform: 'windows', jdk: 17],
       ])
+    path: Jenkinsfile
     language: groovy
   - before: |
       <project>
@@ -321,7 +323,7 @@ examples:
 type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.jenkins.ModernizePluginForJava8
 examples:
-- description: ''
+- description: '`ModernizePluginForJava8Test#shouldDoTheWorks`'
   sources:
   - before: |
       <project>
@@ -393,7 +395,7 @@ examples:
 type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.jenkins.ReplaceLibrariesWithApiPlugin
 examples:
-- description: ''
+- description: '`ReplaceLibrariesWithApiPluginTest#shouldExcludeTransitivesFromBundledLibrary`'
   parameters:
   - io.jenkins.plugins
   - commons-text-api
@@ -476,7 +478,7 @@ examples:
 type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.jenkins.UpgradeJavaVersion
 examples:
-- description: ''
+- description: '`UpgradeJavaVersionTest#openJdk`'
   parameters:
   - '17'
   - 'null'
@@ -499,12 +501,13 @@ examples:
               deleteWorkspace = 'false'
           }
       }
+    path: Jenkinsfile
     language: groovy
 ---
 type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.jenkins.UpgradeVersionProperty
 examples:
-- description: ''
+- description: '`UpgradeVersionPropertyTest#shouldUpgrade`'
   parameters:
   - jenkins.version
   - 2.452.4
@@ -555,7 +558,7 @@ examples:
 type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.jenkins.migrate.hudson.UtilGetPastTimeStringToGetTimeSpanString
 examples:
-- description: ''
+- description: '`UtilGetPastTimeStringToTimeSpanStringTest#shouldReplaceFullyQualifiedMethodCall`'
   sources:
   - before: |
       package org.example;

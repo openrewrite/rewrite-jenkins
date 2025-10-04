@@ -17,6 +17,7 @@ package org.openrewrite.jenkins;
 
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
+import org.openrewrite.DocumentExample;
 import org.openrewrite.java.JavaParser;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
@@ -61,6 +62,7 @@ class ModernizePluginTest implements RewriteTest {
         spec.recipeFromResources("org.openrewrite.jenkins.ModernizePlugin");
     }
 
+    @DocumentExample
     @Test
     void shouldDoTheWorks() {
         Versions versionsBefore = new Versions(
