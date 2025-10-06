@@ -321,6 +321,31 @@ examples:
     language: xml
 ---
 type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.jenkins.ModernizePlugin
+examples:
+- description: '`ModernizePluginTest#shouldDoTheWorks`'
+  sources:
+  - before: |
+      package something;
+
+      import javax.inject.Singleton;
+
+      @Singleton
+      class Example {
+          int add(int a, int b) { return a + b; }
+      }
+    after: |
+      package something;
+
+      import jakarta.inject.Singleton;
+
+      @Singleton
+      class Example {
+          int add(int a, int b) { return a + b; }
+      }
+    language: java
+---
+type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.jenkins.ModernizePluginForJava8
 examples:
 - description: '`ModernizePluginForJava8Test#shouldDoTheWorks`'
