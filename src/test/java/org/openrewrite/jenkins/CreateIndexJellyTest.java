@@ -50,6 +50,10 @@ class CreateIndexJellyTest implements RewriteTest {
                   <version>0.1</version>
                   <repositories>
                       <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
+                      <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
                       </repository>
@@ -92,6 +96,10 @@ class CreateIndexJellyTest implements RewriteTest {
                   <version>0.1</version>
                   <repositories>
                       <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
+                      <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
                       </repository>
@@ -126,6 +134,10 @@ class CreateIndexJellyTest implements RewriteTest {
                   <artifactId>my-plugin</artifactId>
                   <version>0.1</version>
                   <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                       <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
@@ -176,6 +188,10 @@ class CreateIndexJellyTest implements RewriteTest {
                     <version>0.1</version>
                     <description>This is my plugin</description>
                     <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                         <repository>
                             <id>repo.jenkins-ci.org</id>
                             <url>https://repo.jenkins-ci.org/public/</url>
@@ -205,6 +221,10 @@ class CreateIndexJellyTest implements RewriteTest {
                     <version>0.1</version>
                     <description>This is my second, different plugin</description>
                     <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                         <repository>
                             <id>repo.jenkins-ci.org</id>
                             <url>https://repo.jenkins-ci.org/public/</url>

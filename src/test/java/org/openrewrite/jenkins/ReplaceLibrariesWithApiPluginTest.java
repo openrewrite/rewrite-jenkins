@@ -65,6 +65,10 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
 
                   <repositories>
                       <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
+                      <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
                       </repository>
@@ -106,6 +110,10 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                   </dependencies>
 
                   <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                       <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
@@ -149,6 +157,10 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
 
                   <repositories>
                       <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
+                      <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
                       </repository>
@@ -178,6 +190,10 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                   </dependencies>
 
                   <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                       <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
@@ -218,6 +234,10 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
 
                   <repositories>
                       <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
+                      <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
                       </repository>
@@ -247,6 +267,10 @@ class ReplaceLibrariesWithApiPluginTest implements RewriteTest {
                   </dependencies>
 
                   <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                       <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>

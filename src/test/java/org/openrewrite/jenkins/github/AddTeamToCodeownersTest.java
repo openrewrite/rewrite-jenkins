@@ -42,6 +42,10 @@ class AddTeamToCodeownersTest implements RewriteTest {
           <version>0.1</version>
           <repositories>
               <repository>
+                  <id>maven-central</id>
+                  <url>https://repo1.maven.org/maven2/</url>
+              </repository>
+              <repository>
                   <id>repo.jenkins-ci.org</id>
                   <url>https://repo.jenkins-ci.org/public/</url>
               </repository>
@@ -78,7 +82,7 @@ class AddTeamToCodeownersTest implements RewriteTest {
               *       @global-owner1 @global-owner2
               *.js    @js-owner #This is an inline comment.
               /build/logs/ @doctocat
-                            
+
               """,
             """
               # This is a comment.
@@ -86,7 +90,7 @@ class AddTeamToCodeownersTest implements RewriteTest {
               *       @global-owner1 @global-owner2
               *.js    @js-owner #This is an inline comment.
               /build/logs/ @doctocat
-                            
+
               """,
             s -> s.path(".github/CODEOWNERS").noTrim()
           )
@@ -144,6 +148,10 @@ class AddTeamToCodeownersTest implements RewriteTest {
                     <version>0.1</version>
                     <repositories>
                         <repository>
+                            <id>maven-central</id>
+                            <url>https://repo1.maven.org/maven2/</url>
+                        </repository>
+                        <repository>
                             <id>repo.jenkins-ci.org</id>
                             <url>https://repo.jenkins-ci.org/public/</url>
                         </repository>
@@ -161,6 +169,10 @@ class AddTeamToCodeownersTest implements RewriteTest {
                     <artifactId>different-plugin</artifactId>
                     <version>0.1</version>
                     <repositories>
+                        <repository>
+                            <id>maven-central</id>
+                            <url>https://repo1.maven.org/maven2/</url>
+                        </repository>
                         <repository>
                             <id>repo.jenkins-ci.org</id>
                             <url>https://repo.jenkins-ci.org/public/</url>
@@ -208,6 +220,10 @@ class AddTeamToCodeownersTest implements RewriteTest {
                   <version>0.1</version>
                   <repositories>
                       <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
+                      <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
                       </repository>
@@ -236,6 +252,10 @@ class AddTeamToCodeownersTest implements RewriteTest {
                   <artifactId>tool-labels-plugin</artifactId>
                   <version>0.1</version>
                   <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                       <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
