@@ -50,6 +50,10 @@ class AddPluginsBomTest implements RewriteTest {
                   </properties>
                   <repositories>
                       <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
+                      <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
                       </repository>
@@ -121,6 +125,10 @@ class AddPluginsBomTest implements RewriteTest {
                   </properties>
                   <repositories>
                       <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
+                      <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
                       </repository>
@@ -157,6 +165,10 @@ class AddPluginsBomTest implements RewriteTest {
                       <jenkins.version>${jenkins.baseline}.3</jenkins.version>
                   </properties>
                   <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                       <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
@@ -211,6 +223,10 @@ class AddPluginsBomTest implements RewriteTest {
                   </dependencyManagement>
                   <repositories>
                       <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
+                      <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
                       </repository>
@@ -257,6 +273,10 @@ class AddPluginsBomTest implements RewriteTest {
                       </dependencies>
                   </dependencyManagement>
                   <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                       <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
@@ -313,6 +333,10 @@ class AddPluginsBomTest implements RewriteTest {
                       </dependencies>
                   </dependencyManagement>
                   <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                       <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
@@ -396,6 +420,10 @@ class AddPluginsBomTest implements RewriteTest {
                   </dependencyManagement>
                   <repositories>
                       <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
+                      <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
                       </repository>
@@ -448,6 +476,10 @@ class AddPluginsBomTest implements RewriteTest {
                       </dependencies>
                   </dependencyManagement>
                   <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                       <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
@@ -514,12 +546,20 @@ class AddPluginsBomTest implements RewriteTest {
                 <!-- get every artifact through repo.jenkins-ci.org, which proxies all the artifacts that we need -->
                 <repositories>
                   <repository>
+                      <id>maven-central</id>
+                      <url>https://repo1.maven.org/maven2/</url>
+                  </repository>
+                  <repository>
                     <id>repo.jenkins-ci.org</id>
                     <url>https://repo.jenkins-ci.org/public/</url>
                   </repository>
                 </repositories>
 
                 <pluginRepositories>
+                  <pluginRepository>
+                      <id>maven-central</id>
+                      <url>https://repo1.maven.org/maven2/</url>
+                  </pluginRepository>
                   <pluginRepository>
                     <id>repo.jenkins-ci.org</id>
                     <url>https://repo.jenkins-ci.org/public/</url>
@@ -570,12 +610,20 @@ class AddPluginsBomTest implements RewriteTest {
                 <!-- get every artifact through repo.jenkins-ci.org, which proxies all the artifacts that we need -->
                 <repositories>
                   <repository>
+                      <id>maven-central</id>
+                      <url>https://repo1.maven.org/maven2/</url>
+                  </repository>
+                  <repository>
                     <id>repo.jenkins-ci.org</id>
                     <url>https://repo.jenkins-ci.org/public/</url>
                   </repository>
                 </repositories>
 
                 <pluginRepositories>
+                  <pluginRepository>
+                      <id>maven-central</id>
+                      <url>https://repo1.maven.org/maven2/</url>
+                  </pluginRepository>
                   <pluginRepository>
                     <id>repo.jenkins-ci.org</id>
                     <url>https://repo.jenkins-ci.org/public/</url>

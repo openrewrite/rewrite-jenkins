@@ -56,6 +56,10 @@ class ModernizePluginForJava8Test implements RewriteTest {
                   </dependencies>
                   <repositories>
                       <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
+                      <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>http://repo.jenkins-ci.org/public/</url>
                       </repository>
@@ -94,6 +98,10 @@ class ModernizePluginForJava8Test implements RewriteTest {
                   </dependencies>
                   <repositories>
                       <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
+                      <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
                       </repository>
@@ -123,6 +131,10 @@ class ModernizePluginForJava8Test implements RewriteTest {
                   </properties>
                   <repositories>
                       <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
+                      <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>http://repo.jenkins-ci.org/public/</url>
                       </repository>
@@ -142,6 +154,10 @@ class ModernizePluginForJava8Test implements RewriteTest {
                       <jenkins.version>2.346.3</jenkins.version>
                   </properties>
                   <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                       <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
@@ -172,6 +188,10 @@ class ModernizePluginForJava8Test implements RewriteTest {
                   </properties>
                   <repositories>
                       <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
+                      <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
                       </repository>
@@ -191,6 +211,10 @@ class ModernizePluginForJava8Test implements RewriteTest {
                       <jenkins.version>2.346.3</jenkins.version>
                   </properties>
                   <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                       <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
@@ -221,6 +245,10 @@ class ModernizePluginForJava8Test implements RewriteTest {
                   </properties>
                   <repositories>
                       <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
+                      <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
                       </repository>
@@ -250,6 +278,10 @@ class ModernizePluginForJava8Test implements RewriteTest {
                   </properties>
                   <repositories>
                       <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
+                      <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
                       </repository>
@@ -269,6 +301,10 @@ class ModernizePluginForJava8Test implements RewriteTest {
                       <jenkins.version>2.346.3</jenkins.version>
                   </properties>
                   <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                       <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
@@ -298,6 +334,10 @@ class ModernizePluginForJava8Test implements RewriteTest {
                       <jenkins.version>2.346.3</jenkins.version>
                   </properties>
                   <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                       <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
@@ -329,6 +369,10 @@ class ModernizePluginForJava8Test implements RewriteTest {
                   </properties>
                   <repositories>
                       <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
+                      <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
                       </repository>
@@ -348,6 +392,10 @@ class ModernizePluginForJava8Test implements RewriteTest {
                       <jenkins.version>2.346.3</jenkins.version>
                   </properties>
                   <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                       <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
@@ -377,6 +425,10 @@ class ModernizePluginForJava8Test implements RewriteTest {
                   </properties>
                   <repositories>
                       <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
+                      <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
                       </repository>
@@ -396,6 +448,10 @@ class ModernizePluginForJava8Test implements RewriteTest {
                       <jenkins.version>2.346.3</jenkins.version>
                   </properties>
                   <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                       <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
@@ -424,6 +480,10 @@ class ModernizePluginForJava8Test implements RewriteTest {
                       <jenkins.version>2.346.3</jenkins.version>
                   </properties>
                   <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                       <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>
@@ -462,6 +522,10 @@ class ModernizePluginForJava8Test implements RewriteTest {
                       <jenkins.version>2.346.3</jenkins.version>
                   </properties>
                   <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                       <repository>
                           <id>repo.jenkins-ci.org</id>
                           <url>https://repo.jenkins-ci.org/public/</url>

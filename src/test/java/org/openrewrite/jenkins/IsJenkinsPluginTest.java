@@ -34,7 +34,9 @@ class IsJenkinsPluginTest implements RewriteTest {
     @DocumentExample
     @Test
     void shouldKnowIfJenkinsPlugin() {
-        rewriteRun(pomXml(
+        rewriteRun(
+          //language=pom
+          pomXml(
           """
             <project>
                 <parent>
@@ -45,6 +47,10 @@ class IsJenkinsPluginTest implements RewriteTest {
                 <artifactId>my-plugin</artifactId>
                 <version>0.1</version>
                 <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                     <repository>
                         <id>repo.jenkins-ci.org</id>
                         <url>https://repo.jenkins-ci.org/public/</url>
@@ -62,6 +68,10 @@ class IsJenkinsPluginTest implements RewriteTest {
                 <artifactId>my-plugin</artifactId>
                 <version>0.1</version>
                 <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
                     <repository>
                         <id>repo.jenkins-ci.org</id>
                         <url>https://repo.jenkins-ci.org/public/</url>
