@@ -78,6 +78,7 @@ class IsJenkinsPluginTest implements RewriteTest {
                     </repository>
                 </repositories>
             </project>
-            """));
+            """
+          ));
     }
 }
