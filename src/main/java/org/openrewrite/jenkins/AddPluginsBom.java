@@ -139,14 +139,29 @@ public class AddPluginsBom extends Recipe {
                     } else if (change != null) {
                         String artifactId = change.getChildValue("artifactId")
                                 .orElseThrow(() -> new IllegalStateException("No artifactId found on bom"));
-                        doAfterVisit(new ChangeManagedDependencyGroupIdAndArtifactId(
-                                PLUGINS_BOM_GROUP_ID,
-                                artifactId,
-                                PLUGINS_BOM_GROUP_ID,
-                                bomName,
-                                LATEST_RELEASE,
-                                VERSION_METADATA_PATTERN
-                        ).getVisitor());
+                        // If the calculated bomName is bom-weekly but an LTS BOM is already present,
+                        // upgrade to the latest LTS BOM instead of switching to bom-weekly.
+                        // This happens when a plugin depends on a weekly Jenkins version but an LTS BOM can satisfy the dependencies.
+                        if ("bom-weekly".equals(bomName) && artifactId.matches("bom-\\d+\\.\\d+\\.x")) {
+                            // Upgrade to the latest available LTS BOM instead of switching to bom-weekly
+                            doAfterVisit(new ChangeManagedDependencyGroupIdAndArtifactId(
+                                    PLUGINS_BOM_GROUP_ID,
+                                    artifactId,
+                                    PLUGINS_BOM_GROUP_ID,
+                                    artifactId,  // Keep the same LTS BOM artifact ID
+                                    LATEST_RELEASE,  // But upgrade to its latest version
+                                    VERSION_METADATA_PATTERN
+                            ).getVisitor());
+                        } else {
+                            doAfterVisit(new ChangeManagedDependencyGroupIdAndArtifactId(
+                                    PLUGINS_BOM_GROUP_ID,
+                                    artifactId,
+                                    PLUGINS_BOM_GROUP_ID,
+                                    bomName,
+                                    LATEST_RELEASE,
+                                    VERSION_METADATA_PATTERN
+                            ).getVisitor());
+                        }
                     }
                 }
                 return d;
