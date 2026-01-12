@@ -41,6 +41,9 @@ recipeList:
       oldFullyQualifiedTypeName: org.acegisecurity.context.SecurityContextHolder
       newFullyQualifiedTypeName: org.springframework.security.core.context.SecurityContextHolder
   - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.acegisecurity.userdetails.User
+      newFullyQualifiedTypeName: org.springframework.security.core.userdetails.User
+  - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.acegisecurity.userdetails.UserDetails
       newFullyQualifiedTypeName: org.springframework.security.core.userdetails.UserDetails
   - org.openrewrite.java.ChangeType:
@@ -88,11 +91,26 @@ recipeList:
       methodPattern: hudson.security.ACL hasPermission(org.springframework.security.core.Authentication, hudson.security.Permission)
       newMethodName: hasPermission2
       matchOverrides: true
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: hudson.security.AbstractPasswordBasedSecurityRealm authenticate(java.lang.String, java.lang.String)
+      newMethodName: authenticate2
+      matchOverrides: true
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: hudson.security.AbstractPasswordBasedSecurityRealm loadUserByUsername(java.lang.String)
+      newMethodName: loadUserByUsername2
+      matchOverrides: true
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: hudson.security.AbstractPasswordBasedSecurityRealm loadGroupByGroupname(java.lang.String)
+      newMethodName: loadGroupByGroupname2 # TODO also need boolean fetchMembers
+      matchOverrides: true
 
   # Jenkins API constants/fields - change field references
   - org.openrewrite.java.ReplaceConstantWithAnotherConstant:
       existingFullyQualifiedConstantName: hudson.security.ACL.SYSTEM
       fullyQualifiedConstantName: hudson.security.ACL.SYSTEM2
+  - org.openrewrite.java.ReplaceConstantWithAnotherConstant:
+      existingFullyQualifiedConstantName: hudson.security.SecurityRealm.AUTHENICATED_AUTHORITY
+      fullyQualifiedConstantName: hudson.security.SecurityRealm.AUTHENTICATED_AUTHORITY2
   - org.openrewrite.java.ReplaceConstantWithAnotherConstant:
       existingFullyQualifiedConstantName: jenkins.model.Jenkins.ANONYMOUS
       fullyQualifiedConstantName: jenkins.model.Jenkins.ANONYMOUS2
