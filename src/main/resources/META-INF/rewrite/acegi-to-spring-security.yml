@@ -24,16 +24,6 @@ description: >-
   The `org.acegisecurity.acls.sid` package remains undeprecated and is not modified.
   Note: Authentication.getAuthorities() changed from returning an array to Collection, requiring manual conversion.
 recipeList:
-  # Jenkins API methods - add 2 suffix for Spring Security versions (must come BEFORE type changes)
-  - org.openrewrite.java.ChangeMethodName:
-      methodPattern: hudson.model.queue.Tasks getAuthenticationOf(hudson.model.Queue.Task)
-      newMethodName: getAuthenticationOf2
-      matchOverrides: false
-  - org.openrewrite.java.ChangeMethodName:
-      methodPattern: hudson.model.User impersonate()
-      newMethodName: impersonate2
-      matchOverrides: false
-
   # Package migrations (excluding org.acegisecurity.acls.sid which remains undeprecated)
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.acegisecurity.Authentication
@@ -71,6 +61,14 @@ recipeList:
 
   # Jenkins API methods with Spring Security types - add 2 suffix
   - org.openrewrite.java.ChangeMethodName:
+      methodPattern: hudson.model.queue.Tasks getAuthenticationOf(hudson.model.Queue.Task)
+      newMethodName: getAuthenticationOf2
+      matchOverrides: false
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: hudson.model.User impersonate()
+      newMethodName: impersonate2
+      matchOverrides: false
+  - org.openrewrite.java.ChangeMethodName:
       methodPattern: hudson.security.ACL impersonate(org.springframework.security.core.Authentication)
       newMethodName: impersonate2
       matchOverrides: false
@@ -102,16 +100,6 @@ recipeList:
   # Note: Authentication.getAuthorities() signature changed from returning GrantedAuthority[]
   # to Collection<? extends GrantedAuthority>. This requires manual conversion of array
   # declarations to Collection and changing .length accesses to .size() calls.
-
-  # AccessControlled simplification and additional method renames
-  - org.openrewrite.java.ChangeMethodName:
-      methodPattern: hudson.security.AccessControlled hasPermission(org.springframework.security.core.Authentication, hudson.security.Permission)
-      newMethodName: hasPermission
-      matchOverrides: true
-  - org.openrewrite.java.ChangeMethodName:
-      methodPattern: hudson.security.AccessControlled checkPermission(org.springframework.security.core.Authentication, hudson.security.Permission)
-      newMethodName: checkPermission
-      matchOverrides: true
 
   # AccessDeniedException2 is deprecated, use AccessDeniedException3
   - org.openrewrite.java.ChangeType:
