@@ -83,6 +83,7 @@ recipeList:
       methodPattern: hudson.security.ACL impersonate(org.springframework.security.core.Authentication, hudson.remoting.Callable)
       newMethodName: impersonate2
       matchOverrides: false
+  # TODO ACL.as2
   - org.openrewrite.java.ChangeMethodName:
       methodPattern: jenkins.model.Jenkins getAuthentication()
       newMethodName: getAuthentication2
