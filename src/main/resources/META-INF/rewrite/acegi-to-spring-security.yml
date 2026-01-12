@@ -80,7 +80,7 @@ recipeList:
       newMethodName: impersonate2
       matchOverrides: false
   - org.openrewrite.java.ChangeMethodName:
-      methodPattern: hudson.security.ACL impersonate(org.springframework.security.core.Authentication, java.util.concurrent.Callable)
+      methodPattern: hudson.security.ACL impersonate(org.springframework.security.core.Authentication, hudson.remoting.Callable)
       newMethodName: impersonate2
       matchOverrides: false
   - org.openrewrite.java.ChangeMethodName:
