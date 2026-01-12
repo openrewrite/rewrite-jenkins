@@ -124,6 +124,7 @@ recipeList:
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: hudson.security.AccessDeniedException2
       newFullyQualifiedTypeName: hudson.security.AccessDeniedException3
+  # TODO UserMayOrMayNotExistException2
 
   # CredentialsProvider method renames for Item overloads
   - org.openrewrite.java.ChangeMethodName:
