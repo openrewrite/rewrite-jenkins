@@ -36,15 +36,9 @@ public class IsJenkinsPlugin extends Recipe {
             example = "[1,)")
     String version;
 
-    @Override
-    public String getDisplayName() {
-        return "Is the project a Jenkins plugin?";
-    }
+    String displayName = "Is the project a Jenkins plugin?";
 
-    @Override
-    public String getDescription() {
-        return "Checks if the project is a Jenkins plugin by the presence of a managed version of `jenkins-core`.";
-    }
+    String description = "Checks if the project is a Jenkins plugin by the presence of a managed version of `jenkins-core`.";
 
     @Override
     public Validated<Object> validate() {

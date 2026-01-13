@@ -91,15 +91,9 @@ public class ReplaceLibrariesWithApiPlugin extends Recipe {
         this.replaces = replaces;
     }
 
-    @Override
-    public String getDisplayName() {
-        return "Use Jenkins API plugin instead of libraries";
-    }
+    String displayName = "Use Jenkins API plugin instead of libraries";
 
-    @Override
-    public String getDescription() {
-        return "Prefer Jenkins API plugins over bundling libraries for slimmer plugins.";
-    }
+    String description = "Prefer Jenkins API plugins over bundling libraries for slimmer plugins.";
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {

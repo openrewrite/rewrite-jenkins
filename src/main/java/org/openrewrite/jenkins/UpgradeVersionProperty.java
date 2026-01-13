@@ -46,15 +46,9 @@ public class UpgradeVersionProperty extends Recipe {
             example = "2.375.1")
     String minimumVersion;
 
-    @Override
-    public String getDisplayName() {
-        return "Upgrade property's value to version";
-    }
+    String displayName = "Upgrade property's value to version";
 
-    @Override
-    public String getDescription() {
-        return "If the current value is < given version, upgrade it.";
-    }
+    String description = "If the current value is < given version, upgrade it.";
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {

@@ -45,16 +45,10 @@ public class UpgradeJavaVersion extends ScanningRecipe<AtomicBoolean> {
     @Nullable
     String distribution;
 
-    @Override
-    public String getDisplayName() {
-        return "Upgrade jenkins java version";
-    }
+    String displayName = "Upgrade jenkins java version";
 
-    @Override
-    public String getDescription() {
-        return "Upgrades the version of java specified in Jenkins groovy scripts. " +
+    String description = "Upgrades the version of java specified in Jenkins groovy scripts. " +
                "Will not downgrade if the version is newer than the specified version.";
-    }
 
     @Override
     public AtomicBoolean getInitialValue(ExecutionContext ctx) {

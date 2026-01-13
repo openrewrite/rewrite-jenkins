@@ -46,15 +46,9 @@ import static java.util.stream.Collectors.toList;
 public class AddTeamToCodeowners extends ScanningRecipe<AddTeamToCodeowners.Scanned> {
     private static final String FILE_PATH = ".github/CODEOWNERS";
 
-    @Override
-    public String getDisplayName() {
-        return "Add plugin developer team to CODEOWNERS";
-    }
+    String displayName = "Add plugin developer team to CODEOWNERS";
 
-    @Override
-    public String getDescription() {
-        return "Adds the `{artifactId}-plugin-developers` team to all files in `.github/CODEOWNERS` if absent.";
-    }
+    String description = "Adds the `{artifactId}-plugin-developers` team to all files in `.github/CODEOWNERS` if absent.";
 
     @Override
     public Scanned getInitialValue(ExecutionContext ctx) {

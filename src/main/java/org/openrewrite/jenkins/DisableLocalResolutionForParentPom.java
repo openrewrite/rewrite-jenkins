@@ -32,16 +32,10 @@ import org.openrewrite.xml.tree.Xml.Tag;
 @EqualsAndHashCode(callSuper = false)
 @Value
 public class DisableLocalResolutionForParentPom extends Recipe {
-    @Override
-    public String getDisplayName() {
-        return "Disables local file resolution for parent POM";
-    }
+    String displayName = "Disables local file resolution for parent POM";
 
-    @Override
-    public String getDescription() {
-        return "Explicitly sets `<relativePath/>` to disable file resolution, as recommended in the " +
+    String description = "Explicitly sets `<relativePath/>` to disable file resolution, as recommended in the " +
                 "[plugin development guide](https://www.jenkins.io/doc/developer/plugin-development/updating-parent/).";
-    }
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {

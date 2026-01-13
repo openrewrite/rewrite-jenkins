@@ -36,15 +36,9 @@ public class JenkinsfileAsGroovy extends Recipe {
     @Nullable
     String filePattern;
 
-    @Override
-    public String getDisplayName() {
-        return "Parse `Jenkinsfile` as Groovy";
-    }
+    String displayName = "Parse `Jenkinsfile` as Groovy";
 
-    @Override
-    public String getDescription() {
-        return "Parse any `Jenkinsfile` as Groovy code.";
-    }
+    String description = "Parse any `Jenkinsfile` as Groovy code.";
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {
