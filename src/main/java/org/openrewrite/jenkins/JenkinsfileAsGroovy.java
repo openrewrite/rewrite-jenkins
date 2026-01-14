@@ -20,6 +20,7 @@ import lombok.Value;
 import org.jspecify.annotations.Nullable;
 import org.openrewrite.*;
 import org.openrewrite.groovy.GroovyParser;
+import org.openrewrite.marker.SearchResult;
 import org.openrewrite.text.PlainText;
 import org.openrewrite.text.PlainTextVisitor;
 
@@ -55,6 +56,7 @@ public class JenkinsfileAsGroovy extends Recipe {
                                     .<SourceFile>withId(pt.getId())
                                     .<SourceFile>withMarkers(pt.getMarkers())
                                     .<SourceFile>withSourcePath(pt.getSourcePath()))
+                            .map(sf -> SearchResult.found(sf, "Parsed as Groovy"))
                             .orElse(pt);
                 }
                 return super.visit(tree, ctx);
