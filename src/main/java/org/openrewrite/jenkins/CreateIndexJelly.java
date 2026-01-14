@@ -15,6 +15,7 @@
  */
 package org.openrewrite.jenkins;
 
+import lombok.Getter;
 import lombok.Value;
 import org.jspecify.annotations.Nullable;
 import org.openrewrite.*;
@@ -35,16 +36,12 @@ import static java.util.Objects.requireNonNull;
  */
 public class CreateIndexJelly extends ScanningRecipe<CreateIndexJelly.Scanned> {
 
-    @Override
-    public String getDisplayName() {
-        return "Create `index.jelly` if it doesn't exist";
-    }
+    @Getter
+    final String displayName = "Create `index.jelly` if it doesn't exist";
 
-    @Override
-    public String getDescription() {
-        return "Jenkins tooling [requires](https://github.com/jenkinsci/maven-hpi-plugin/pull/302) " +
-                "`src/main/resources/index.jelly` exists with a description.";
-    }
+    @Getter
+    final String description = "Jenkins tooling [requires](https://github.com/jenkinsci/maven-hpi-plugin/pull/302) " +
+            "`src/main/resources/index.jelly` exists with a description.";
 
     @Override
     public Scanned getInitialValue(ExecutionContext ctx) {

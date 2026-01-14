@@ -15,6 +15,7 @@
  */
 package org.openrewrite.jenkins;
 
+import lombok.Getter;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
 import org.openrewrite.text.PlainText;
@@ -31,20 +32,16 @@ public class AddJellyXmlDeclaration extends Recipe {
      *
      * @return the display name of the recipe
      */
-    @Override
-    public String getDisplayName() {
-        return "Add XML declaration to Jelly files";
-    }
+    @Getter
+    final String displayName = "Add XML declaration to Jelly files";
 
     /**
      * Returns the description of the recipe.
      *
      * @return the description of the recipe
      */
-    @Override
-    public String getDescription() {
-        return "Ensure the XML declaration `<?jelly escape-by-default='true'?>` is present in all `.jelly` files.";
-    }
+    @Getter
+    final String description = "Ensure the XML declaration `<?jelly escape-by-default='true'?>` is present in all `.jelly` files.";
 
     /**
      * Returns a visitor that adds the XML declaration to Jelly files.
