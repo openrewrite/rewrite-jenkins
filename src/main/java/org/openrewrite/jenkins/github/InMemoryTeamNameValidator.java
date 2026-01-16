@@ -16,6 +16,7 @@
 package org.openrewrite.jenkins.github;
 
 import org.jspecify.annotations.Nullable;
+import org.openrewrite.internal.StringUtils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -31,8 +32,7 @@ class InMemoryTeamNameValidator implements TeamNameValidator {
 
     @Override
     public boolean isValid(@Nullable String name) {
-        return name != null &&
-                !name.isEmpty() &&
+        return StringUtils.isNotEmpty(name) &&
                 !BANNED.contains(name);
     }
 
