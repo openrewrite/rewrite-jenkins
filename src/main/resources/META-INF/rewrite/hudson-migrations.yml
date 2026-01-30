@@ -21,6 +21,8 @@ displayName: Replace `hudson.Util.getPastTimeString` with `getTimeSpanString`
 description: >-
   `hudson.Util.getPastTimeString` has been [deprecated](https://github.com/jenkinsci/jenkins/pull/4174)
   since the [2.204.1 LTS release](https://www.jenkins.io/changelog-stable/#v2.204.1) on 2019-12-18.
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - org.openrewrite.java.ChangeMethodName:
       methodPattern: hudson.Util getPastTimeString(long)

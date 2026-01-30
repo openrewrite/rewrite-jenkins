@@ -22,6 +22,8 @@ description: >-
   This recipe is intended to break down the modernization of very old plugins into distinct steps.
   It allows modernizing all tooling up to the last versions that supported Java 8.
   This can then be followed by another recipe that makes the jump to Java 11.
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - org.openrewrite.maven.security.UseHttpsForRepositories
   - org.openrewrite.jenkins.DisableLocalResolutionForParentPom
