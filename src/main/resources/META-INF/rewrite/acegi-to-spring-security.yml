@@ -1,0 +1,167 @@
+#
+# Copyright 2024 the original author or authors.
+# <p>
+# Licensed under the Moderne Source Available License (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# <p>
+# https://docs.moderne.io/licensing/moderne-source-available-license
+# <p>
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: org.openrewrite.jenkins.UpgradeAcegiSecurityToSpringSecurity
+displayName: Migrate from Acegi Security to Spring Security
+description: >-
+  Migrates Jenkins plugins from the deprecated Acegi Security API to Spring Security.
+  This handles package renames, method signature changes, and Jenkins-specific API updates.
+  The `org.acegisecurity.acls.sid` package remains undeprecated and is not modified.
+  Note: Authentication.getAuthorities() changed from returning an array to Collection, requiring manual conversion.
+recipeList:
+  # Package migrations (excluding org.acegisecurity.acls.sid which remains undeprecated)
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.acegisecurity.Authentication
+      newFullyQualifiedTypeName: org.springframework.security.core.Authentication
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.acegisecurity.GrantedAuthority
+      newFullyQualifiedTypeName: org.springframework.security.core.GrantedAuthority
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.acegisecurity.GrantedAuthorityImpl
+      newFullyQualifiedTypeName: org.springframework.security.core.authority.SimpleGrantedAuthority
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.acegisecurity.context.SecurityContext
+      newFullyQualifiedTypeName: org.springframework.security.core.context.SecurityContext
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.acegisecurity.context.SecurityContextHolder
+      newFullyQualifiedTypeName: org.springframework.security.core.context.SecurityContextHolder
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.acegisecurity.userdetails.User
+      newFullyQualifiedTypeName: org.springframework.security.core.userdetails.User
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.acegisecurity.userdetails.UserDetails
+      newFullyQualifiedTypeName: org.springframework.security.core.userdetails.UserDetails
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.acegisecurity.userdetails.UsernameNotFoundException
+      newFullyQualifiedTypeName: org.springframework.security.core.userdetails.UsernameNotFoundException
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.acegisecurity.providers.UsernamePasswordAuthenticationToken
+      newFullyQualifiedTypeName: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.acegisecurity.AccessDeniedException
+      newFullyQualifiedTypeName: org.springframework.security.access.AccessDeniedException
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.acegisecurity.AuthenticationException
+      newFullyQualifiedTypeName: org.springframework.security.core.AuthenticationException
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.acegisecurity.BadCredentialsException
+      newFullyQualifiedTypeName: org.springframework.security.authentication.BadCredentialsException
+
+  # Jenkins API methods with Spring Security types - add 2 suffix
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: hudson.model.queue.Tasks getAuthenticationOf(hudson.model.Queue.Task)
+      newMethodName: getAuthenticationOf2
+      matchOverrides: false
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: hudson.model.User impersonate()
+      newMethodName: impersonate2
+      matchOverrides: false
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: hudson.security.ACL impersonate(org.springframework.security.core.Authentication)
+      newMethodName: impersonate2
+      matchOverrides: false
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: hudson.security.ACL impersonate(org.springframework.security.core.Authentication, java.lang.Runnable)
+      newMethodName: impersonate2
+      matchOverrides: false
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: hudson.security.ACL impersonate(org.springframework.security.core.Authentication, hudson.remoting.Callable)
+      newMethodName: impersonate2
+      matchOverrides: false
+  # TODO ACL.as2
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: jenkins.model.Jenkins getAuthentication()
+      newMethodName: getAuthentication2
+      matchOverrides: false
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: hudson.security.ACL hasPermission(org.springframework.security.core.Authentication, hudson.security.Permission)
+      newMethodName: hasPermission2
+      matchOverrides: true
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: hudson.security.AbstractPasswordBasedSecurityRealm authenticate(java.lang.String, java.lang.String)
+      newMethodName: authenticate2
+      matchOverrides: true
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: hudson.security.AbstractPasswordBasedSecurityRealm loadUserByUsername(java.lang.String)
+      newMethodName: loadUserByUsername2
+      matchOverrides: true
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: hudson.security.AbstractPasswordBasedSecurityRealm loadGroupByGroupname(java.lang.String)
+      newMethodName: loadGroupByGroupname2 # TODO also need boolean fetchMembers
+      matchOverrides: true
+
+  # Jenkins API constants/fields - change field references
+  - org.openrewrite.java.ReplaceConstantWithAnotherConstant:
+      existingFullyQualifiedConstantName: hudson.security.ACL.SYSTEM
+      fullyQualifiedConstantName: hudson.security.ACL.SYSTEM2
+  - org.openrewrite.java.ReplaceConstantWithAnotherConstant:
+      existingFullyQualifiedConstantName: hudson.security.SecurityRealm.AUTHENICATED_AUTHORITY
+      fullyQualifiedConstantName: hudson.security.SecurityRealm.AUTHENTICATED_AUTHORITY2
+  - org.openrewrite.java.ReplaceConstantWithAnotherConstant:
+      existingFullyQualifiedConstantName: jenkins.model.Jenkins.ANONYMOUS
+      fullyQualifiedConstantName: jenkins.model.Jenkins.ANONYMOUS2
+
+  # Note: Authentication.getAuthorities() signature changed from returning GrantedAuthority[]
+  # to Collection<? extends GrantedAuthority>. This requires manual conversion of array
+  # declarations to Collection and changing .length accesses to .size() calls.
+
+  # AccessDeniedException2 is deprecated, use AccessDeniedException3
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: hudson.security.AccessDeniedException2
+      newFullyQualifiedTypeName: hudson.security.AccessDeniedException3
+  # TODO UserMayOrMayNotExistException2
+
+  # CredentialsProvider method renames for Item overloads
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: com.cloudbees.plugins.credentials.CredentialsProvider lookupCredentials(java.lang.Class, hudson.model.Item, org.springframework.security.core.Authentication)
+      newMethodName: lookupCredentialsInItem
+      matchOverrides: false
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: com.cloudbees.plugins.credentials.CredentialsProvider lookupCredentials(java.lang.Class, hudson.model.Item, org.springframework.security.core.Authentication, java.util.List)
+      newMethodName: lookupCredentialsInItem
+      matchOverrides: false
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: com.cloudbees.plugins.credentials.CredentialsProvider lookupCredentials(java.lang.Class, hudson.model.Item, org.springframework.security.core.Authentication, com.cloudbees.plugins.credentials.domains.DomainRequirement...)
+      newMethodName: lookupCredentialsInItem
+      matchOverrides: false
+
+  # CredentialsProvider method renames for ItemGroup overloads
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: com.cloudbees.plugins.credentials.CredentialsProvider lookupCredentials(java.lang.Class, hudson.model.ItemGroup, org.springframework.security.core.Authentication)
+      newMethodName: lookupCredentialsInItemGroup
+      matchOverrides: false
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: com.cloudbees.plugins.credentials.CredentialsProvider lookupCredentials(java.lang.Class, hudson.model.ItemGroup, org.springframework.security.core.Authentication, java.util.List)
+      newMethodName: lookupCredentialsInItemGroup
+      matchOverrides: false
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: com.cloudbees.plugins.credentials.CredentialsProvider lookupCredentials(java.lang.Class, hudson.model.ItemGroup, org.springframework.security.core.Authentication, com.cloudbees.plugins.credentials.domains.DomainRequirement...)
+      newMethodName: lookupCredentialsInItemGroup
+      matchOverrides: false
+
+  # CredentialsProvider listCredentials renames for Item overloads
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: com.cloudbees.plugins.credentials.CredentialsProvider listCredentials(java.lang.Class, hudson.model.Item, org.springframework.security.core.Authentication, java.util.List, com.cloudbees.plugins.credentials.CredentialsMatcher)
+      newMethodName: listCredentialsInItem
+      matchOverrides: false
+
+  # CredentialsProvider listCredentials renames for ItemGroup overloads
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: com.cloudbees.plugins.credentials.CredentialsProvider listCredentials(java.lang.Class, hudson.model.ItemGroup, org.springframework.security.core.Authentication, java.util.List, com.cloudbees.plugins.credentials.CredentialsMatcher)
+      newMethodName: listCredentialsInItemGroup
+      matchOverrides: false
