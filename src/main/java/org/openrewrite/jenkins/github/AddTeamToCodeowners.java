@@ -17,6 +17,7 @@ package org.openrewrite.jenkins.github;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.jspecify.annotations.Nullable;
 import org.openrewrite.*;
@@ -132,16 +133,12 @@ public class AddTeamToCodeowners extends ScanningRecipe<AddTeamToCodeowners.Scan
     }
 
     @Data
+    @RequiredArgsConstructor
     public static class Scanned {
         private final TeamNameGenerator<TeamNameInput> generator;
         private final TeamNameValidator validator;
         String artifactId;
         boolean foundFile;
-
-        public Scanned(TeamNameGenerator<TeamNameInput> generator, TeamNameValidator validator) {
-            this.generator = generator;
-            this.validator = validator;
-        }
 
         boolean presentIn(String text) {
             Pattern p = Pattern.compile("^\\*\\s+" + teamName() + "\\s*$");
