@@ -634,4 +634,62 @@ class AddPluginsBomTest implements RewriteTest {
           )
         );
     }
+
+    @Test
+    void shouldLeaveExistingLtsBomWhenJenkinsVersionIsWeekly() {
+        // language=xml
+        rewriteRun(
+          pomXml(
+            """
+              <project>
+                  <parent>
+                      <groupId>org.jenkins-ci.plugins</groupId>
+                      <artifactId>plugin</artifactId>
+                      <version>4.86</version>
+                      <relativePath/>
+                  </parent>
+                  <artifactId>foo</artifactId>
+                  <properties>
+                      <jenkins.version>2.450</jenkins.version>
+                  </properties>
+                  <dependencyManagement>
+                      <dependencies>
+                          <dependency>
+                              <groupId>io.jenkins.tools.bom</groupId>
+                              <artifactId>bom-2.440.x</artifactId>
+                              <version>2982.vdce2153031a_0</version>
+                              <type>pom</type>
+                              <scope>import</scope>
+                          </dependency>
+                      </dependencies>
+                  </dependencyManagement>
+                  <repositories>
+                      <repository>
+                          <id>maven-central</id>
+                          <url>https://repo1.maven.org/maven2/</url>
+                      </repository>
+                      <repository>
+                          <id>repo.jenkins-ci.org</id>
+                          <url>https://repo.jenkins-ci.org/public/</url>
+                      </repository>
+                  </repositories>
+                  <dependencies>
+                      <dependency>
+                          <groupId>org.jenkins-ci.plugins</groupId>
+                          <artifactId>ant</artifactId>
+                      </dependency>
+                  </dependencies>
+              </project>
+              """,
+            spec -> spec.after(after -> {
+                // When jenkins.version is weekly but an LTS BOM is present,
+                // the recipe should keep the LTS BOM artifact ID but upgrade to its latest version
+                ModernizePluginTest.Versions versionsAfter = ModernizePluginTest.Versions.parse(after);
+                assertThat(versionsAfter.bomArtifactId()).isEqualTo("bom-2.440.x");  // Keep same LTS BOM
+                assertThat(versionsAfter.bomVersion()).isGreaterThan("2982.vdce2153031a_0");  // But upgrade its version
+                return after;
+            })
+          )
+        );
+    }
 }
