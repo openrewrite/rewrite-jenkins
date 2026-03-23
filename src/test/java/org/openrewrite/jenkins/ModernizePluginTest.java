@@ -65,7 +65,7 @@ class ModernizePluginTest implements RewriteTest {
     @DocumentExample
     @Test
     void shouldDoTheWorks() {
-        Versions versionsBefore = new Versions(
+        var versionsBefore = new Versions(
           "4.75",
           "2.387.3",
           "bom-2.387.x",

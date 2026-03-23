@@ -362,7 +362,7 @@ class AddPluginsBomTest implements RewriteTest {
 
     @Test
     void shouldFixOutdatedPluginsBomPropertiesBelowManagedDependencies() {
-        ModernizePluginTest.Versions versionsBefore = new ModernizePluginTest.Versions(
+        var versionsBefore = new ModernizePluginTest.Versions(
           "4.86",
           "2.440.3",
           "bom-2.346.x",
