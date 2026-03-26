@@ -297,8 +297,8 @@ class AddPluginsBomTest implements RewriteTest {
 
     @Test
     void shouldFixOutdatedPluginsBom() {
-        String bomArtifactId = "bom-2.346.x";
-        String bomVersion = "1706.vc166d5f429f8";
+        var bomArtifactId = "bom-2.346.x";
+        var bomVersion = "1706.vc166d5f429f8";
         // language=xml
         rewriteRun(
           pomXml(
@@ -390,8 +390,8 @@ class AddPluginsBomTest implements RewriteTest {
 
     @Test
     void shouldFixOutdatedPluginsBomEvenIfUnused() {
-        String bomArtifactId = "bom-2.346.x";
-        String bomVersion = "1706.vc166d5f429f8";
+        var bomArtifactId = "bom-2.346.x";
+        var bomVersion = "1706.vc166d5f429f8";
         // language=xml
         rewriteRun(
           pomXml(
