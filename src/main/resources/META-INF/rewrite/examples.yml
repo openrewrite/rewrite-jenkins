@@ -136,7 +136,7 @@ examples:
 - description: '`CreateJenkinsfileTest#createNewFile`'
   sources:
   - after: |
-      pipeline {
+      /*~~(Parsed as Groovy)~~>*/pipeline {
           agent any
 
           stages {
