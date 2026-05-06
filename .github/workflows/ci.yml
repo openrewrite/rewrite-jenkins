@@ -40,8 +40,6 @@ jobs:
             url: https://repo1.maven.org/maven2
           - name: apache
             url: https://repo.maven.apache.org/maven2
-          - name: jenkins
-            url: https://repo.jenkins-ci.org/public
     steps:
       - name: Probe artifacts that 404'd in nightly CI
         env:
