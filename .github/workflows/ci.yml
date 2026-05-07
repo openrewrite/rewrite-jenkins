@@ -12,7 +12,7 @@ on:
       - main
   workflow_dispatch: {}
   schedule:
-    - cron: 0 * * * *
+    - cron: 0 17 * * *
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -28,62 +28,3 @@ jobs:
       ossrh_signing_key: ${{ secrets.OSSRH_SIGNING_KEY }}
       ossrh_signing_password: ${{ secrets.OSSRH_SIGNING_PASSWORD }}
       OPS_GITHUB_ACTIONS_WEBHOOK: ${{ secrets.OPS_GITHUB_ACTIONS_WEBHOOK }}
-
-  probe-maven-central:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    strategy:
-      fail-fast: false
-      matrix:
-        mirror:
-          - name: repo1
-            url: https://repo1.maven.org/maven2
-          - name: apache
-            url: https://repo.maven.apache.org/maven2
-    steps:
-      - name: Probe artifacts that 404'd in nightly CI
-        env:
-          BASE_URL: ${{ matrix.mirror.url }}
-          MIRROR_NAME: ${{ matrix.mirror.name }}
-        run: |
-          set -u
-          # Same artifacts that failed in run 25393558316.
-          paths=(
-            "org/springframework/security/spring-security-crypto/5.6.3/spring-security-crypto-5.6.3.pom"
-            "org/testcontainers/testcontainers-bom/1.18.3/testcontainers-bom-1.18.3.pom"
-            "com/google/inject/guice-bom/5.0.1/guice-bom-5.0.1.pom"
-            "com/google/inject/guice-bom/6.0.0/guice-bom-6.0.0.pom"
-          )
-
-          probe() {
-            local i=$1 path=$2
-            local out
-            out=$(curl -sS -o /dev/null -A "rewrite-jenkins-probe" \
-              -w '%{http_code} retry_after=%header{retry-after} cf_ray=%header{cf-ray} via=%header{via} server=%header{server} t=%{time_total}s' \
-              --max-time 30 "${BASE_URL}/${path}" 2>&1) || true
-            printf '[%s] iter=%03d %s -> %s\n' "$MIRROR_NAME" "$i" "$path" "$out"
-          }
-          export -f probe
-          export BASE_URL MIRROR_NAME
-
-          echo "=== Sequential warm-up (5 reqs) ==="
-          for i in $(seq 1 5); do
-            for p in "${paths[@]}"; do probe "$i" "$p"; done
-          done
-
-          echo "=== Parallel burst (50 reqs x 4 paths = 200, -P 16) ==="
-          for i in $(seq 1 50); do
-            for p in "${paths[@]}"; do
-              printf '%s\t%s\n' "$i" "$p"
-            done
-          done | xargs -n2 -P16 bash -c 'probe "$0" "$1"'
-
-          echo "=== Tally ==="
-          # Re-run quickly and count status codes only.
-          codes=$(for i in $(seq 1 100); do
-            for p in "${paths[@]}"; do
-              curl -sS -o /dev/null -w '%{http_code}\n' --max-time 30 "${BASE_URL}/${p}" &
-            done
-            wait
-          done | sort | uniq -c | sort -rn)
-          echo "$codes"
