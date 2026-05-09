@@ -90,11 +90,46 @@ jobs:
           done | xargs -n2 -P16 bash -c 'probe "$0" "$1"'
 
           echo "=== Tally ==="
-          # Re-run quickly and count status codes only.
-          codes=$(for i in $(seq 1 100); do
+          # Re-run quickly, count status codes, and capture headers/body for the first 5 non-200s.
+          tally_dir=$(mktemp -d)
+          tally_one() {
+            local p=$1 dir=$2 hdrs body line code
+            hdrs=$(mktemp); body=$(mktemp)
+            line=$(curl -sS -o "$body" -D "$hdrs" -A "Java/25" \
+              -w '%{http_code} cf_ray=%header{cf-ray} cf_cache=%header{cf-cache-status} age=%header{age}' \
+              --max-time 30 "${BASE_URL}/${p}" 2>&1) || true
+            code=${line%% *}
+            echo "$code" >> "$dir/codes"
+            if [[ "$code" != "200" ]]; then
+              # Write each non-200 to its own file to avoid interleaving between parallel writers.
+              {
+                printf -- '--- non-200 sample: %s -> %s ---\n' "$p" "$line"
+                printf '  request headers were sent with -A "Java/25"\n'
+                printf '  response headers:\n'
+                sed 's/^/    /' "$hdrs"
+                printf '  response body (first 500 bytes):\n'
+                head -c 500 "$body" | sed 's/^/    /'
+                printf '\n--- end ---\n'
+              } > "$(mktemp "$dir/non200.XXXXXX")"
+            fi
+            rm -f "$hdrs" "$body"
+          }
+          export -f tally_one
+          export BASE_URL
+          for i in $(seq 1 100); do
             for p in "${paths[@]}"; do
-              curl -sS -o /dev/null -A "Java/25" -w '%{http_code}\n' --max-time 30 "${BASE_URL}/${p}" &
+              tally_one "$p" "$tally_dir" &
             done
             wait
-          done | sort | uniq -c | sort -rn)
-          echo "$codes"
+          done
+          echo "Counts:"
+          sort "$tally_dir/codes" | uniq -c | sort -rn
+          shopt -s nullglob
+          samples=("$tally_dir"/non200.*)
+          if (( ${#samples[@]} > 0 )); then
+            echo "Non-200 samples (showing first 5 of ${#samples[@]}):"
+            for f in "${samples[@]:0:5}"; do cat "$f"; done
+          else
+            echo "No non-200 responses captured."
+          fi
+          rm -rf "$tally_dir"
