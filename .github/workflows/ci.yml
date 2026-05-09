@@ -58,11 +58,21 @@ jobs:
 
           probe() {
             local i=$1 path=$2
-            local out
-            out=$(curl -sS -o /dev/null -A "Java/25" \
-              -w '%{http_code} retry_after=%header{retry-after} cf_ray=%header{cf-ray} via=%header{via} server=%header{server} t=%{time_total}s' \
+            local out hdrs body code
+            hdrs=$(mktemp); body=$(mktemp)
+            out=$(curl -sS -o "$body" -D "$hdrs" -A "Java/25" \
+              -w '%{http_code} retry_after=%header{retry-after} cf_ray=%header{cf-ray} cf_cache=%header{cf-cache-status} age=%header{age} cache_control=%header{cache-control} expires=%header{expires} via=%header{via} server=%header{server} t=%{time_total}s' \
               --max-time 30 "${BASE_URL}/${path}" 2>&1) || true
             printf '[%s] iter=%03d %s -> %s\n' "$MIRROR_NAME" "$i" "$path" "$out"
+            code=${out%% *}
+            if [[ "$code" == "404" ]]; then
+              printf '[%s] iter=%03d %s --- 404 full headers ---\n' "$MIRROR_NAME" "$i" "$path"
+              sed 's/^/    /' "$hdrs"
+              printf '[%s] iter=%03d %s --- 404 body (first 500 bytes) ---\n' "$MIRROR_NAME" "$i" "$path"
+              head -c 500 "$body" | sed 's/^/    /'
+              printf '\n[%s] iter=%03d %s --- end ---\n' "$MIRROR_NAME" "$i" "$path"
+            fi
+            rm -f "$hdrs" "$body"
           }
           export -f probe
           export BASE_URL MIRROR_NAME
