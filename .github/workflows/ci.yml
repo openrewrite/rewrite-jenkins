@@ -59,7 +59,7 @@ jobs:
           probe() {
             local i=$1 path=$2
             local out
-            out=$(curl -sS -o /dev/null -A "rewrite-jenkins-probe" \
+            out=$(curl -sS -o /dev/null -A "Java/25" \
               -w '%{http_code} retry_after=%header{retry-after} cf_ray=%header{cf-ray} via=%header{via} server=%header{server} t=%{time_total}s' \
               --max-time 30 "${BASE_URL}/${path}" 2>&1) || true
             printf '[%s] iter=%03d %s -> %s\n' "$MIRROR_NAME" "$i" "$path" "$out"
@@ -83,7 +83,7 @@ jobs:
           # Re-run quickly and count status codes only.
           codes=$(for i in $(seq 1 100); do
             for p in "${paths[@]}"; do
-              curl -sS -o /dev/null -w '%{http_code}\n' --max-time 30 "${BASE_URL}/${p}" &
+              curl -sS -o /dev/null -A "Java/25" -w '%{http_code}\n' --max-time 30 "${BASE_URL}/${p}" &
             done
             wait
           done | sort | uniq -c | sort -rn)
