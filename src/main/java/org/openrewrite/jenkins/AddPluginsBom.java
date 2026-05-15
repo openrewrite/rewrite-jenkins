@@ -90,7 +90,7 @@ public class AddPluginsBom extends Recipe {
                         doAfterVisit(new RemoveRedundantDependencyVersions(
                                 groupId,
                                 dependency.getArtifactId(),
-                                (RemoveRedundantDependencyVersions.Comparator) null,
+                                null,
                                 null).getVisitor());
                     }
                 }
