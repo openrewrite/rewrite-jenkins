@@ -29,17 +29,13 @@ jobs:
       # Route Maven resolution through Moderne's Artifactory cache to avoid
       # Maven Central rate-limiting (HTTP 429) under parallel test load.
       # Picked up by MavenSettingsAutoLoadingExtension at test time.
+      # maven-cache-3 is a public read-through proxy, so anonymous access is sufficient.
       - uses: s4u/maven-settings-action@v4.0.0
         with:
           mirrors: '[{"id": "moderne-cache", "name": "Moderne Artifactory Cache", "mirrorOf": "*", "url": "https://artifactory.moderne.ninja/artifactory/moderne-cache-3/"}]'
-          servers: '[{"id": "moderne-cache", "username": "${{ secrets.AST_PUBLISH_USERNAME }}", "password": "${{ secrets.AST_PUBLISH_PASSWORD }}"}]'
 
       - name: publish-candidate
         if: contains(github.ref, '-rc.')
-        env:
-          REWRITE_GRADLE_MIRROR_URL: https://artifactory.moderne.ninja/artifactory/moderne-cache-3/
-          REWRITE_GRADLE_MIRROR_USERNAME: ${{ secrets.AST_PUBLISH_USERNAME }}
-          REWRITE_GRADLE_MIRROR_PASSWORD: ${{ secrets.AST_PUBLISH_PASSWORD }}
         run: |
           ./gradlew \
           ${{ env.GRADLE_SWITCHES }} \
@@ -52,10 +48,6 @@ jobs:
 
       - name: publish-release
         if: (!contains(github.ref, '-rc.'))
-        env:
-          REWRITE_GRADLE_MIRROR_URL: https://artifactory.moderne.ninja/artifactory/moderne-cache-3/
-          REWRITE_GRADLE_MIRROR_USERNAME: ${{ secrets.AST_PUBLISH_USERNAME }}
-          REWRITE_GRADLE_MIRROR_PASSWORD: ${{ secrets.AST_PUBLISH_PASSWORD }}
         run: |
           ./gradlew \
           ${{ env.GRADLE_SWITCHES }} \
