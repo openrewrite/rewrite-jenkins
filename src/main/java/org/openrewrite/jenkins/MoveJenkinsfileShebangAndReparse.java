@@ -37,18 +37,12 @@ public class MoveJenkinsfileShebangAndReparse extends Recipe {
     // Anchored to start-of-line via (?m); only matches the shebang line itself plus its terminator.
     private static final Pattern SHEBANG_LINE = Pattern.compile("(?m)^#![^\\r\\n]*(?:\\r\\n|\\r|\\n)?");
 
-    @Override
-    public String getDisplayName() {
-        return "Recover `Jenkinsfile` parse errors caused by a misplaced shebang";
-    }
+    String displayName = "Recover `Jenkinsfile` parse errors caused by a misplaced shebang";
 
-    @Override
-    public String getDescription() {
-        return "Groovy's Antlr4 parser rejects a `#!` shebang that is not on the first line of the file, " +
-                "causing the `Jenkinsfile` to be ingested as a `ParseError`. This recipe detects that exact " +
-                "failure mode, relocates the shebang to line 1, and re-parses the result with the Groovy " +
-                "parser so downstream recipes have a usable Groovy LST to work with.";
-    }
+    String description = "Groovy's Antlr4 parser rejects a `#!` shebang that is not on the first line of " +
+            "the file, causing the `Jenkinsfile` to be ingested as a `ParseError`. This recipe detects that " +
+            "exact failure mode, relocates the shebang to line 1, and re-parses the result with the Groovy " +
+            "parser so downstream recipes have a usable Groovy LST to work with.";
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {
