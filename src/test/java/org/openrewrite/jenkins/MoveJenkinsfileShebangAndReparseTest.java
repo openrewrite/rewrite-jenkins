@@ -25,7 +25,7 @@ import org.openrewrite.groovy.tree.G;
 import org.openrewrite.internal.InMemoryLargeSourceSet;
 import org.openrewrite.tree.ParseError;
 
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.List;
 
 import static java.util.Collections.singletonList;
@@ -94,7 +94,7 @@ class MoveJenkinsfileShebangAndReparseTest {
                 .parse(broken)
                 .findFirst()
                 .orElseThrow()
-                .withSourcePath(Paths.get("not-a-jenkinsfile.groovy"));
+                .withSourcePath(Path.of("not-a-jenkinsfile.groovy"));
         assertThat(ingested).isInstanceOf(ParseError.class);
 
         List<Result> results = new MoveJenkinsfileShebangAndReparse()
@@ -109,7 +109,7 @@ class MoveJenkinsfileShebangAndReparseTest {
                 .parse(source)
                 .findFirst()
                 .orElseThrow()
-                .withSourcePath(Paths.get("Jenkinsfile"));
+                .withSourcePath(Path.of("Jenkinsfile"));
     }
 
     private static SourceFile runRecipe(SourceFile ingested) {
@@ -117,6 +117,6 @@ class MoveJenkinsfileShebangAndReparseTest {
                 .run(new InMemoryLargeSourceSet(singletonList(ingested)), new InMemoryExecutionContext())
                 .getChangeset().getAllResults();
         assertThat(results).hasSize(1);
-        return results.get(0).getAfter();
+        return results.getFirst().getAfter();
     }
 }
