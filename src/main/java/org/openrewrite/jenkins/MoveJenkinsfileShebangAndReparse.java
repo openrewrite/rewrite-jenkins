@@ -75,9 +75,9 @@ public class MoveJenkinsfileShebangAndReparse extends Recipe {
                         .findFirst()
                         .filter(sf -> !(sf instanceof ParseError))
                         .map(sf -> (Tree) sf
-                                .<SourceFile>withId(pe.getId())
-                                .<SourceFile>withSourcePath(pe.getSourcePath())
-                                .<SourceFile>withFileAttributes(pe.getFileAttributes())
+                                .withId(pe.getId())
+                                .withSourcePath(pe.getSourcePath())
+                                .withFileAttributes(pe.getFileAttributes())
                                 .<SourceFile>withCharset(pe.getCharset()))
                         .orElse(pe);
             }
