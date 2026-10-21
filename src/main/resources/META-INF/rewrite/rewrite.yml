@@ -57,7 +57,7 @@ recipeList:
   - org.openrewrite.maven.ChangeParentPom:
       oldGroupId: org.jenkins-ci.plugins
       oldArtifactId: plugin
-      newVersion: 4.X
+      newVersion: 4.x
       allowVersionDowngrades: false
   - org.openrewrite.java.RemoveAnnotation:
       # https://github.com/jenkinsci/plugin-pom/releases/tag/plugin-4.52 removed Animal Sniffer
