@@ -17,6 +17,7 @@ package org.openrewrite.java.testing.htmlunit;
 
 import org.junit.jupiter.api.Test;
 import org.openrewrite.DocumentExample;
+import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.java.JavaParser;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
@@ -30,7 +31,7 @@ class UpgradeHtmlUnit3Test implements RewriteTest {
     @Override
     public void defaults(RecipeSpec spec) {
         spec
-          .parser(JavaParser.fromJavaVersion().classpath("htmlunit"))
+          .parser(JavaParser.fromJavaVersion().classpathFromResources(new InMemoryExecutionContext(), "htmlunit-2"))
           .recipeFromResource("/META-INF/rewrite/htmlunit.yml", "org.openrewrite.java.testing.htmlunit.UpgradeHtmlUnit_3");
     }
 

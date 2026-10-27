@@ -17,6 +17,7 @@ package org.openrewrite.jenkins;
 
 import org.junit.jupiter.api.Test;
 import org.openrewrite.DocumentExample;
+import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.java.JavaParser;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
@@ -26,7 +27,7 @@ import static org.openrewrite.java.Assertions.java;
 class JavaxAnnotationsToSpotBugsTest implements RewriteTest {
     @Override
     public void defaults(RecipeSpec spec) {
-        spec.parser(JavaParser.fromJavaVersion().classpath("jsr305", "spotbugs-annotations"));
+        spec.parser(JavaParser.fromJavaVersion().classpathFromResources(new InMemoryExecutionContext(), "jsr305", "spotbugs-annotations"));
         spec.recipeFromResource("/META-INF/rewrite/jsr-305.yml", "org.openrewrite.jenkins.JavaxAnnotationsToSpotbugs");
     }
 
