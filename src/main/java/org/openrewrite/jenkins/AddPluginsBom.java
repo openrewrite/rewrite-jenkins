@@ -110,6 +110,7 @@ public class AddPluginsBom extends Recipe {
                             VERSION_METADATA_PATTERN,
                             true,
                             null,
+                            null,
                             null
                     ).getVisitor().visitNonNull(d, ctx, getCursor().getParentOrThrow());
                 }
