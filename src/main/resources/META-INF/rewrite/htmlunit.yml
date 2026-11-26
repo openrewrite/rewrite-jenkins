@@ -37,6 +37,10 @@ recipeList:
       oldArtifactId: htmlunit-driver
       newArtifactId: htmlunit3-driver
       newVersion: 4.x
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: com.gargoylesoftware.htmlunit.html.DomNode asText()
+      newMethodName: asNormalizedText
+      matchOverrides: true
   - org.openrewrite.java.ChangePackage:
       oldPackageName: com.gargoylesoftware.htmlunit
       newPackageName: org.htmlunit

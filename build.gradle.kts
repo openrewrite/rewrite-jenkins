@@ -32,5 +32,5 @@ dependencies {
 recipeDependencies {
     testParserClasspath("com.github.spotbugs:spotbugs-annotations:4.7.0")
     testParserClasspath("com.google.code.findbugs:jsr305:3.0.2")
-    testParserClasspath("net.sourceforge.htmlunit:htmlunit:2.70.0")
+    testParserClasspath("net.sourceforge.htmlunit:htmlunit:2.54.0")
 }

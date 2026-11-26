@@ -46,6 +46,7 @@ class UpgradeHtmlUnit3Test implements RewriteTest {
               import com.gargoylesoftware.htmlunit.html.HtmlForm;
               import com.gargoylesoftware.htmlunit.html.HtmlInput;
               import com.gargoylesoftware.htmlunit.html.HtmlPage;
+              import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 
               import java.io.IOException;
 
@@ -60,6 +61,9 @@ class UpgradeHtmlUnit3Test implements RewriteTest {
                           a.setAttribute("value", "up2");
                           a.setAttribute("value2", "leave");
                           a.setValueAttribute("updated");
+                          HtmlSelect select = form.getSelectByName("b");
+                          String pageText = page.asText();
+                          String selectText = select.asText();
                       }
                   }
               }
@@ -69,6 +73,7 @@ class UpgradeHtmlUnit3Test implements RewriteTest {
               import org.htmlunit.html.HtmlForm;
               import org.htmlunit.html.HtmlInput;
               import org.htmlunit.html.HtmlPage;
+              import org.htmlunit.html.HtmlSelect;
 
               import java.io.IOException;
 
@@ -83,7 +88,30 @@ class UpgradeHtmlUnit3Test implements RewriteTest {
                           a.setAttribute("value", "up2");
                           a.setAttribute("value2", "leave");
                           a.setValue("updated");
+                          HtmlSelect select = form.getSelectByName("b");
+                          String pageText = page.asNormalizedText();
+                          String selectText = select.asNormalizedText();
                       }
+                  }
+              }
+              """
+          )
+        );
+    }
+
+    @Test
+    void shouldNotChangeUnrelatedAsText() {
+        rewriteRun(
+          //language=java
+          java(
+            """
+              class Label {
+                  String asText() {
+                      return "label";
+                  }
+
+                  String render() {
+                      return asText();
                   }
               }
               """
