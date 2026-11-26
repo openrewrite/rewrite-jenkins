@@ -16,6 +16,7 @@
 package org.openrewrite.jenkins.github;
 
 import org.intellij.lang.annotations.Language;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -205,78 +206,82 @@ class AddTeamToCodeownersTest implements RewriteTest {
         );
     }
 
-    @Test
-    void shouldNoOpIfInvalidTeamGenerated() {
-        rewriteRun(
-          pomXml(
-            """
-              <project>
-                  <parent>
-                      <groupId>org.jenkins-ci.plugins</groupId>
-                      <artifactId>plugin</artifactId>
-                      <version>4.86</version>
-                  </parent>
-                  <artifactId>tool-labels-plugin</artifactId>
-                  <version>0.1</version>
-                  <repositories>
-                      <repository>
-                          <id>maven-central</id>
-                          <url>https://repo1.maven.org/maven2/</url>
-                      </repository>
-                      <repository>
-                          <id>repo.jenkins-ci.org</id>
-                          <url>https://repo.jenkins-ci.org/public/</url>
-                      </repository>
-                  </repositories>
-              </project>
-              """
-          ),
-          text(
-            "* @global-owner1",
-            s -> s.path(".github/CODEOWNERS").noTrim()
-          )
-        );
-    }
+    @Nested
+    class NoChange {
 
-    @Test
-    void shouldNoOpIfInvalidTeamGeneratedAndCodeownersFileAbsent() {
-        rewriteRun(
-          pomXml(
-            """
-              <project>
-                  <parent>
-                      <groupId>org.jenkins-ci.plugins</groupId>
-                      <artifactId>plugin</artifactId>
-                      <version>4.86</version>
-                  </parent>
-                  <artifactId>tool-labels-plugin</artifactId>
-                  <version>0.1</version>
-                  <repositories>
-                      <repository>
-                          <id>maven-central</id>
-                          <url>https://repo1.maven.org/maven2/</url>
-                      </repository>
-                      <repository>
-                          <id>repo.jenkins-ci.org</id>
-                          <url>https://repo.jenkins-ci.org/public/</url>
-                      </repository>
-                  </repositories>
-              </project>
-              """
-          )
-        );
-    }
+        @Test
+        void shouldNoOpIfInvalidTeamGenerated() {
+            rewriteRun(
+              pomXml(
+                """
+                  <project>
+                      <parent>
+                          <groupId>org.jenkins-ci.plugins</groupId>
+                          <artifactId>plugin</artifactId>
+                          <version>4.86</version>
+                      </parent>
+                      <artifactId>tool-labels-plugin</artifactId>
+                      <version>0.1</version>
+                      <repositories>
+                          <repository>
+                              <id>maven-central</id>
+                              <url>https://repo1.maven.org/maven2/</url>
+                          </repository>
+                          <repository>
+                              <id>repo.jenkins-ci.org</id>
+                              <url>https://repo.jenkins-ci.org/public/</url>
+                          </repository>
+                      </repositories>
+                  </project>
+                  """
+              ),
+              text(
+                "* @global-owner1",
+                s -> s.path(".github/CODEOWNERS").noTrim()
+              )
+            );
+        }
 
-    @Test
-    void shouldNotModifyNonCodeowners() {
-        rewriteRun(
-          pomXml(POM),
-          text("*.iml",
-            s -> s.path(".gitignore")),
-          text(
-            "* @jenkinsci/sample-plugin-developers",
-            s -> s.path(".github/CODEOWNERS").noTrim()
-          )
-        );
+        @Test
+        void shouldNoOpIfInvalidTeamGeneratedAndCodeownersFileAbsent() {
+            rewriteRun(
+              pomXml(
+                """
+                  <project>
+                      <parent>
+                          <groupId>org.jenkins-ci.plugins</groupId>
+                          <artifactId>plugin</artifactId>
+                          <version>4.86</version>
+                      </parent>
+                      <artifactId>tool-labels-plugin</artifactId>
+                      <version>0.1</version>
+                      <repositories>
+                          <repository>
+                              <id>maven-central</id>
+                              <url>https://repo1.maven.org/maven2/</url>
+                          </repository>
+                          <repository>
+                              <id>repo.jenkins-ci.org</id>
+                              <url>https://repo.jenkins-ci.org/public/</url>
+                          </repository>
+                      </repositories>
+                  </project>
+                  """
+              )
+            );
+        }
+
+        @Test
+        void shouldNotModifyNonCodeowners() {
+            rewriteRun(
+              pomXml(POM),
+              text("*.iml",
+                s -> s.path(".gitignore")),
+              text(
+                "* @jenkinsci/sample-plugin-developers",
+                s -> s.path(".github/CODEOWNERS").noTrim()
+              )
+            );
+        }
     }
 }
